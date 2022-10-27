@@ -1,3 +1,4 @@
+import 'package:final_project/Group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -5,9 +6,10 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 List<Meeting> meetings = <Meeting>[];
 
 class CalendarPage extends StatefulWidget {
-  CalendarPage({super.key, required this.title});
+  CalendarPage({super.key, required this.title, required this.group});
 
   final String title;
+  final Group group;
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
@@ -17,6 +19,7 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(title: const Text('List of groups')),
         floatingActionButton: FloatingActionButton(
           child: const Text('Add appointment'),
           onPressed: () {
