@@ -17,6 +17,15 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
+  Future<void> _handleCalendar(Group group) async {
+    print("Chat");
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CalendarPage(title: group.name, group: group),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +37,7 @@ class _GroupPageState extends State<GroupPage> {
           children: groups.map((Group) {
             return GroupItem(
               group: Group,
-              //completed: ,
-              //onListChanged: _handleListChanged,
+              onListChanged: _handleCalendar,
             );
           }).toList(),
         ),

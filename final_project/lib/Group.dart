@@ -10,18 +10,18 @@ class Group {
   }
 }
 
-typedef ToDoListChangedCallback = Function(bool completed, Group group);
+typedef ToDoListChangedCallback = Function(Group group);
 //typedef ToDoListRemovedCallback = Function(Car car);
 
 class GroupItem extends StatelessWidget {
   GroupItem(
       { //required this.completed,
-      //required this.onListChanged,
+      required this.onListChanged,
       required this.group})
       : super(key: ObjectKey(group));
 
   //final bool completed;
-  //final ToDoListChangedCallback onListChanged;
+  final ToDoListChangedCallback onListChanged;
   final Group group;
 
   Color _getColor(BuildContext context) {
@@ -50,7 +50,7 @@ class GroupItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        //onListChanged(completed, group);
+        onListChanged(group);
       },
       leading: CircleAvatar(
         backgroundColor: _getColor(context),
