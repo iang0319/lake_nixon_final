@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:final_project/Group.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -22,6 +23,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   MeetingDataSource _events = MeetingDataSource(<Meeting>[]);
   late CalendarView _currentView;
+  late SampleModel
 
   final List<CalendarView> _allowedViews = <CalendarView>[
     CalendarView.day,
@@ -39,12 +41,13 @@ class _CalendarPageState extends State<CalendarPage> {
   final GlobalKey _globalKey = GlobalKey();
   final ScrollController _controller = ScrollController();
   final CalendarController _calendarController = CalendarController();
+  Meeting? _selectedMeeting;
 
   @override
   void initState() {
     _currentView = CalendarView.week;
     _calendarController.view = _currentView;
-    _events = MeetingDataSource(getAppointmentDetails());
+    _events = MeetingDataSource(_getDataSource());
     super.initState();
   }
 
@@ -69,13 +72,8 @@ class _CalendarPageState extends State<CalendarPage> {
             });
           },
         ),
-        body: SfCalendar(
-          view: CalendarView.month,
-          dataSource: MeetingDataSource(_getDataSource()),
-          monthViewSettings: const MonthViewSettings(
-              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-              showAgenda: true),
-        ));
+        body: _getLakeNixonCalender(
+            _calendarController, _events, _onViewChanged));
   }
 
   List<Meeting> _getDataSource() {
@@ -126,7 +124,7 @@ class _CalendarPageState extends State<CalendarPage> {
       controller: calendarController,
       dataSource: calendarDataSource,
       allowedViews: _allowedViews,
-      showNavigationArrow: model.isWebFullView,
+      //showNavigationArrow: model.isWebFullView,
       onViewChanged: viewChangedCallback,
       allowDragAndDrop: true,
       showDatePickerButton: true,
