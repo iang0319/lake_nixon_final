@@ -377,7 +377,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                   size: 20,
                 )),
             title: TextField(
-              cursorColor: widget.model.backgroundColor,
+              cursorColor: const Color(0xff4169e1),
               controller: TextEditingController(text: _location),
               onChanged: (String value) {
                 _location = value;
@@ -452,7 +452,6 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                     builder: (BuildContext context) {
                       return _ResourcePicker(
                         _unSelectedResources,
-                        widget.model,
                         onChanged: (_PickerChangedDetails details) {
                           _resourceIds = _resourceIds == null
                               ? <Object>[details.resourceId!]
@@ -498,7 +497,6 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                       widget.colorCollection,
                       _selectedColorIndex,
                       widget.colorNames,
-                      widget.model,
                       onChanged: (_PickerChangedDetails details) {
                         _selectedColorIndex = details.index;
                       },
@@ -557,30 +555,31 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                                     _subject == '' ? '(No title)' : _subject,
                                 resourceIds: _resourceIds,
                               );
-                              return WillPopScope(
-                                onWillPop: () async {
-                                  if (widget.newAppointment != null) {
-                                    widget.events.appointments!.removeAt(widget
-                                        .events.appointments!
-                                        .indexOf(widget.newAppointment));
-                                    widget.events.notifyListeners(
-                                        CalendarDataSourceAction.remove,
-                                        <Appointment>[widget.newAppointment!]);
-                                  }
-                                  return true;
-                                },
-                                child: AppointmentEditorWeb(
-                                  widget.model,
-                                  selectedApp,
-                                  widget.colorCollection,
-                                  widget.colorNames,
-                                  widget.events,
-                                  widget.timeZoneCollection,
-                                  widget.appointment,
-                                  widget.visibleDates,
-                                  widget.newAppointment,
-                                ),
-                              );
+                              return const Text("hello");
+                              // return WillPopScope(
+                              //   onWillPop: () async {
+                              //     if (widget.newAppointment != null) {
+                              //       widget.events.appointments!.removeAt(widget
+                              //           .events.appointments!
+                              //           .indexOf(widget.newAppointment));
+                              //       widget.events.notifyListeners(
+                              //           CalendarDataSourceAction.remove,
+                              //           <Appointment>[widget.newAppointment!]);
+                              //     }
+                              //     return true;
+                              //   },
+                              //   child: AppointmentEditorWeb(
+                              //     widget.model,
+                              //     selectedApp,
+                              //     widget.colorCollection,
+                              //     widget.colorNames,
+                              //     widget.events,
+                              //     widget.timeZoneCollection,
+                              //     widget.appointment,
+                              //     widget.visibleDates,
+                              //     widget.newAppointment,
+                              //   ),
+                              // );
                             });
                       },
                       child: Text(
@@ -596,7 +595,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
-                    fillColor: widget.model.backgroundColor,
+                    fillColor: const Color(0xff4169e1),
                     onPressed: () {
                       if (widget.selectedAppointment != null ||
                           widget.newAppointment != null) {
@@ -668,7 +667,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
       chipWidgets.add(Chip(
         padding: EdgeInsets.zero,
         avatar: CircleAvatar(
-          backgroundColor: widget.model.backgroundColor,
+          backgroundColor: const Color(0xff4169e1),
           backgroundImage: selectedResource.image,
           child: selectedResource.image == null
               ? Text(selectedResource.displayName[0])
@@ -743,4 +742,175 @@ CalendarResource _getResourceFromId(
     Object resourceId, List<CalendarResource> resourceCollection) {
   return resourceCollection
       .firstWhere((CalendarResource resource) => resource.id == resourceId);
+}
+
+/// The color picker element for the appointment editor with the available
+/// color collection, and returns the selection color index
+class _CalendarColorPicker extends StatefulWidget {
+  const _CalendarColorPicker(
+      this.colorCollection, this.selectedColorIndex, this.colorNames,
+      {required this.onChanged});
+
+  final List<Color> colorCollection;
+
+  final int selectedColorIndex;
+
+  final List<String> colorNames;
+
+  final _PickerChanged onChanged;
+
+  @override
+  State<StatefulWidget> createState() => _CalendarColorPickerState();
+}
+
+class _CalendarColorPickerState extends State<_CalendarColorPicker> {
+  int _selectedColorIndex = -1;
+
+  @override
+  void initState() {
+    _selectedColorIndex = widget.selectedColorIndex;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(_CalendarColorPicker oldWidget) {
+    _selectedColorIndex = widget.selectedColorIndex;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.light,
+          colorScheme: ColorScheme.fromSwatch(
+            backgroundColor: const Color(0xff4169e1),
+          )),
+      child: AlertDialog(
+        content: SizedBox(
+            width: double.maxFinite,
+            height: (widget.colorCollection.length * 50).toDouble(),
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: widget.colorCollection.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                    height: 50,
+                    child: ListTile(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      leading: Icon(
+                          index == _selectedColorIndex
+                              ? Icons.lens
+                              : Icons.trip_origin,
+                          color: widget.colorCollection[index]),
+                      title: Text(widget.colorNames[index]),
+                      onTap: () {
+                        setState(() {
+                          _selectedColorIndex = index;
+                          widget.onChanged(_PickerChangedDetails(index: index));
+                        });
+
+                        // ignore: always_specify_types
+                        Future.delayed(const Duration(milliseconds: 200), () {
+                          // When task is over, close the dialog
+                          Navigator.pop(context);
+                        });
+                      },
+                    ));
+              },
+            )),
+      ),
+    );
+  }
+}
+
+// Picker to display the available resource collection, and returns the
+/// selected resource id.
+class _ResourcePicker extends StatefulWidget {
+  const _ResourcePicker(this.resourceCollection, {required this.onChanged});
+
+  final List<CalendarResource> resourceCollection;
+
+  final _PickerChanged onChanged;
+
+  @override
+  State<StatefulWidget> createState() => _ResourcePickerState();
+}
+
+class _ResourcePickerState extends State<_ResourcePicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+        data: ThemeData(
+            brightness: Brightness.light,
+            colorScheme: ColorScheme.fromSwatch(
+              backgroundColor: const Color(0xff4169e1),
+            )),
+        child: AlertDialog(
+          content: SizedBox(
+              width: double.maxFinite,
+              height: (widget.resourceCollection.length * 50).toDouble(),
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: widget.resourceCollection.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final CalendarResource resource =
+                      widget.resourceCollection[index];
+                  return SizedBox(
+                      height: 50,
+                      child: ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                        leading: CircleAvatar(
+                          backgroundColor: const Color(0xff4169e1),
+                          backgroundImage: resource.image,
+                          child: resource.image == null
+                              ? Text(resource.displayName[0])
+                              : null,
+                        ),
+                        title: Text(resource.displayName),
+                        onTap: () {
+                          setState(() {
+                            widget.onChanged(
+                                _PickerChangedDetails(resourceId: resource.id));
+                          });
+
+                          // ignore: always_specify_types
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            // When task is over, close the dialog
+                            Navigator.pop(context);
+                          });
+                        },
+                      ));
+                },
+              )),
+        ));
+  }
+}
+
+enum _SelectRule {
+  doesNotRepeat,
+  everyDay,
+  everyWeek,
+  everyMonth,
+  everyYear,
+  custom
+}
+
+typedef _PickerChanged = void Function(
+    _PickerChangedDetails pickerChangedDetails);
+
+/// Details for the [_PickerChanged].
+class _PickerChangedDetails {
+  _PickerChangedDetails(
+      {this.index = -1,
+      this.resourceId,
+      this.selectedRule = _SelectRule.doesNotRepeat});
+
+  final int index;
+
+  final Object? resourceId;
+
+  final _SelectRule? selectedRule;
 }
