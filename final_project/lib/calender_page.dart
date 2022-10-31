@@ -352,7 +352,7 @@ class _CalendarPageState extends State<CalendarPage> {
         data: ThemeData(
           brightness: Brightness.light,
           colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: const Color(0xff4169e1),
+            backgroundColor: theme,
           ),
         ),
         child: _getLakeNixonCalender(
@@ -362,7 +362,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: Row(children: <Widget>[
         Expanded(
-          child: Container(color: const Color(0xff4169e1), child: calendar),
+          child: Container(color: theme, child: calendar),
         )
       ]),
     );

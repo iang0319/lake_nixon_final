@@ -6,6 +6,8 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:syncfusion_flutter_core/core.dart';
 
+Color theme = const Color(0xffffffff);
+
 enum _SelectRule {
   doesNotRepeat,
   everyDay,
@@ -55,7 +57,7 @@ class _CalendarTimeZonePickerState extends State<_CalendarTimeZonePicker> {
         data: ThemeData(
           brightness: Brightness.light,
           colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: const Color(0xff4169e1),
+            backgroundColor: theme,
           ),
         ),
         child: AlertDialog(
@@ -327,7 +329,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                 data: ThemeData(
                                   brightness: Brightness.light,
                                   colorScheme: ColorScheme.fromSwatch(
-                                    backgroundColor: const Color(0xff4169e1),
+                                    backgroundColor: theme,
                                   ),
                                 ),
                                 child: child!,
