@@ -360,6 +360,9 @@ class _CalendarPageState extends State<CalendarPage> {
 
     final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Group Calendar"),
+      ),
       body: Row(children: <Widget>[
         Expanded(
           child: Container(color: theme, child: calendar),
@@ -426,7 +429,7 @@ class AppointmentDataSource extends CalendarDataSource {
   }
 
   Appointment _getMeetingData(int index) {
-    final dynamic meeting = appointments![index];
+    final dynamic meeting = appointments[index];
     late final Appointment meetingData;
     if (meeting is Appointment) {
       meetingData = meeting;

@@ -1,4 +1,5 @@
 import 'package:final_project/Group.dart';
+import 'package:final_project/calender_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -835,7 +836,12 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                   _recurrenceProperties!, _startDate, _endDate),
                         ));
 
-                        widget.events.appointments!.add(appointment[0]);
+                        //if (appointment[0] != null) {
+                        //widget.events.appointments?.add(appointment[0]);
+                        //}
+                        //Potential Fix? Making the call conditional
+                        //original: wiget.events.appointments!.add(appointment[0]);
+                        widget.events.appointments?.add(appointment[0]);
 
                         widget.events.notifyListeners(
                             CalendarDataSourceAction.add, appointment);
@@ -859,7 +865,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                       if (widget.selectedAppointment != null) {
                         if (widget.selectedAppointment!.appointmentType ==
                             AppointmentType.normal) {
-                          widget.events.appointments!.removeAt(widget
+                          //Another Potential Fix?
+                          widget.events.appointments?.removeAt(widget
                               .events.appointments!
                               .indexOf(widget.selectedAppointment));
                           widget.events.notifyListeners(
