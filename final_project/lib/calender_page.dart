@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:final_project/globals.dart';
 
 List<Appointment> appointments = <Appointment>[];
 
@@ -178,8 +179,6 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('West Asia Standard Time');
     _timeZoneCollection.add('West Pacific Standard Time');
     _timeZoneCollection.add('Yakutsk Standard Time');
-
-    final List<Appointment> meetings = <Appointment>[];
 
     // final DateTime today = DateTime.now();
     // final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
