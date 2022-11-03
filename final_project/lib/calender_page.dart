@@ -3,6 +3,7 @@ import 'package:final_project/appointment_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:final_project/globals.dart';
 
 List<Appointment> appointments = <Appointment>[];
 
@@ -30,7 +31,7 @@ final List<CalendarView> _allowedViews = <CalendarView>[
 class _CalendarPageState extends State<CalendarPage> {
   _CalendarPageState();
 
-  AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
+  //AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
   late CalendarView _currentView;
 
   /// Global key used to maintain the state, when we change the parent of the
@@ -42,6 +43,7 @@ class _CalendarPageState extends State<CalendarPage> {
   final List<String> _colorNames = <String>[];
   final List<Color> _colorCollection = <Color>[];
   final List<String> _timeZoneCollection = <String>[];
+  late AppointmentDataSource _events;
 
   @override
   void initState() {
@@ -178,15 +180,17 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('West Pacific Standard Time');
     _timeZoneCollection.add('Yakutsk Standard Time');
 
-    final List<Appointment> meetings = <Appointment>[];
+    List<Appointment> appointments = <Appointment>[];
+    // appointments.add(Appointment(
+    //   startTime: DateTime.now(),
+    //   endTime: DateTime.now().add(Duration(minutes: 10)),
+    //   subject: 'Meeting',
+    //   color: Colors.Blue,
+    //   startTimeZone: '',
+    //   endTimeZone: '',
+    // ));
 
-    // final DateTime today = DateTime.now();
-    // final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
-    // final DateTime endTime = startTime.add(const Duration(hours: 2));
-    // meetings.add(Meeting(
-    //     'Conference', startTime, endTime, const Color(0xFF0F8644), false));
-
-    return meetings;
+    return globalAppointments;
   }
 
   void _onViewChanged(ViewChangedDetails viewChangedDetails) {
@@ -399,7 +403,7 @@ class AppointmentDataSource extends CalendarDataSource {
   /// Creates a meeting data source, which used to set the appointment
   /// collection to the calendar
   AppointmentDataSource(List<Appointment> source) {
-    appointments = source;
+    this.appointments = source;
   }
 
   @override
