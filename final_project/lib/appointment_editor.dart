@@ -129,7 +129,7 @@ class AppointmentEditor extends StatefulWidget {
   final List<String> colorNames;
 
   /// Holds the events value
-  final CalendarDataSource events;
+  final AppointmentDataSource events;
 
   /// Collection of time zone values
   final List<String> timeZoneCollection;
@@ -843,7 +843,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         //Potential Fix? Making the call conditional
                         //original: wiget.events.appointments!.add(appointment[0]);
                         widget.events.appointments?.add(appointment[0]);
-                        meetings.add(appointment[0]);
+                        globalAppointments.add(appointment[0]);
 
                         widget.events.notifyListeners(
                             CalendarDataSourceAction.add, appointment);
