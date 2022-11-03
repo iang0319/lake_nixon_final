@@ -842,7 +842,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         //}
                         //Potential Fix? Making the call conditional
                         //original: wiget.events.appointments!.add(appointment[0]);
-                        widget.events.appointments?.add(appointment[0]);
+                        //widget.events.appointments?.add(appointment[0]);
                         globalAppointments.add(appointment[0]);
 
                         widget.events.notifyListeners(

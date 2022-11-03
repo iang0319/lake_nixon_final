@@ -1,6 +1,7 @@
 import 'package:final_project/Group.dart';
 import 'package:final_project/appointment_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:final_project/globals.dart';
