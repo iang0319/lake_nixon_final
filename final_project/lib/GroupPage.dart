@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'Group.dart';
 import 'calender_page.dart';
 
-List<Group> groups = <Group>[
-  const Group(name: "Bears"),
-  const Group(name: "Koalas")
-];
+List<Group> groups = <Group>[Group(name: "Bears"), Group(name: "Koalas")];
 
 class GroupPage extends StatefulWidget {
   GroupPage({super.key, required this.title});

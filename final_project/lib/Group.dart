@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Group {
-  const Group({required this.name});
+  Group({required this.name});
 
   final String name;
+
+  /// Try and let each individual group have a list of appointments that are added to in the calendar
+  /// Something along this line
+  late List<Appointment> meetings;
 
   String abbrev() {
     return name.substring(0, 1);

@@ -5,7 +5,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-List<Appointment> appointments = <Appointment>[];
+final DateTime today = DateTime.now();
+final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
+final DateTime endTime = startTime.add(const Duration(hours: 2));
+List<Appointment> appointments = <Appointment>[
+  Appointment(startTime: startTime, endTime: endTime)
+];
 
 class CalendarPage extends StatefulWidget {
   CalendarPage({super.key, required this.title, required this.group});
