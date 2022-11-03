@@ -50,11 +50,12 @@ class _CalendarPageState extends State<CalendarPage> {
   void initState() {
     _currentView = CalendarView.week;
     _calendarController.view = _currentView;
-    _events = AppointmentDataSource(_getDataSource());
+    createGroup(widget.group);
+    _events = AppointmentDataSource(_getDataSource(widget.group));
     super.initState();
   }
 
-  List<Appointment> _getDataSource() {
+  List<Appointment> _getDataSource(Group group) {
     _colorNames.add('Green');
     _colorNames.add('Purple');
     _colorNames.add('Red');
@@ -191,7 +192,7 @@ class _CalendarPageState extends State<CalendarPage> {
     //   endTimeZone: '',
     // ));
 
-    return globalAppointments;
+    return events[group];
   }
 
   void _onViewChanged(ViewChangedDetails viewChangedDetails) {
@@ -341,7 +342,8 @@ class _CalendarPageState extends State<CalendarPage> {
                 _colorCollection,
                 _colorNames,
                 _events,
-                _timeZoneCollection)),
+                _timeZoneCollection,
+                widget.group)),
       );
     }
   }

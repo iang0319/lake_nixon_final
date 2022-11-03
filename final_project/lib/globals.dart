@@ -1,3 +1,12 @@
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-final List<Appointment> globalAppointments = <Appointment>[];
+import 'Group.dart';
+
+var events = {};
+
+void createGroup(Group group) {
+  if (events.containsKey(group)) {
+  } else {
+    events[group] = <Appointment>[];
+  }
+}

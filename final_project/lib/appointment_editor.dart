@@ -111,6 +111,7 @@ class AppointmentEditor extends StatefulWidget {
       this.colorNames,
       this.events,
       this.timeZoneCollection,
+      this.group,
       [this.selectedResource]);
 
   /// Selected appointment
@@ -136,6 +137,8 @@ class AppointmentEditor extends StatefulWidget {
 
   /// Selected calendar resource
   final CalendarResource? selectedResource;
+
+  final Group group;
 
   @override
   _AppointmentEditorState createState() => _AppointmentEditorState();
@@ -843,7 +846,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         //Potential Fix? Making the call conditional
                         //original: wiget.events.appointments!.add(appointment[0]);
                         //widget.events.appointments?.add(appointment[0]);
-                        globalAppointments.add(appointment[0]);
+                        events[widget.group].add(appointment[0]);
 
                         widget.events.notifyListeners(
                             CalendarDataSourceAction.add, appointment);
