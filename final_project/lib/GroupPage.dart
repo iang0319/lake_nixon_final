@@ -4,7 +4,8 @@ import 'calender_page.dart';
 
 List<Group> groups = <Group>[
   const Group(name: "Bears"),
-  const Group(name: "Koalas")
+  const Group(name: "Koalas"),
+  const Group(name: "Kangaroos")
 ];
 
 class GroupPage extends StatefulWidget {

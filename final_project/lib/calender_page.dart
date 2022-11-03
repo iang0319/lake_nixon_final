@@ -65,6 +65,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorNames.add('Blue');
     _colorNames.add('Peach');
     _colorNames.add('Gray');
+    _colorNames.add("Green");
 
     _colorCollection.add(const Color(0xFF0F8644));
     _colorCollection.add(const Color(0xFF8B1FA9));
@@ -368,7 +369,6 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.group.name} calendar"),
-
       ),
       body: Row(children: <Widget>[
         Expanded(
