@@ -20,13 +20,13 @@ class CalendarPage extends StatefulWidget {
 
 final List<CalendarView> _allowedViews = <CalendarView>[
   CalendarView.day,
-  CalendarView.week,
+  //CalendarView.week,
   CalendarView.workWeek,
-  CalendarView.month,
+  //CalendarView.month,
   CalendarView.timelineDay,
-  CalendarView.timelineWeek,
+  //CalendarView.timelineWeek,
   CalendarView.timelineWorkWeek,
-  CalendarView.timelineMonth,
+  //CalendarView.timelineMonth,
 ];
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -48,7 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    _currentView = CalendarView.week;
+    _currentView = CalendarView.timelineDay;
     _calendarController.view = _currentView;
     createGroup(widget.group);
     _events = AppointmentDataSource(_getDataSource(widget.group));
