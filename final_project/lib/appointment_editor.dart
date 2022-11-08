@@ -173,6 +173,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
       const DropdownMenuItem(value: "Gaga Ball", child: Text("Gaga Ball")),
       const DropdownMenuItem(value: "Archery", child: Text("Archery")),
       const DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
+      const DropdownMenuItem(value: "Pickup Time", child: Text("Pickup Time"))
     ];
     return menuItems;
   }
