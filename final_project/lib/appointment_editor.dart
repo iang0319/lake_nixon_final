@@ -292,10 +292,12 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
+                    _subject = newValue;
                   });
                 },
               ),
             ),
+            /*
             ListTile(
               contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               leading: const Text(''),
@@ -316,6 +318,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                 ),
               ),
             ),
+            */
             const Divider(
               height: 1.0,
               thickness: 1,
