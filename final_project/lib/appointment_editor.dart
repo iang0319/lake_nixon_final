@@ -166,6 +166,19 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
   _SelectRule? _rule = _SelectRule.doesNotRepeat;
 
+  //Hardcoded events
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(value: "Swimming", child: Text("Swimming")),
+      const DropdownMenuItem(value: "Gaga Ball", child: Text("Gaga Ball")),
+      const DropdownMenuItem(value: "Archery", child: Text("Archery")),
+      const DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
+    ];
+    return menuItems;
+  }
+
+  String dropdownValue = "Swimming";
+
   @override
   void initState() {
     _updateAppointmentProperties();
@@ -270,6 +283,19 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
+            ListTile(
+              contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+              leading: const Text("Events"),
+              title: DropdownButton(
+                value: dropdownValue,
+                items: dropdownItems,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
+                },
+              ),
+            ),
             ListTile(
               contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               leading: const Text(''),
