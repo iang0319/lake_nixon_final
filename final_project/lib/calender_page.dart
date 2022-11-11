@@ -48,7 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    _currentView = CalendarView.timelineDay;
+    _currentView = CalendarView.day;
     _calendarController.view = _currentView;
     createGroup(widget.group);
     _events = AppointmentDataSource(_getDataSource(widget.group));
