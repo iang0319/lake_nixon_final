@@ -20,13 +20,13 @@ class CalendarPage extends StatefulWidget {
 
 final List<CalendarView> _allowedViews = <CalendarView>[
   CalendarView.day,
-  CalendarView.week,
+  //CalendarView.week,
   CalendarView.workWeek,
-  CalendarView.month,
+  //CalendarView.month,
   CalendarView.timelineDay,
-  CalendarView.timelineWeek,
+  //CalendarView.timelineWeek,
   CalendarView.timelineWorkWeek,
-  CalendarView.timelineMonth,
+  //CalendarView.timelineMonth,
 ];
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -48,7 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    _currentView = CalendarView.week;
+    _currentView = CalendarView.day;
     _calendarController.view = _currentView;
     createGroup(widget.group);
     _events = AppointmentDataSource(_getDataSource(widget.group));
@@ -65,6 +65,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorNames.add('Blue');
     _colorNames.add('Peach');
     _colorNames.add('Gray');
+    //_colorNames.add("Green");
 
     _colorCollection.add(const Color(0xFF0F8644));
     _colorCollection.add(const Color(0xFF8B1FA9));
@@ -75,7 +76,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF3D4FB5));
     _colorCollection.add(const Color(0xFFE47C73));
     _colorCollection.add(const Color(0xFF636363));
-    _colorCollection.add(const Color(0xFF0A8043));
+    //_colorCollection.add(const Color(0xFF0A8043));
 
     _timeZoneCollection.add('Default Time');
     _timeZoneCollection.add('AUS Central Standard Time');
@@ -368,7 +369,6 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.group.name} calendar"),
-
       ),
       body: Row(children: <Widget>[
         Expanded(

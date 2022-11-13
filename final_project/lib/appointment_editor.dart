@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:syncfusion_flutter_core/core.dart';
 import "globals.dart";
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 Color theme = const Color(0xffffffff);
 
@@ -166,9 +167,41 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
   _SelectRule? _rule = _SelectRule.doesNotRepeat;
 
+  static List<Group> _groups = [
+    Group(name: "Lion"),
+    Group(name: "Flamingo"),
+    Group(name: "Hippo"),
+    Group(name: "Owl"),
+    Group(name: "Dragonfly"),
+    Group(name: "Dolphin"),
+  ];
+
+  final _items = _groups
+      .map((group) => MultiSelectItem<Group>(group, group.name))
+      .toList();
+
+  List<Group> _selectedGroups5 = [];
+
+  final _multiSelectKey = GlobalKey<FormFieldState>();
+
+  //Hardcoded events
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(value: "Swimming", child: Text("Swimming")),
+      const DropdownMenuItem(value: "Gaga Ball", child: Text("Gaga Ball")),
+      const DropdownMenuItem(value: "Archery", child: Text("Archery")),
+      const DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
+      const DropdownMenuItem(value: "Pickup Time", child: Text("Pickup Time"))
+    ];
+    return menuItems;
+  }
+
+  String dropdownValue = "Swimming";
+
   @override
   void initState() {
     _updateAppointmentProperties();
+    _selectedGroups5 = _groups;
     super.initState();
   }
 
@@ -272,6 +305,29 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
           children: <Widget>[
             ListTile(
               contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+              leading: const Text("Events"),
+              title: DropdownButton(
+                value: dropdownValue,
+                items: dropdownItems,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                    _subject = newValue;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+              leading: const Text("Assign Groups"),
+              title: MultiSelectDialogField(
+                items: _items,
+                onConfirm: (results) {},
+              ),
+            ),
+            /*
+            ListTile(
+              contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
               leading: const Text(''),
               title: TextField(
                 controller: TextEditingController(text: _subject),
@@ -290,6 +346,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                 ),
               ),
             ),
+            */
             const Divider(
               height: 1.0,
               thickness: 1,
