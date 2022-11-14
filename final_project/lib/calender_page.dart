@@ -13,7 +13,6 @@ class CalendarPage extends StatefulWidget {
 
   final String title;
   final Group group;
-
   @override
   State<CalendarPage> createState() => _CalendarPageState();
 }

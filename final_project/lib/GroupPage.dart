@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Group.dart';
 import 'calender_page.dart';
+import "globals.dart";
+import 'package:firebase_database/firebase_database.dart';
 
 List<Group> groups = <Group>[
   const Group(name: "Bears"),
@@ -43,6 +45,21 @@ class _GroupPageState extends State<GroupPage> {
           }).toList(),
         ),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add), onPressed: () {}));
+            child: const Icon(Icons.add),
+            onPressed: () async {
+              DatabaseReference test = FirebaseDatabase.instance.ref('users');
+              final snapshot = await test.child('users').get();
+              if (snapshot.exists) {
+                print(snapshot.value);
+              } else {
+                print('No data available.');
+              }
+              DatabaseReference ref = FirebaseDatabase.instance.ref("users");
+              await ref.set({
+                "name": "John",
+                "age": 18,
+                "address": {"line1": "100 Mountain View"}
+              });
+            }));
   }
 }
