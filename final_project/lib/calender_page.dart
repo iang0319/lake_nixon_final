@@ -78,6 +78,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF636363));
     //_colorCollection.add(const Color(0xFF0A8043));
 
+    /*
     _timeZoneCollection.add('Default Time');
     _timeZoneCollection.add('AUS Central Standard Time');
     _timeZoneCollection.add('AUS Eastern Standard Time');
@@ -103,7 +104,9 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('Central Europe Standard Time');
     _timeZoneCollection.add('Central European Standard Time');
     _timeZoneCollection.add('Central Pacific Standard Time');
+    */
     _timeZoneCollection.add('Central Standard Time');
+    /*
     _timeZoneCollection.add('China Standard Time');
     _timeZoneCollection.add('Dateline Standard Time');
     _timeZoneCollection.add('E. Africa Standard Time');
@@ -182,6 +185,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('West Asia Standard Time');
     _timeZoneCollection.add('West Pacific Standard Time');
     _timeZoneCollection.add('Yakutsk Standard Time');
+    */
 
     List<Appointment> appointments = <Appointment>[];
     // appointments.add(Appointment(
@@ -446,24 +450,75 @@ class AppointmentDataSource extends CalendarDataSource {
   }
 }
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
-// class Meeting {
-//   /// Creates a meeting class with required details.
-//   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+// Custom business object class which contains properties to hold the detailed
+// information about the event data which will be rendered in calendar.
+/// Creates a meeting class with required details.
 
-//   /// Event name which is equivalent to subject property of [Appointment].
-//   String eventName;
+class Meeting {
+  Meeting(
+      {required this.from,
+      required this.to,
+      this.background = Colors.green,
+      this.isAllDay = false,
+      this.eventName = '',
+      this.startTimeZone = '',
+      this.endTimeZone = '',
+      this.description = '',
+      this.ageMinimum = 0,
+      this.numberGroupsAllowed = 0});
 
-//   /// From which is equivalent to start time property of [Appointment].
-//   DateTime from;
+  // Event name which is equivalent to subject property of [Appointment].
+  final String eventName;
 
-//   /// To which is equivalent to end time property of [Appointment].
-//   DateTime to;
+  // From which is equivalent to start time property of [Appointment].
+  final DateTime from;
 
-//   /// Background which is equivalent to color property of [Appointment].
-//   Color background;
+  // To which is equivalent to end time property of [Appointment].
+  final DateTime to;
 
-//   /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-//   bool isAllDay;
-// }
+  // Background which is equivalent to color property of [Appointment].
+  final Color background;
+
+  // IsAllDay which is equivalent to isAllDay property of [Appointment].
+  final bool isAllDay;
+
+  final String startTimeZone;
+  final String endTimeZone;
+  final String description;
+
+  /// Number of groups allowed to share one event
+  int numberGroupsAllowed;
+
+  /// The bottom age limit for events (if 15, only 15 and up can join)
+  int ageMinimum;
+}
+
+class DataSource extends CalendarDataSource {
+  DataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  bool isAllDay(int index) => appointments[index].isAllDay;
+
+  @override
+  String getSubject(int index) => appointments[index].subject;
+
+  @override
+  String? getStartTimeZone(int index) => appointments[index].startTimeZone;
+
+  @override
+  String? getNotes(int index) => appointments[index].notes;
+
+  @override
+  String? getEndTimeZone(int index) => appointments[index].endTimeZone;
+
+  @override
+  Color getColor(int index) => appointments[index].color;
+
+  @override
+  DateTime getStartTime(int index) => appointments[index].startTime;
+
+  @override
+  DateTime getEndTime(int index) => appointments[index].endTime;
+}
