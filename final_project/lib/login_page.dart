@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:final_project/calender_page.dart';
 import 'package:final_project/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +19,20 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void login() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      groupPagePush();
+    }
+  }
+
+  Future<void> groupPagePush() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GroupPage(title: "List of groups"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'TutorialKart',
+                      'Lake Nixon',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -90,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         print(emailController.text);
                         print(passwordController.text);
+                        login();
                       },
                     )),
                 Row(

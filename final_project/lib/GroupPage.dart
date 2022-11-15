@@ -47,18 +47,19 @@ class _GroupPageState extends State<GroupPage> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () async {
-              DatabaseReference test = FirebaseDatabase.instance.ref('users');
+              DatabaseReference test = FirebaseDatabase.instance.ref('events');
               final snapshot = await test.child('users').get();
               if (snapshot.exists) {
                 print(snapshot.value);
               } else {
                 print('No data available.');
               }
-              DatabaseReference ref = FirebaseDatabase.instance.ref("users");
-              await ref.set({
-                "name": "John",
-                "age": 18,
-                "address": {"line1": "100 Mountain View"}
+              DatabaseReference ref = FirebaseDatabase.instance.ref("events");
+              await ref.update({
+                "one": {"name": "Swimming", "age_limit": 15, "group_limit": 2}
+              });
+              await ref.update({
+                "two": {"name": "Volleyball", "age_limit": 10, "group_limit": 3}
               });
             }));
   }
