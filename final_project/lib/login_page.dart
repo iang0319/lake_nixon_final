@@ -97,6 +97,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               .signInWithEmailAndPassword(
                                   email: emailController.text,
                                   password: passwordController.text);
+                          await Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                GroupPage(title: "List of groups"),
+                          ));
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
                             print('No user found for that email.');
