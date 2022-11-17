@@ -1,4 +1,5 @@
 import 'package:final_project/Group.dart';
+import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/calender_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:syncfusion_flutter_core/core.dart';
+import 'GroupPage.dart';
 import "globals.dart";
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -118,6 +120,8 @@ class AppointmentEditor extends StatefulWidget {
   /// Selected appointment
   final Appointment? selectedAppointment;
 
+  //final LakeNixonEvent? selectedAppointment;
+
   /// Calendar element
   final CalendarElement targetElement;
 
@@ -140,7 +144,6 @@ class AppointmentEditor extends StatefulWidget {
   final CalendarResource? selectedResource;
 
   final Group group;
-
   @override
   _AppointmentEditorState createState() => _AppointmentEditorState();
 }
@@ -156,6 +159,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   String _subject = '';
   String? _notes;
   String? _location;
+  //List<Group> _groupsTest;
   List<Object>? _resourceIds;
   List<CalendarResource> _selectedResources = <CalendarResource>[];
   List<CalendarResource> _unSelectedResources = <CalendarResource>[];
@@ -166,8 +170,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   late int _interval;
 
   _SelectRule? _rule = _SelectRule.doesNotRepeat;
-
-  static List<Group> _groups = [
+  /*
+  static final List<Group> _groups = [
     Group(name: "Lion"),
     Group(name: "Flamingo"),
     Group(name: "Hippo"),
@@ -175,12 +179,12 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
     Group(name: "Dragonfly"),
     Group(name: "Dolphin"),
   ];
+  */
 
-  final _items = _groups
-      .map((group) => MultiSelectItem<Group>(group, group.name))
-      .toList();
+  final _items =
+      groups.map((group) => MultiSelectItem<Group>(group, group.name)).toList();
 
-  List<Group> _selectedGroups5 = [];
+  List<Group> _selectedGroups = [];
 
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
@@ -201,7 +205,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   @override
   void initState() {
     _updateAppointmentProperties();
-    _selectedGroups5 = _groups;
+    _selectedGroups = assignments[widget.group];
     super.initState();
   }
 
@@ -217,6 +221,9 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
       _startDate = widget.selectedAppointment!.startTime;
       _endDate = widget.selectedAppointment!.endTime;
       _isAllDay = widget.selectedAppointment!.isAllDay;
+
+      //_selectedGroups = widget.selectedAppointment!.;
+
       _selectedColorIndex =
           widget.colorCollection.indexOf(widget.selectedAppointment!.color);
       _selectedTimeZoneIndex =
@@ -322,7 +329,13 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
               leading: const Text("Assign Groups"),
               title: MultiSelectDialogField(
                 items: _items,
-                onConfirm: (results) {},
+                initialValue: _selectedGroups,
+                onConfirm: (results) {
+                  setState(() {
+                    _selectedGroups = results;
+                    assignments[widget.group] = _selectedGroups;
+                  });
+                },
               ),
             ),
             /*
@@ -773,6 +786,13 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                       if (widget.selectedAppointment != null) {
                         if (widget.selectedAppointment!.appointmentType !=
                             AppointmentType.normal) {
+                          // final Appointment newAppointment = LakeNixonEvent
+                          //
+                          //
+                          //
+                          //
+                          //
+
                           final Appointment newAppointment = Appointment(
                             startTime: _startDate,
                             endTime: _endDate,
@@ -801,6 +821,39 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                     _startDate,
                                     _endDate),
                           );
+                          /*
+                          final LakeNixonEvent newAppointment = LakeNixonEvent(
+                            startTime: _startDate,
+                            endTime: _endDate,
+                            age: 5,
+                            groupSize: 4,
+                            groups: _selectedGroups,
+                            color: widget.colorCollection[_selectedColorIndex],
+                            startTimeZone: _selectedTimeZoneIndex == 0
+                                ? ''
+                                : widget
+                                    .timeZoneCollection[_selectedTimeZoneIndex],
+                            endTimeZone: _selectedTimeZoneIndex == 0
+                                ? ''
+                                : widget
+                                    .timeZoneCollection[_selectedTimeZoneIndex],
+                            notes: _notes,
+                            isAllDay: _isAllDay,
+                            subject: _subject == '' ? '(No title)' : _subject,
+                            recurrenceExceptionDates: widget
+                                .selectedAppointment!.recurrenceExceptionDates,
+                            resourceIds: _resourceIds,
+                            id: widget.selectedAppointment!.id,
+                            recurrenceId:
+                                widget.selectedAppointment!.recurrenceId,
+                            recurrenceRule: _recurrenceProperties == null
+                                ? null
+                                : SfCalendar.generateRRule(
+                                    _recurrenceProperties!,
+                                    _startDate,
+                                    _endDate),
+                          );
+*/
                           showDialog<Widget>(
                               context: context,
                               builder: (BuildContext context) {
@@ -904,6 +957,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         //original: wiget.events.appointments!.add(appointment[0]);
                         //widget.events.appointments?.add(appointment[0]);
                         events[widget.group].add(appointment[0]);
+                        //assignments[widget.group].add(_selectedGroups);
+                        //events[widget.group].add(_selectedGroups);
 
                         widget.events.notifyListeners(
                             CalendarDataSourceAction.add, appointment);

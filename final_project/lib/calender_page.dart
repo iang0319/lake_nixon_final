@@ -1,4 +1,5 @@
 import 'package:final_project/Group.dart';
+import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/appointment_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:final_project/globals.dart';
 
-List<Appointment> appointments = <Appointment>[];
+List<LakeNixonEvent> appointments = <LakeNixonEvent>[];
 
 class CalendarPage extends StatefulWidget {
   CalendarPage({super.key, required this.title, required this.group});
@@ -39,6 +40,7 @@ class _CalendarPageState extends State<CalendarPage> {
   final GlobalKey _globalKey = GlobalKey();
   final ScrollController _controller = ScrollController();
   final CalendarController _calendarController = CalendarController();
+  //LakeNixonEvent? _selectedAppointment;
   Appointment? _selectedAppointment;
   final List<String> _colorNames = <String>[];
   final List<Color> _colorCollection = <Color>[];
