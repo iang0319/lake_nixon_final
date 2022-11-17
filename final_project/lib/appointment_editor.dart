@@ -144,7 +144,6 @@ class AppointmentEditor extends StatefulWidget {
   final CalendarResource? selectedResource;
 
   final Group group;
-
   @override
   _AppointmentEditorState createState() => _AppointmentEditorState();
 }
@@ -171,7 +170,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   late int _interval;
 
   _SelectRule? _rule = _SelectRule.doesNotRepeat;
-
+  /*
   static final List<Group> _groups = [
     Group(name: "Lion"),
     Group(name: "Flamingo"),
@@ -180,6 +179,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
     Group(name: "Dragonfly"),
     Group(name: "Dolphin"),
   ];
+  */
 
   final _items =
       groups.map((group) => MultiSelectItem<Group>(group, group.name)).toList();
@@ -205,7 +205,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   @override
   void initState() {
     _updateAppointmentProperties();
-    //_selectedGroups = _selectedGroups;
+    _selectedGroups = assignments[widget.group];
     super.initState();
   }
 
@@ -333,6 +333,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                 onConfirm: (results) {
                   setState(() {
                     _selectedGroups = results;
+                    assignments[widget.group] = _selectedGroups;
                   });
                 },
               ),
@@ -956,6 +957,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         //original: wiget.events.appointments!.add(appointment[0]);
                         //widget.events.appointments?.add(appointment[0]);
                         events[widget.group].add(appointment[0]);
+                        //assignments[widget.group].add(_selectedGroups);
                         //events[widget.group].add(_selectedGroups);
 
                         widget.events.notifyListeners(
