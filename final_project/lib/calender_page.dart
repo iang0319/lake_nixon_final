@@ -1,6 +1,7 @@
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/appointment_editor.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,7 @@ class _CalendarPageState extends State<CalendarPage> {
   final List<Color> _colorCollection = <Color>[];
   final List<String> _timeZoneCollection = <String>[];
   late AppointmentDataSource _events;
+  List<DropdownMenuItem<String>> firebaseEvents = [];
 
   @override
   void initState() {
@@ -53,7 +55,29 @@ class _CalendarPageState extends State<CalendarPage> {
     _calendarController.view = _currentView;
     createGroup(widget.group);
     _events = AppointmentDataSource(_getDataSource(widget.group));
+    print(_events);
+    //getEvents();
     super.initState();
+  }
+
+  Future<void> getEvents() async {
+    DatabaseReference db = FirebaseDatabase.instance.ref();
+    final snapshot = await db.child("events").get();
+    var count = 0;
+    if (snapshot.exists) {
+      var events = snapshot.value as Map;
+      dbEvents = events;
+      events.forEach((key, value) {
+        if (count == 0) {
+          //dropdownValue = events[key]["name"];
+          count++;
+        }
+        firebaseEvents.add(DropdownMenuItem(
+            value: events[key]["name"], child: Text(events[key]["name"])));
+      });
+    } else {
+      print('No data available.');
+    }
   }
 
   List<Appointment> _getDataSource(Group group) {
@@ -345,7 +369,8 @@ class _CalendarPageState extends State<CalendarPage> {
                 _colorNames,
                 _events,
                 _timeZoneCollection,
-                widget.group)),
+                widget.group,
+                firebaseEvents)),
       );
     }
   }
@@ -446,25 +471,3 @@ class AppointmentDataSource extends CalendarDataSource {
     return meetingData;
   }
 }
-
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
-// class Meeting {
-//   /// Creates a meeting class with required details.
-//   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
-
-//   /// Event name which is equivalent to subject property of [Appointment].
-//   String eventName;
-
-//   /// From which is equivalent to start time property of [Appointment].
-//   DateTime from;
-
-//   /// To which is equivalent to end time property of [Appointment].
-//   DateTime to;
-
-//   /// Background which is equivalent to color property of [Appointment].
-//   Color background;
-
-//   /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-//   bool isAllDay;
-// }

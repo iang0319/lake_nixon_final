@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Group.dart';
 import 'calender_page.dart';
@@ -98,26 +99,30 @@ class _GroupPageState extends State<GroupPage> {
             TextButton(
               key: const Key("OKButton"),
               onPressed: () async {
-                int count = 0;
-                DatabaseReference test = FirebaseDatabase.instance.ref();
-                final snapshot = await test.child("events").get();
-                if (snapshot.exists) {
-                  Map? test = snapshot.value as Map?;
-                  test?.forEach((key, value) {
-                    count++;
-                  });
-                } else {
-                  print('No data available.');
-                }
-                DatabaseReference ref = FirebaseDatabase.instance.ref("events");
-                await ref.update({
-                  "$count": {
-                    "name": eventController.text,
-                    "age_limit": ageLimitController.text,
-                    "group_limit": groupSizeController.text,
-                    "desc": descriptionController.text
-                  }
+                CollectionReference events =
+                    FirebaseFirestore.instance.collection("events");
+                final snapshot = await events.get();
+
+                // Example of reading in a collection and getting each doc
+                // if (snapshot.size > 0) {
+                //   List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
+                //   data.forEach((element) {
+                //     print(element.data());
+                //   });
+                // } else {
+                //   print('No data available.');
+                // }
+
+                int count = snapshot.size;
+                events.doc("$count").set({
+                  "name": eventController.text,
+                  "age_limit": ageLimitController.text,
+                  "group_limit": groupSizeController.text
                 });
+                eventController.clear();
+                ageLimitController.clear();
+                groupSizeController.clear();
+                descriptionController.clear();
                 Navigator.pop(context);
               },
               child: Text('Send'),

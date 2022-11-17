@@ -1,6 +1,7 @@
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/calender_page.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -115,6 +116,7 @@ class AppointmentEditor extends StatefulWidget {
       this.events,
       this.timeZoneCollection,
       this.group,
+      this.firebaseEvents,
       [this.selectedResource]);
 
   /// Selected appointment
@@ -144,6 +146,8 @@ class AppointmentEditor extends StatefulWidget {
   final CalendarResource? selectedResource;
 
   final Group group;
+
+  final List<DropdownMenuItem<String>> firebaseEvents;
   @override
   _AppointmentEditorState createState() => _AppointmentEditorState();
 }
@@ -163,6 +167,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   List<Object>? _resourceIds;
   List<CalendarResource> _selectedResources = <CalendarResource>[];
   List<CalendarResource> _unSelectedResources = <CalendarResource>[];
+  //List<DropdownMenuItem<String>> firebaseEvents = [];
+  String dropdownValue = "Archery";
 
   RecurrenceProperties? _recurrenceProperties;
   late RecurrenceType _recurrenceType;
@@ -188,24 +194,42 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
-  //Hardcoded events
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "Swimming", child: Text("Swimming")),
-      const DropdownMenuItem(value: "Gaga Ball", child: Text("Gaga Ball")),
-      const DropdownMenuItem(value: "Archery", child: Text("Archery")),
-      const DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
-      const DropdownMenuItem(value: "Pickup Time", child: Text("Pickup Time"))
-    ];
-    return menuItems;
-  }
+  // Future<void> getEvents() async {
+  //   DatabaseReference db = FirebaseDatabase.instance.ref();
+  //   final snapshot = await db.child("events").get();
+  //   var count = 0;
+  //   if (snapshot.exists) {
+  //     var events = snapshot.value as Map;
+  //     events.forEach((key, value) {
+  //       if (count == 0) {
+  //         dropdownValue = events[key]["name"];
+  //         count++;
+  //       }
+  //       //firebaseEvents.add(DropdownMenuItem(
+  //       //value: events[key]["name"], child: Text(events[key]["name"])));
+  //     });
+  //   } else {
+  //     print('No data available.');
+  //   }
+  // }
 
-  String dropdownValue = "Swimming";
+  //Hardcoded events
+  // List<DropdownMenuItem<String>> get dropdownItems {
+  //   List<DropdownMenuItem<String>> menuItems = [
+  //     const DropdownMenuItem(value: "Swimming", child: Text("Swimming")),
+  //     const DropdownMenuItem(value: "Gaga Ball", child: Text("Gaga Ball")),
+  //     const DropdownMenuItem(value: "Archery", child: Text("Archery")),
+  //     const DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
+  //     const DropdownMenuItem(value: "Pickup Time", child: Text("Pickup Time"))
+  //   ];
+  //   return menuItems;
+  // }
 
   @override
   void initState() {
     _updateAppointmentProperties();
     _selectedGroups = assignments[widget.group];
+    //getEvents();
     super.initState();
   }
 
@@ -315,7 +339,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
               leading: const Text("Events"),
               title: DropdownButton(
                 value: dropdownValue,
-                items: dropdownItems,
+                items: widget.firebaseEvents,
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
@@ -927,7 +951,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               CalendarDataSourceAction.remove,
                               <Appointment>[widget.selectedAppointment!]);
                         }
-                        appointment.add(Appointment(
+
+                        Appointment app = Appointment(
                           startTime: _startDate,
                           endTime: _endDate,
                           color: widget.colorCollection[_selectedColorIndex],
@@ -948,14 +973,18 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               ? null
                               : SfCalendar.generateRRule(
                                   _recurrenceProperties!, _startDate, _endDate),
-                        ));
+                        );
+                        appointment.add(app);
 
-                        //if (appointment[0] != null) {
-                        //widget.events.appointments?.add(appointment[0]);
-                        //}
-                        //Potential Fix? Making the call conditional
-                        //original: wiget.events.appointments!.add(appointment[0]);
-                        //widget.events.appointments?.add(appointment[0]);
+                        // var age = 0;
+                        // var group = 0;
+                        // dbEvents.forEach((key, value) {
+                        //   if (dbEvents[key]["name"] == dropdownValue) {
+                        //     age = dbEvents[key]["age_limit"];
+                        //     group = dbEvents[key]["group_limit"];
+                        //   }
+                        // });
+
                         events[widget.group].add(appointment[0]);
                         //assignments[widget.group].add(_selectedGroups);
                         //events[widget.group].add(_selectedGroups);
