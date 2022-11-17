@@ -152,6 +152,24 @@ class AppointmentEditor extends StatefulWidget {
   _AppointmentEditorState createState() => _AppointmentEditorState();
 }
 
+Future<List<DropdownMenuItem<String>>> createDropdown() async {
+  int count = 0;
+  List<DropdownMenuItem<String>> menuItems = [
+    const DropdownMenuItem(value: "Swimming", child: Text("Swimming"))
+  ];
+  const DropdownMenuItem(value: "Swimming", child: Text("Swimming"));
+  DatabaseReference test = FirebaseDatabase.instance.ref();
+  final snapshot = await test.child("events").get();
+  if (snapshot.exists) {
+    Map? test = snapshot.value as Map?;
+    test?.forEach((key, value) {
+      menuItems.add(DropdownMenuItem(value: value, child: Text("$value")));
+      count++;
+    });
+  }
+  return menuItems;
+}
+
 class _AppointmentEditorState extends State<AppointmentEditor> {
   int _selectedColorIndex = 0;
   int _selectedTimeZoneIndex = 0;
