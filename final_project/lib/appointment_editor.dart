@@ -172,7 +172,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
   _SelectRule? _rule = _SelectRule.doesNotRepeat;
 
-  static List<Group> _groups = [
+  static final List<Group> _groups = [
     Group(name: "Lion"),
     Group(name: "Flamingo"),
     Group(name: "Hippo"),
@@ -181,9 +181,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
     Group(name: "Dolphin"),
   ];
 
-  final _items = _groups
-      .map((group) => MultiSelectItem<Group>(group, group.name))
-      .toList();
+  final _items =
+      groups.map((group) => MultiSelectItem<Group>(group, group.name)).toList();
 
   List<Group> _selectedGroups = [];
 
