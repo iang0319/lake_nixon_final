@@ -116,8 +116,8 @@ class _GroupPageState extends State<GroupPage> {
                 int count = snapshot.size;
                 events.doc("$count").set({
                   "name": eventController.text,
-                  "age_limit": ageLimitController.text,
-                  "group_limit": groupSizeController.text
+                  "ageMin": ageLimitController.text,
+                  "groupMax": groupSizeController.text
                 });
                 eventController.clear();
                 ageLimitController.clear();

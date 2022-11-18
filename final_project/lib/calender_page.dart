@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/appointment_editor.dart';
@@ -56,28 +57,50 @@ class _CalendarPageState extends State<CalendarPage> {
     createGroup(widget.group);
     _events = AppointmentDataSource(_getDataSource(widget.group));
     print(_events);
-    //getEvents();
+    getEvents();
     super.initState();
   }
 
   Future<void> getEvents() async {
-    DatabaseReference db = FirebaseDatabase.instance.ref();
-    final snapshot = await db.child("events").get();
-    var count = 0;
-    if (snapshot.exists) {
-      var events = snapshot.value as Map;
-      dbEvents = events;
-      events.forEach((key, value) {
-        if (count == 0) {
-          //dropdownValue = events[key]["name"];
-          count++;
-        }
-        firebaseEvents.add(DropdownMenuItem(
-            value: events[key]["name"], child: Text(events[key]["name"])));
+    CollectionReference events =
+        FirebaseFirestore.instance.collection("events");
+    final snapshot = await events.get();
+    if (snapshot.size > 0) {
+      List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
+      data.forEach((element) {
+        var event = element.data() as Map;
+
+        dbEvents.addAll({
+          event["name"]: {
+            "ageMin": event["ageMin"],
+            "groupMax": event["groupMax"]
+          }
+        });
+        firebaseEvents.add(
+            DropdownMenuItem(value: event["name"], child: Text(event["name"])));
       });
     } else {
       print('No data available.');
     }
+    print(dbEvents);
+
+    // DatabaseReference db = FirebaseDatabase.instance.ref();
+    // final snapshot = await db.child("events").get();
+    // var count = 0;
+    // if (snapshot.exists) {
+    //   var events = snapshot.value as Map;
+    //   dbEvents = events;
+    //   events.forEach((key, value) {
+    //     if (count == 0) {
+    //       //dropdownValue = events[key]["name"];
+    //       count++;
+    //     }
+    //     firebaseEvents.add(DropdownMenuItem(
+    //         value: events[key]["name"], child: Text(events[key]["name"])));
+    //   });
+    // } else {
+    //   print('No data available.');
+    // }
   }
 
   List<Appointment> _getDataSource(Group group) {

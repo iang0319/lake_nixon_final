@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/calender_page.dart';
@@ -211,37 +212,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   List<Group> _selectedGroups = [];
 
   final _multiSelectKey = GlobalKey<FormFieldState>();
-
-  // Future<void> getEvents() async {
-  //   DatabaseReference db = FirebaseDatabase.instance.ref();
-  //   final snapshot = await db.child("events").get();
-  //   var count = 0;
-  //   if (snapshot.exists) {
-  //     var events = snapshot.value as Map;
-  //     events.forEach((key, value) {
-  //       if (count == 0) {
-  //         dropdownValue = events[key]["name"];
-  //         count++;
-  //       }
-  //       //firebaseEvents.add(DropdownMenuItem(
-  //       //value: events[key]["name"], child: Text(events[key]["name"])));
-  //     });
-  //   } else {
-  //     print('No data available.');
-  //   }
-  // }
-
-  //Hardcoded events
-  // List<DropdownMenuItem<String>> get dropdownItems {
-  //   List<DropdownMenuItem<String>> menuItems = [
-  //     const DropdownMenuItem(value: "Swimming", child: Text("Swimming")),
-  //     const DropdownMenuItem(value: "Gaga Ball", child: Text("Gaga Ball")),
-  //     const DropdownMenuItem(value: "Archery", child: Text("Archery")),
-  //     const DropdownMenuItem(value: "Lunch", child: Text("Lunch")),
-  //     const DropdownMenuItem(value: "Pickup Time", child: Text("Pickup Time"))
-  //   ];
-  //   return menuItems;
-  // }
 
   @override
   void initState() {
@@ -824,7 +794,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                       Icons.done,
                       color: Colors.white,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (widget.selectedAppointment != null) {
                         if (widget.selectedAppointment!.appointmentType !=
                             AppointmentType.normal) {
@@ -1002,6 +972,13 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         //     group = dbEvents[key]["group_limit"];
                         //   }
                         // });
+
+                        // if snapshot[groups].size < dbevents[dropdownvalue][groupMax]:
+
+                        // firebase[time] = []
+                        // var time = app.startTime;
+                        // CollectionReference events = FirebaseFirestore.instance.collection("events");
+                        // final snapshot = await events.get();
 
                         events[widget.group].add(appointment[0]);
                         //assignments[widget.group].add(_selectedGroups);
