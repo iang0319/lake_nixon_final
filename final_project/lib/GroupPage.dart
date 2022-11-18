@@ -99,11 +99,13 @@ class _GroupPageState extends State<GroupPage> {
             TextButton(
               key: const Key("OKButton"),
               onPressed: () async {
+                // This is how you get the database from Firebase
                 CollectionReference events =
                     FirebaseFirestore.instance.collection("events");
                 final snapshot = await events.get();
 
                 // Example of reading in a collection and getting each doc
+
                 // if (snapshot.size > 0) {
                 //   List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
                 //   data.forEach((element) {
@@ -113,6 +115,7 @@ class _GroupPageState extends State<GroupPage> {
                 //   print('No data available.');
                 // }
 
+                //This is where we write database, specfically to the event collection. You can change collection just up a couple lines
                 int count = snapshot.size;
                 events.doc("$count").set({
                   "name": eventController.text,
