@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "497761986925",
+    "firebase_url": "https://testmanager-86d06-default-rtdb.firebaseio.com",
+    "project_id": "testmanager-86d06",
+    "storage_bucket": "testmanager-86d06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497761986925:android:9e0eabfbf22600e358d264",
+        "android_client_info": {
+          "package_name": "com.example.final_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497761986925-0pjfhet2m0riq733i6t3qp445pm3cv74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjmci2kr5gmE8aaZOs5h3lYb7pZADUfVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497761986925-0pjfhet2m0riq733i6t3qp445pm3cv74.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "497761986925-qde7rjbbhii4nja75r05iupdnlou36ch.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.finalProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,6 +5,8 @@ class Group {
 
   final String name;
 
+  //bool selected = false;
+
   String abbrev() {
     return name.substring(0, 1);
   }
@@ -48,17 +50,20 @@ class GroupItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        onListChanged(group);
-      },
-      leading: CircleAvatar(
-        backgroundColor: _getColor(context),
-        child: Text(group.abbrev()),
-      ),
-      title: Text(
-        group.name,
-        style: _getTextStyle(context),
+    return Card(
+      elevation: 10.0,
+      child: ListTile(
+        onTap: () {
+          onListChanged(group);
+        },
+        leading: CircleAvatar(
+          backgroundColor: _getColor(context),
+          child: Text(group.abbrev()),
+        ),
+        title: Text(
+          group.name,
+          style: _getTextStyle(context),
+        ),
       ),
     );
   }

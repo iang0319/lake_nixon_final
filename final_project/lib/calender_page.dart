@@ -1,19 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/Group.dart';
+import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/appointment_editor.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:final_project/globals.dart';
 
-List<Appointment> appointments = <Appointment>[];
+List<LakeNixonEvent> appointments = <LakeNixonEvent>[];
 
 class CalendarPage extends StatefulWidget {
   CalendarPage({super.key, required this.title, required this.group});
 
   final String title;
   final Group group;
-
   @override
   State<CalendarPage> createState() => _CalendarPageState();
 }
@@ -40,11 +42,13 @@ class _CalendarPageState extends State<CalendarPage> {
   final GlobalKey _globalKey = GlobalKey();
   final ScrollController _controller = ScrollController();
   final CalendarController _calendarController = CalendarController();
+  //LakeNixonEvent? _selectedAppointment;
   Appointment? _selectedAppointment;
   final List<String> _colorNames = <String>[];
   final List<Color> _colorCollection = <Color>[];
   final List<String> _timeZoneCollection = <String>[];
   late AppointmentDataSource _events;
+  List<DropdownMenuItem<String>> firebaseEvents = [];
 
   @override
   void initState() {
@@ -52,7 +56,51 @@ class _CalendarPageState extends State<CalendarPage> {
     _calendarController.view = _currentView;
     createGroup(widget.group);
     _events = AppointmentDataSource(_getDataSource(widget.group));
+    print(_events);
+    getEvents();
     super.initState();
+  }
+
+  Future<void> getEvents() async {
+    CollectionReference events =
+        FirebaseFirestore.instance.collection("events");
+    final snapshot = await events.get();
+    if (snapshot.size > 0) {
+      List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
+      data.forEach((element) {
+        var event = element.data() as Map;
+
+        dbEvents.addAll({
+          event["name"]: {
+            "ageMin": event["ageMin"],
+            "groupMax": event["groupMax"]
+          }
+        });
+        firebaseEvents.add(
+            DropdownMenuItem(value: event["name"], child: Text(event["name"])));
+      });
+    } else {
+      print('No data available.');
+    }
+    print(dbEvents);
+
+    // DatabaseReference db = FirebaseDatabase.instance.ref();
+    // final snapshot = await db.child("events").get();
+    // var count = 0;
+    // if (snapshot.exists) {
+    //   var events = snapshot.value as Map;
+    //   dbEvents = events;
+    //   events.forEach((key, value) {
+    //     if (count == 0) {
+    //       //dropdownValue = events[key]["name"];
+    //       count++;
+    //     }
+    //     firebaseEvents.add(DropdownMenuItem(
+    //         value: events[key]["name"], child: Text(events[key]["name"])));
+    //   });
+    // } else {
+    //   print('No data available.');
+    // }
   }
 
   List<Appointment> _getDataSource(Group group) {
@@ -348,7 +396,8 @@ class _CalendarPageState extends State<CalendarPage> {
                 _colorNames,
                 _events,
                 _timeZoneCollection,
-                widget.group)),
+                widget.group,
+                firebaseEvents)),
       );
     }
   }
