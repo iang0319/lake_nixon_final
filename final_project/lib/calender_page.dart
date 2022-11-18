@@ -78,6 +78,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF636363));
     //_colorCollection.add(const Color(0xFF0A8043));
 
+    /*
     _timeZoneCollection.add('Default Time');
     _timeZoneCollection.add('AUS Central Standard Time');
     _timeZoneCollection.add('AUS Eastern Standard Time');
@@ -103,7 +104,9 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('Central Europe Standard Time');
     _timeZoneCollection.add('Central European Standard Time');
     _timeZoneCollection.add('Central Pacific Standard Time');
+    */
     _timeZoneCollection.add('Central Standard Time');
+    /*
     _timeZoneCollection.add('China Standard Time');
     _timeZoneCollection.add('Dateline Standard Time');
     _timeZoneCollection.add('E. Africa Standard Time');
@@ -182,6 +185,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('West Asia Standard Time');
     _timeZoneCollection.add('West Pacific Standard Time');
     _timeZoneCollection.add('Yakutsk Standard Time');
+    */
 
     List<Appointment> appointments = <Appointment>[];
     // appointments.add(Appointment(
@@ -446,24 +450,16 @@ class AppointmentDataSource extends CalendarDataSource {
   }
 }
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
-// class Meeting {
-//   /// Creates a meeting class with required details.
-//   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+// The event class should allow us to add additional information to our appointments
+class Event {
+  Event({required this.appointment, this.ageMinimum, this.groupMaximum});
 
-//   /// Event name which is equivalent to subject property of [Appointment].
-//   String eventName;
+  // The Event class primarily contains Appointment.
+  final Appointment appointment;
 
-//   /// From which is equivalent to start time property of [Appointment].
-//   DateTime from;
+  // The minimum age of the people allowed at one activitiy
+  final int? ageMinimum;
 
-//   /// To which is equivalent to end time property of [Appointment].
-//   DateTime to;
-
-//   /// Background which is equivalent to color property of [Appointment].
-//   Color background;
-
-//   /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-//   bool isAllDay;
-// }
+  // The maximum number of groups allowed at one activity
+  final int? groupMaximum;
+}

@@ -801,6 +801,17 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                     _startDate,
                                     _endDate),
                           );
+                          /*
+                          final Activity newActivity = Activity(
+                              eventName: _subject,
+                              from: _startDate,
+                              to: _endDate,
+                              background:
+                                  widget.colorCollection[_selectedColorIndex],
+                              isAllDay: _isAllDay,
+                              numberGroupsAllowed: 3,
+                              ageLimit: 3);
+                */
                           showDialog<Widget>(
                               context: context,
                               builder: (BuildContext context) {
