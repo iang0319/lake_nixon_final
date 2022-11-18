@@ -126,6 +126,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF636363));
     //_colorCollection.add(const Color(0xFF0A8043));
 
+    /*
     _timeZoneCollection.add('Default Time');
     _timeZoneCollection.add('AUS Central Standard Time');
     _timeZoneCollection.add('AUS Eastern Standard Time');
@@ -151,7 +152,9 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('Central Europe Standard Time');
     _timeZoneCollection.add('Central European Standard Time');
     _timeZoneCollection.add('Central Pacific Standard Time');
+    */
     _timeZoneCollection.add('Central Standard Time');
+    /*
     _timeZoneCollection.add('China Standard Time');
     _timeZoneCollection.add('Dateline Standard Time');
     _timeZoneCollection.add('E. Africa Standard Time');
@@ -230,6 +233,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _timeZoneCollection.add('West Asia Standard Time');
     _timeZoneCollection.add('West Pacific Standard Time');
     _timeZoneCollection.add('Yakutsk Standard Time');
+    */
 
     List<Appointment> appointments = <Appointment>[];
     // appointments.add(Appointment(
@@ -493,4 +497,18 @@ class AppointmentDataSource extends CalendarDataSource {
 
     return meetingData;
   }
+}
+
+// The event class should allow us to add additional information to our appointments
+class Event {
+  Event({required this.appointment, this.ageMinimum, this.groupMaximum});
+
+  // The Event class primarily contains Appointment.
+  final Appointment appointment;
+
+  // The minimum age of the people allowed at one activitiy
+  final int? ageMinimum;
+
+  // The maximum number of groups allowed at one activity
+  final int? groupMaximum;
 }

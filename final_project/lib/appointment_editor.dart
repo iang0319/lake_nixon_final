@@ -834,38 +834,19 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                     _endDate),
                           );
                           /*
-                          final LakeNixonEvent newAppointment = LakeNixonEvent(
-                            startTime: _startDate,
-                            endTime: _endDate,
-                            age: 5,
-                            groupSize: 4,
-                            groups: _selectedGroups,
-                            color: widget.colorCollection[_selectedColorIndex],
-                            startTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
-                            endTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
-                            notes: _notes,
-                            isAllDay: _isAllDay,
-                            subject: _subject == '' ? '(No title)' : _subject,
-                            recurrenceExceptionDates: widget
-                                .selectedAppointment!.recurrenceExceptionDates,
-                            resourceIds: _resourceIds,
-                            id: widget.selectedAppointment!.id,
-                            recurrenceId:
-                                widget.selectedAppointment!.recurrenceId,
-                            recurrenceRule: _recurrenceProperties == null
-                                ? null
-                                : SfCalendar.generateRRule(
-                                    _recurrenceProperties!,
-                                    _startDate,
-                                    _endDate),
-                          );
-*/
+
+
+                          final Activity newActivity = Activity(
+                              eventName: _subject,
+                              from: _startDate,
+                              to: _endDate,
+                              background:
+                                  widget.colorCollection[_selectedColorIndex],
+                              isAllDay: _isAllDay,
+                              numberGroupsAllowed: 3,
+                              ageLimit: 3);
+                */
+                
                           showDialog<Widget>(
                               context: context,
                               builder: (BuildContext context) {
