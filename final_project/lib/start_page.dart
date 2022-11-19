@@ -1,4 +1,6 @@
 import 'package:final_project/GroupPage.dart';
+import 'package:final_project/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,18 @@ class _StartPageState extends State<StartPage> {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GroupPage(title: "List of groups"),
+      ),
+    );
+  }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> logoutScreenPush() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
       ),
     );
   }
@@ -64,7 +78,10 @@ class _StartPageState extends State<StartPage> {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     child: const Text("Logout"),
-                    onPressed: () {},
+                    onPressed: () {
+                      logout();
+                      logoutScreenPush();
+                    },
                   ),
                 ),
               ],
