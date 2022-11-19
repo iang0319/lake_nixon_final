@@ -1,4 +1,5 @@
 import 'package:final_project/calender_page.dart';
+import 'package:final_project/start_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'GroupPage.dart';
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
 
   Widget checkLogin() {
     if (FirebaseAuth.instance.currentUser != null) {
-      return GroupPage(title: "List of groups");
+      return const StartPage();
+      //return GroupPage(title: "List of groups");
     } else {
       return const LoginScreen();
     }
