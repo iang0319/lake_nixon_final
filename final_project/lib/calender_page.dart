@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/Event.dart';
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/appointment_editor.dart';
@@ -69,13 +70,12 @@ class _CalendarPageState extends State<CalendarPage> {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
       data.forEach((element) {
         var event = element.data() as Map;
+        var tmp = Event(
+            name: event["name"],
+            ageMin: event["ageMin"],
+            groupMax: event["groupMax"]);
+        dbEvents.add(tmp);
 
-        dbEvents.addAll({
-          event["name"]: {
-            "ageMin": event["ageMin"],
-            "groupMax": event["groupMax"]
-          }
-        });
         firebaseEvents.add(
             DropdownMenuItem(value: event["name"], child: Text(event["name"])));
       });
@@ -500,15 +500,15 @@ class AppointmentDataSource extends CalendarDataSource {
 }
 
 // The event class should allow us to add additional information to our appointments
-class Event {
-  Event({required this.appointment, this.ageMinimum, this.groupMaximum});
+// class Event {
+//   Event({required this.appointment, this.ageMinimum, this.groupMaximum});
 
-  // The Event class primarily contains Appointment.
-  final Appointment appointment;
+//   // The Event class primarily contains Appointment.
+//   final Appointment appointment;
 
-  // The minimum age of the people allowed at one activitiy
-  final int? ageMinimum;
+//   // The minimum age of the people allowed at one activitiy
+//   final int? ageMinimum;
 
-  // The maximum number of groups allowed at one activity
-  final int? groupMaximum;
-}
+//   // The maximum number of groups allowed at one activity
+//   final int? groupMaximum;
+// }

@@ -846,7 +846,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               numberGroupsAllowed: 3,
                               ageLimit: 3);
                 */
-                
+
                           showDialog<Widget>(
                               context: context,
                               builder: (BuildContext context) {
@@ -957,10 +957,21 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         // if snapshot[groups].size < dbevents[dropdownvalue][groupMax]:
 
                         // firebase[time] = []
-                        // var time = app.startTime;
-                        // CollectionReference events = FirebaseFirestore.instance.collection("events");
-                        // final snapshot = await events.get();
+                        var time = app.startTime;
+                        var hour = time.hour;
+                        DateFormat formatter = DateFormat("MM-dd-yy");
+                        var docName = formatter.format(time);
+                        print(hour);
+                        print(dropdownValue);
+                        CollectionReference schedules =
+                            FirebaseFirestore.instance.collection("schedulues");
+                        final snapshot = await schedules.get();
 
+                        schedules.doc(docName).set({
+                          dropdownValue: {
+                            "$hour": [widget.group]
+                          }
+                        });
                         events[widget.group].add(appointment[0]);
                         //assignments[widget.group].add(_selectedGroups);
                         //events[widget.group].add(_selectedGroups);

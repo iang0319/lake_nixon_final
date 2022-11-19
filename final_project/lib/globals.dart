@@ -8,7 +8,7 @@ import "package:final_project/calender_page.dart";
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-Map dbEvents = {};
+List dbEvents = [];
 
 var events2 = {};
 
