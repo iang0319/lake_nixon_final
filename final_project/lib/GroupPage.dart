@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Group.dart';
@@ -26,8 +28,12 @@ class _GroupPageState extends State<GroupPage> {
   var ageLimitController = TextEditingController();
   var groupSizeController = TextEditingController();
   var descriptionController = TextEditingController();
+
   Future<void> _handleCalendar(Group group) async {
     print("Chat");
+    for (Group g in groups) {
+      createGroup(g);
+    }
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CalendarPage(title: group.name, group: group),

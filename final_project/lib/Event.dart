@@ -18,3 +18,14 @@ class Event {
     return name;
   }
 }
+
+class Schedule {
+  const Schedule({required this.name, required this.times});
+  final String name;
+  final Map<String, dynamic> times;
+
+  @override
+  String toString() {
+    return "$name : $times";
+  }
+}
