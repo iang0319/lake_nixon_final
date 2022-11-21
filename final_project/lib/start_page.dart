@@ -63,13 +63,6 @@ class _StartPageState extends State<StartPage> {
                           fontSize: 30),
                     )),
                 Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Sign up',
-                      style: TextStyle(fontSize: 20),
-                    )),
-                Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     child: const Text("Groups"),
