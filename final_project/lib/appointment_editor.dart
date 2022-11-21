@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/Event.dart';
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/calender_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -12,6 +14,7 @@ import 'package:syncfusion_flutter_core/core.dart';
 import 'GroupPage.dart';
 import "globals.dart";
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Color theme = const Color(0xffffffff);
 
@@ -846,7 +849,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               numberGroupsAllowed: 3,
                               ageLimit: 3);
                 */
-                
+
                           showDialog<Widget>(
                               context: context,
                               builder: (BuildContext context) {
@@ -945,28 +948,95 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         );
                         appointment.add(app);
 
-                        // var age = 0;
-                        // var group = 0;
-                        // dbEvents.forEach((key, value) {
-                        //   if (dbEvents[key]["name"] == dropdownValue) {
-                        //     age = dbEvents[key]["age_limit"];
-                        //     group = dbEvents[key]["group_limit"];
-                        //   }
-                        // });
+                        Map<String, dynamic> appMap = {
+                          "appointment": [
+                            app.startTime,
+                            app.endTime,
+                            app.color.toString(),
+                            app.startTimeZone,
+                            app.endTimeZone,
+                            app.notes,
+                            app.isAllDay,
+                            app.subject,
+                            app.resourceIds,
+                            app.recurrenceRule
+                          ]
+                        };
 
-                        // if snapshot[groups].size < dbevents[dropdownvalue][groupMax]:
+                        var time = app.startTime;
+                        var hour = "${time.hour}";
+                        var name = app.subject;
+                        DateFormat formatter = DateFormat("MM-dd-yy");
+                        var docName = formatter.format(time);
+                        bool created = false;
+                        Schedule? schedule;
 
-                        // firebase[time] = []
-                        // var time = app.startTime;
-                        // CollectionReference events = FirebaseFirestore.instance.collection("events");
-                        // final snapshot = await events.get();
+                        CollectionReference schedules =
+                            FirebaseFirestore.instance.collection("schedules");
+                        final snapshot = await schedules.get();
 
-                        events[widget.group].add(appointment[0]);
-                        //assignments[widget.group].add(_selectedGroups);
-                        //events[widget.group].add(_selectedGroups);
+                        if (snapshot.size > 0) {
+                          List<QueryDocumentSnapshot<Object?>> data =
+                              snapshot.docs;
+                          data.forEach((element) {
+                            if (docName == element.id) {
+                              created = true;
+                              var tmp = element.data() as Map;
+                              if (tmp[name] != null) {
+                                schedule =
+                                    Schedule(name: name, times: tmp[name]);
+                              }
+                            }
+                          });
+                        } else {
+                          print('No data available.');
+                        }
 
-                        widget.events.notifyListeners(
-                            CalendarDataSourceAction.add, appointment);
+                        if (created) {
+                          if (schedule != null &&
+                              schedule!.times[hour] != null) {
+                            int i = indexEvents(schedule!.name);
+                            if (dbEvents[i].groupMax <=
+                                schedule!.times[hour].length) {
+                              Fluttertoast.showToast(
+                                  msg: "CANT ADD EVENT DUE TO RESTRICTIONS",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                              print("CANT ADD EVENT DUE TO RESTRICTIONS");
+                            }
+                          } else {
+                            Map map = {
+                              hour: [widget.group.name]
+                            };
+                            schedules.doc(docName).update({name: map});
+                            schedules.doc(docName).update({
+                              "appointments.${widget.group.name}":
+                                  FieldValue.arrayUnion([appMap])
+                            });
+                            events[widget.group]!.add(appointment[0]);
+
+                            widget.events.notifyListeners(
+                                CalendarDataSourceAction.add, appointment);
+                          }
+                        } else {
+                          Map map = {
+                            hour: [widget.group.name]
+                          };
+                          schedules.doc(docName).set({dropdownValue: map});
+                          schedules.doc(docName).update({
+                            "appointments.${widget.group.name}":
+                                FieldValue.arrayUnion([appMap])
+                          });
+                          events[widget.group]!.add(appointment[0]);
+
+                          widget.events.notifyListeners(
+                              CalendarDataSourceAction.add, appointment);
+                        }
+
                         Navigator.pop(context);
                       }
                     })

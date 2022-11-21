@@ -5,14 +5,40 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'Group.dart';
 import "package:final_project/calender_page.dart";
+import "Event.dart";
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-Map dbEvents = {};
+List<Event> dbEvents = [];
+
+int indexEvents(String name) {
+  int count = 0;
+  for (Event element in dbEvents) {
+    if (element.name == name) {
+      return count;
+    }
+    count++;
+  }
+  return -1;
+}
 
 var events2 = {};
 
-var events = {};
+Map<Group, List<Appointment>> events = {};
+
+Group? indexGroups(String name) {
+  int count = 0;
+  int index = -1;
+  Group? group;
+  events.forEach((key, value) {
+    if (key.name == name) {
+      index = count;
+      group = key;
+    }
+    count++;
+  });
+  return group;
+}
 
 var assignments = {};
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/Event.dart';
 import 'package:final_project/Group.dart';
 import 'package:final_project/LakeNixonEvent.dart';
 import 'package:final_project/appointment_editor.dart';
@@ -21,9 +22,9 @@ class CalendarPage extends StatefulWidget {
 }
 
 final List<CalendarView> _allowedViews = <CalendarView>[
-  CalendarView.day,
-  //CalendarView.week,
   CalendarView.workWeek,
+  //CalendarView.week,
+  CalendarView.day,
   //CalendarView.month,
   CalendarView.timelineDay,
   //CalendarView.timelineWeek,
@@ -49,15 +50,17 @@ class _CalendarPageState extends State<CalendarPage> {
   final List<String> _timeZoneCollection = <String>[];
   late AppointmentDataSource _events;
   List<DropdownMenuItem<String>> firebaseEvents = [];
+  List<Appointment> savedEvents = [];
 
   @override
   void initState() {
-    _currentView = CalendarView.day;
+    _currentView = CalendarView.workWeek;
     _calendarController.view = _currentView;
-    createGroup(widget.group);
+    getEvents();
+    getSavedEvents();
     _events = AppointmentDataSource(_getDataSource(widget.group));
     print(_events);
-    getEvents();
+
     super.initState();
   }
 
@@ -69,13 +72,12 @@ class _CalendarPageState extends State<CalendarPage> {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
       data.forEach((element) {
         var event = element.data() as Map;
+        var tmp = Event(
+            name: event["name"],
+            ageMin: event["ageMin"],
+            groupMax: event["groupMax"]);
+        dbEvents.add(tmp);
 
-        dbEvents.addAll({
-          event["name"]: {
-            "ageMin": event["ageMin"],
-            "groupMax": event["groupMax"]
-          }
-        });
         firebaseEvents.add(
             DropdownMenuItem(value: event["name"], child: Text(event["name"])));
       });
@@ -83,24 +85,45 @@ class _CalendarPageState extends State<CalendarPage> {
       print('No data available.');
     }
     print(dbEvents);
+  }
 
-    // DatabaseReference db = FirebaseDatabase.instance.ref();
-    // final snapshot = await db.child("events").get();
-    // var count = 0;
-    // if (snapshot.exists) {
-    //   var events = snapshot.value as Map;
-    //   dbEvents = events;
-    //   events.forEach((key, value) {
-    //     if (count == 0) {
-    //       //dropdownValue = events[key]["name"];
-    //       count++;
-    //     }
-    //     firebaseEvents.add(DropdownMenuItem(
-    //         value: events[key]["name"], child: Text(events[key]["name"])));
-    //   });
-    // } else {
-    //   print('No data available.');
-    // }
+  Future<void> getSavedEvents() async {
+    CollectionReference schedules =
+        FirebaseFirestore.instance.collection("schedules");
+    final snapshot = await schedules.get();
+    if (snapshot.size > 0) {
+      List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
+      data.forEach((element) {
+        var event = element.data() as Map;
+        Map apps = event["appointments"];
+
+        apps.forEach((key, value) {
+          for (var _app in value) {
+            var app = _app["appointment"];
+            var test = app[2];
+            String valueString = test.split('(0x')[1].split(')')[0];
+            int value = int.parse(valueString, radix: 16);
+            Color color = new Color(value);
+            print(app[6]);
+            Appointment tmp = Appointment(
+                startTime: app[0].toDate(),
+                endTime: app[1].toDate(),
+                color: color,
+                startTimeZone: app[3],
+                endTimeZone: app[4],
+                notes: app[5],
+                isAllDay: app[6],
+                subject: app[7],
+                resourceIds: app[8],
+                recurrenceRule: app[9]);
+            var group = indexGroups(key);
+            events[group]!.add(tmp);
+          }
+        });
+      });
+    } else {
+      print('No data available.');
+    }
   }
 
   List<Appointment> _getDataSource(Group group) {
@@ -126,126 +149,11 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF636363));
     //_colorCollection.add(const Color(0xFF0A8043));
 
-    /*
-    _timeZoneCollection.add('Default Time');
-    _timeZoneCollection.add('AUS Central Standard Time');
-    _timeZoneCollection.add('AUS Eastern Standard Time');
-    _timeZoneCollection.add('Afghanistan Standard Time');
-    _timeZoneCollection.add('Alaskan Standard Time');
-    _timeZoneCollection.add('Arab Standard Time');
-    _timeZoneCollection.add('Arabian Standard Time');
-    _timeZoneCollection.add('Arabic Standard Time');
-    _timeZoneCollection.add('Argentina Standard Time');
-    _timeZoneCollection.add('Atlantic Standard Time');
-    _timeZoneCollection.add('Azerbaijan Standard Time');
-    _timeZoneCollection.add('Azores Standard Time');
-    _timeZoneCollection.add('Bahia Standard Time');
-    _timeZoneCollection.add('Bangladesh Standard Time');
-    _timeZoneCollection.add('Belarus Standard Time');
-    _timeZoneCollection.add('Canada Central Standard Time');
-    _timeZoneCollection.add('Cape Verde Standard Time');
-    _timeZoneCollection.add('Caucasus Standard Time');
-    _timeZoneCollection.add('Cen. Australia Standard Time');
-    _timeZoneCollection.add('Central America Standard Time');
-    _timeZoneCollection.add('Central Asia Standard Time');
-    _timeZoneCollection.add('Central Brazilian Standard Time');
-    _timeZoneCollection.add('Central Europe Standard Time');
-    _timeZoneCollection.add('Central European Standard Time');
-    _timeZoneCollection.add('Central Pacific Standard Time');
-    */
     _timeZoneCollection.add('Central Standard Time');
-    /*
-    _timeZoneCollection.add('China Standard Time');
-    _timeZoneCollection.add('Dateline Standard Time');
-    _timeZoneCollection.add('E. Africa Standard Time');
-    _timeZoneCollection.add('E. Australia Standard Time');
-    _timeZoneCollection.add('E. South America Standard Time');
-    _timeZoneCollection.add('Eastern Standard Time');
-    _timeZoneCollection.add('Egypt Standard Time');
-    _timeZoneCollection.add('Ekaterinburg Standard Time');
-    _timeZoneCollection.add('FLE Standard Time');
-    _timeZoneCollection.add('Fiji Standard Time');
-    _timeZoneCollection.add('GMT Standard Time');
-    _timeZoneCollection.add('GTB Standard Time');
-    _timeZoneCollection.add('Georgian Standard Time');
-    _timeZoneCollection.add('Greenland Standard Time');
-    _timeZoneCollection.add('Greenwich Standard Time');
-    _timeZoneCollection.add('Hawaiian Standard Time');
-    _timeZoneCollection.add('India Standard Time');
-    _timeZoneCollection.add('Iran Standard Time');
-    _timeZoneCollection.add('Israel Standard Time');
-    _timeZoneCollection.add('Jordan Standard Time');
-    _timeZoneCollection.add('Kaliningrad Standard Time');
-    _timeZoneCollection.add('Korea Standard Time');
-    _timeZoneCollection.add('Libya Standard Time');
-    _timeZoneCollection.add('Line Islands Standard Time');
-    _timeZoneCollection.add('Magadan Standard Time');
-    _timeZoneCollection.add('Mauritius Standard Time');
-    _timeZoneCollection.add('Middle East Standard Time');
-    _timeZoneCollection.add('Montevideo Standard Time');
-    _timeZoneCollection.add('Morocco Standard Time');
-    _timeZoneCollection.add('Mountain Standard Time');
-    _timeZoneCollection.add('Mountain Standard Time (Mexico)');
-    _timeZoneCollection.add('Myanmar Standard Time');
-    _timeZoneCollection.add('N. Central Asia Standard Time');
-    _timeZoneCollection.add('Namibia Standard Time');
-    _timeZoneCollection.add('Nepal Standard Time');
-    _timeZoneCollection.add('New Zealand Standard Time');
-    _timeZoneCollection.add('Newfoundland Standard Time');
-    _timeZoneCollection.add('North Asia East Standard Time');
-    _timeZoneCollection.add('North Asia Standard Time');
-    _timeZoneCollection.add('Pacific SA Standard Time');
-    _timeZoneCollection.add('Pacific Standard Time');
-    _timeZoneCollection.add('Pacific Standard Time (Mexico)');
-    _timeZoneCollection.add('Pakistan Standard Time');
-    _timeZoneCollection.add('Paraguay Standard Time');
-    _timeZoneCollection.add('Romance Standard Time');
-    _timeZoneCollection.add('Russia Time Zone 10');
-    _timeZoneCollection.add('Russia Time Zone 11');
-    _timeZoneCollection.add('Russia Time Zone 3');
-    _timeZoneCollection.add('Russian Standard Time');
-    _timeZoneCollection.add('SA Eastern Standard Time');
-    _timeZoneCollection.add('SA Pacific Standard Time');
-    _timeZoneCollection.add('SA Western Standard Time');
-    _timeZoneCollection.add('SE Asia Standard Time');
-    _timeZoneCollection.add('Samoa Standard Time');
-    _timeZoneCollection.add('Singapore Standard Time');
-    _timeZoneCollection.add('South Africa Standard Time');
-    _timeZoneCollection.add('Sri Lanka Standard Time');
-    _timeZoneCollection.add('Syria Standard Time');
-    _timeZoneCollection.add('Taipei Standard Time');
-    _timeZoneCollection.add('Tasmania Standard Time');
-    _timeZoneCollection.add('Tokyo Standard Time');
-    _timeZoneCollection.add('Tonga Standard Time');
-    _timeZoneCollection.add('Turkey Standard Time');
-    _timeZoneCollection.add('US Eastern Standard Time');
-    _timeZoneCollection.add('US Mountain Standard Time');
-    _timeZoneCollection.add('UTC');
-    _timeZoneCollection.add('UTC+12');
-    _timeZoneCollection.add('UTC-02');
-    _timeZoneCollection.add('UTC-11');
-    _timeZoneCollection.add('Ulaanbaatar Standard Time');
-    _timeZoneCollection.add('Venezuela Standard Time');
-    _timeZoneCollection.add('Vladivostok Standard Time');
-    _timeZoneCollection.add('W. Australia Standard Time');
-    _timeZoneCollection.add('W. Central Africa Standard Time');
-    _timeZoneCollection.add('W. Europe Standard Time');
-    _timeZoneCollection.add('West Asia Standard Time');
-    _timeZoneCollection.add('West Pacific Standard Time');
-    _timeZoneCollection.add('Yakutsk Standard Time');
-    */
 
     List<Appointment> appointments = <Appointment>[];
-    // appointments.add(Appointment(
-    //   startTime: DateTime.now(),
-    //   endTime: DateTime.now().add(Duration(minutes: 10)),
-    //   subject: 'Meeting',
-    //   color: Colors.Blue,
-    //   startTimeZone: '',
-    //   endTimeZone: '',
-    // ));
 
-    return events[group];
+    return events[group] as List<Appointment>;
   }
 
   void _onViewChanged(ViewChangedDetails viewChangedDetails) {
@@ -500,15 +408,15 @@ class AppointmentDataSource extends CalendarDataSource {
 }
 
 // The event class should allow us to add additional information to our appointments
-class Event {
-  Event({required this.appointment, this.ageMinimum, this.groupMaximum});
+// class Event {
+//   Event({required this.appointment, this.ageMinimum, this.groupMaximum});
 
-  // The Event class primarily contains Appointment.
-  final Appointment appointment;
+//   // The Event class primarily contains Appointment.
+//   final Appointment appointment;
 
-  // The minimum age of the people allowed at one activitiy
-  final int? ageMinimum;
+//   // The minimum age of the people allowed at one activitiy
+//   final int? ageMinimum;
 
-  // The maximum number of groups allowed at one activity
-  final int? groupMaximum;
-}
+//   // The maximum number of groups allowed at one activity
+//   final int? groupMaximum;
+// }
