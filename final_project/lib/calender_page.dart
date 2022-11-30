@@ -351,13 +351,13 @@ SfCalendar _getLakeNixonCalender(
     allowedViews: _allowedViews,
     //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
-    allowDragAndDrop: true,
+    allowDragAndDrop: false,
     showDatePickerButton: true,
     monthViewSettings: const MonthViewSettings(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
     timeSlotViewSettings: const TimeSlotViewSettings(
         minimumAppointmentDuration: Duration(minutes: 60)),
-    onTap: calendarTapCallback,
+    //onTap: calendarTapCallback,
   );
 }
 

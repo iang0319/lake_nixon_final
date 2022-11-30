@@ -2,6 +2,7 @@ import 'package:final_project/Group.dart';
 import 'package:final_project/GroupPage.dart';
 import 'package:final_project/calender_page.dart';
 import 'package:final_project/login_page.dart';
+import 'package:final_project/masterPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _StartPageState extends State<StartPage> {
     //print("Chat");
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => CalendarPage(title: group.name, group: group),
+        builder: (context) => MasterPage(),
       ),
     );
   }
