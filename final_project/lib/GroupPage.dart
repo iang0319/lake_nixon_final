@@ -59,7 +59,7 @@ class _GroupPageState extends State<GroupPage> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () async {
-              _EventInfoPopupForm(context);
+              //_EventInfoPopupForm(context);
             }));
   }
 

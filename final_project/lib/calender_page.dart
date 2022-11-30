@@ -357,7 +357,7 @@ SfCalendar _getLakeNixonCalender(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
     timeSlotViewSettings: const TimeSlotViewSettings(
         minimumAppointmentDuration: Duration(minutes: 60)),
-    //onTap: calendarTapCallback,
+    onTap: calendarTapCallback,
   );
 }
 

@@ -50,30 +50,31 @@ class _StartPageState extends State<StartPage> {
     return Scaffold(
         appBar: AppBar(title: const Text("Action Page")),
         body: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.fromLTRB(200, 50, 200, 10),
             child: ListView(
               children: <Widget>[
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'Lake Nixon',
+                      'Welcome to Lake Nixon!',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
                 Container(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    child: const Text("Groups"),
-                    onPressed: () {
-                      groupPagePush();
-                    },
-                  ),
-                ),
+                    padding: const EdgeInsets.fromLTRB(180, 60, 180, 25),
+                    child: SizedBox(
+                      child: ElevatedButton(
+                        child: const Text("Groups"),
+                        onPressed: () {
+                          groupPagePush();
+                        },
+                      ),
+                    )),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.fromLTRB(180, 25, 180, 25),
                   child: ElevatedButton(
                     child: const Text("Master Calendar"),
                     onPressed: () {
@@ -82,7 +83,7 @@ class _StartPageState extends State<StartPage> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.fromLTRB(180, 25, 180, 25),
                   child: ElevatedButton(
                     child: const Text("Logout"),
                     onPressed: () {

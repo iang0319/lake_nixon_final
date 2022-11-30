@@ -1,9 +1,5 @@
 {
   "rules": {
-    "adminContent": {
-      ".read": "auth.token.admin === true",
-      ".write": "auth.token.admin === true"
-    },
     ".read": "now < 1670392800000",  // 2022-12-7
     ".write": "now < 1670392800000",  // 2022-12-7
   }
