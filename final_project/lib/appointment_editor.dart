@@ -1095,10 +1095,13 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
                           db.collection("schedules").doc(docName).update({
                             "appointments.${widget.group.name}":
-                                //FieldValue.arrayUnion([appMap])
-                                //FieldValue.delete()
                                 FieldValue.arrayRemove([appMap])
                           });
+
+                          db
+                              .collection("schedules")
+                              .doc(docName)
+                              .update({"$name.$hour": FieldValue.delete()});
 
                           //db.collection("schedules").doc(docName).update({
                           //   "$name.${widget.group.name}":
