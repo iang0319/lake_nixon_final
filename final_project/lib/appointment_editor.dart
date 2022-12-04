@@ -1082,11 +1082,30 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                           bool created = false;
                           Schedule? schedule;
 
-                          db.collection("schedules").doc(docName).delete().then(
-                                (doc) => print("Document deleted"),
-                                onError: (e) =>
-                                    print("Error updating document $e"),
-                              );
+                          //db.collection("schedules").doc(docName).delete().then(
+                          //    (doc) => print("Document deleted"),
+                          //  onError: (e) =>
+                          //    print("Error updating document $e"),
+                          // );
+
+                          // db
+                          //   .collection("schedules")
+                          // .doc(docName)
+                          //.collection("appointments");
+
+                          db.collection("schedules").doc(docName).update({
+                            "appointments.${widget.group.name}":
+                                //FieldValue.arrayUnion([appMap])
+                                //FieldValue.delete()
+                                FieldValue.arrayRemove([appMap])
+                          });
+
+                          //db.collection("schedules").doc(docName).update({
+                          //   "$name.${widget.group.name}":
+                          //"appointments.${widget.group.name}":
+                          //FieldValue.arrayUnion([appMap])
+                          //      FieldValue.delete()
+                          // });
 
                           widget.events.appointments?.removeAt(widget
                               .events.appointments!

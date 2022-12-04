@@ -50,7 +50,7 @@ class _StartPageState extends State<StartPage> {
     return Scaffold(
         appBar: AppBar(title: const Text("Action Page")),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(200, 50, 200, 10),
+            padding: const EdgeInsets.all(10),
             child: ListView(
               children: <Widget>[
                 Container(
@@ -64,7 +64,7 @@ class _StartPageState extends State<StartPage> {
                           fontSize: 30),
                     )),
                 Container(
-                    padding: const EdgeInsets.fromLTRB(180, 60, 180, 25),
+                    padding: const EdgeInsets.all(10),
                     child: SizedBox(
                       child: ElevatedButton(
                         child: const Text("Groups"),
@@ -74,7 +74,7 @@ class _StartPageState extends State<StartPage> {
                       ),
                     )),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(180, 25, 180, 25),
+                  padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     child: const Text("Master Calendar"),
                     onPressed: () {
@@ -83,7 +83,7 @@ class _StartPageState extends State<StartPage> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(180, 25, 180, 25),
+                  padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     child: const Text("Logout"),
                     onPressed: () {
