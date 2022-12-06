@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/calender_page.dart';
 import 'package:flutter/material.dart';
 import 'GroupPage.dart';
@@ -75,6 +76,17 @@ class _SignupScreenState extends State<SignupScreen> {
                             password: passwordController.text,
                           );
                           success = true;
+                          User? user = FirebaseAuth.instance.currentUser;
+
+                          await FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(user?.uid)
+                              .set({
+                            'uid': user?.uid,
+                            'email': emailController.text,
+                            'password': passwordController.text,
+                            'role': "user"
+                          });
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
                             const Text('The password provided is too weak.');

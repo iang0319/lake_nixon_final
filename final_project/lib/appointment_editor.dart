@@ -970,10 +970,33 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         var docName = formatter.format(time);
                         bool created = false;
                         Schedule? schedule;
+                        Event? event;
 
                         CollectionReference schedules =
                             FirebaseFirestore.instance.collection("schedules");
+
+                        CollectionReference events2 =
+                            FirebaseFirestore.instance.collection("events");
+
                         final snapshot = await schedules.get();
+
+                        final eventSnapshot = await events2.get();
+
+                        if (eventSnapshot.size > 0) {
+                          List<QueryDocumentSnapshot<Object?>> data =
+                              eventSnapshot.docs;
+                          data.forEach((element) {
+                            var tmp = element.data() as Map;
+                            if (tmp[name] != null) {
+                              event = Event(
+                                  name: name,
+                                  ageMin: tmp['ageMin'],
+                                  groupMax: tmp['groupMax']);
+                            }
+                          });
+                        } else {
+                          print("You can't code");
+                        }
 
                         if (snapshot.size > 0) {
                           List<QueryDocumentSnapshot<Object?>> data =
