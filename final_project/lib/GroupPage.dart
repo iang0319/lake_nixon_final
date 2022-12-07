@@ -1,6 +1,8 @@
 import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/userCalendar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Group.dart';
 import 'calender_page.dart';
@@ -24,21 +26,75 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
+  String role = "user";
   var eventController = TextEditingController();
   var ageLimitController = TextEditingController();
   var groupSizeController = TextEditingController();
   var descriptionController = TextEditingController();
+
+  Future<void> UserPush(Group group) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => UserCalendarPage(
+                title: group.name,
+                group: group,
+                isUser: true,
+              )),
+    );
+    //await Navigator.of(context).push(
+    //MaterialPageRoute(builder: (context) => const StartPage()),
+    //);
+  }
+
+  Future<void> AdminPush(Group group) async {
+    //await Navigator.of(context).push(
+    // MaterialPageRoute(builder: (context) => const SplashScreen()),
+    //);
+
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CalendarPage(
+          title: group.name,
+          group: group,
+          isUser: false,
+        ),
+      ),
+    );
+    //await Navigator.of(context).push(
+    //MaterialPageRoute(builder: (context) => const StartPage()),
+    //);
+  }
+
+  void _checkAuth(Group group) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      role = snap['role'];
+    });
+
+    if (role == 'user') {
+      UserPush(group);
+    } else {
+      AdminPush(group);
+    }
+  }
 
   Future<void> _handleCalendar(Group group) async {
     print("Chat");
     for (Group g in groups) {
       createGroup(g);
     }
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CalendarPage(title: group.name, group: group),
-      ),
-    );
+    _checkAuth(group);
+    //await Navigator.of(context).push(
+    //MaterialPageRoute(
+    //builder: (context) => CalendarPage(title: group.name, group: group),
+    //),
+    //);
   }
 
   @override

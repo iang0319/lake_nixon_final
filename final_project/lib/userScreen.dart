@@ -60,9 +60,18 @@ class _UserSplashScreenState extends State<UserSplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-        children: [Text("Welcome")],
-      )),
+          child: Column(children: <Widget>[
+        Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(10),
+            child: const Text(
+              'Authenticating',
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30),
+            )),
+      ])),
     );
   }
 }
