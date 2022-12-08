@@ -970,10 +970,33 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         var docName = formatter.format(time);
                         bool created = false;
                         Schedule? schedule;
+                        Event? event;
 
                         CollectionReference schedules =
                             FirebaseFirestore.instance.collection("schedules");
+
+                        CollectionReference events2 =
+                            FirebaseFirestore.instance.collection("events");
+
                         final snapshot = await schedules.get();
+
+                        final eventSnapshot = await events2.get();
+
+                        if (eventSnapshot.size > 0) {
+                          List<QueryDocumentSnapshot<Object?>> data =
+                              eventSnapshot.docs;
+                          data.forEach((element) {
+                            var tmp = element.data() as Map;
+                            if (tmp[name] != null) {
+                              event = Event(
+                                  name: name,
+                                  ageMin: tmp['ageMin'],
+                                  groupMax: tmp['groupMax']);
+                            }
+                          });
+                        } else {
+                          print("You can't code");
+                        }
 
                         if (snapshot.size > 0) {
                           List<QueryDocumentSnapshot<Object?>> data =
@@ -1087,6 +1110,58 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         if (widget.selectedAppointment!.appointmentType ==
                             AppointmentType.normal) {
                           //Another Potential Fix?
+
+                          Map<String, dynamic> appMap = {
+                            "appointment": [
+                              widget.selectedAppointment?.startTime,
+                              widget.selectedAppointment?.endTime,
+                              widget.selectedAppointment?.color.toString(),
+                              widget.selectedAppointment?.startTimeZone,
+                              widget.selectedAppointment?.endTimeZone,
+                              widget.selectedAppointment?.notes,
+                              widget.selectedAppointment?.isAllDay,
+                              widget.selectedAppointment?.subject,
+                              widget.selectedAppointment?.resourceIds,
+                              widget.selectedAppointment?.recurrenceRule
+                            ]
+                          };
+
+                          var time = widget.selectedAppointment?.startTime;
+                          var hour = "${time?.hour}";
+                          var name = widget.selectedAppointment?.subject;
+                          DateFormat formatter = DateFormat("MM-dd-yy");
+                          var docName = formatter.format(time!);
+                          bool created = false;
+                          Schedule? schedule;
+
+                          //db.collection("schedules").doc(docName).delete().then(
+                          //    (doc) => print("Document deleted"),
+                          //  onError: (e) =>
+                          //    print("Error updating document $e"),
+                          // );
+
+                          // db
+                          //   .collection("schedules")
+                          // .doc(docName)
+                          //.collection("appointments");
+
+                          db.collection("schedules").doc(docName).update({
+                            "appointments.${widget.group.name}":
+                                FieldValue.arrayRemove([appMap])
+                          });
+
+                          db
+                              .collection("schedules")
+                              .doc(docName)
+                              .update({"$name.$hour": FieldValue.delete()});
+
+                          //db.collection("schedules").doc(docName).update({
+                          //   "$name.${widget.group.name}":
+                          //"appointments.${widget.group.name}":
+                          //FieldValue.arrayUnion([appMap])
+                          //      FieldValue.delete()
+                          // });
+
                           widget.events.appointments?.removeAt(widget
                               .events.appointments!
                               .indexOf(widget.selectedAppointment));
@@ -1967,13 +2042,44 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        ////Need to start the delete section here
+                        ///Look at the firebase code
+
                         Navigator.pop(context);
                         final Appointment? parentAppointment = widget.events
                             .getPatternAppointment(
                                 widget.selectedAppointment, '') as Appointment?;
+
+                        Map<String, dynamic> appMap = {
+                          "appointment": [
+                            parentAppointment?.startTime,
+                            parentAppointment?.endTime,
+                            parentAppointment?.color.toString(),
+                            parentAppointment?.startTimeZone,
+                            parentAppointment?.endTimeZone,
+                            parentAppointment?.notes,
+                            parentAppointment?.isAllDay,
+                            parentAppointment?.subject,
+                            parentAppointment?.resourceIds,
+                            parentAppointment?.recurrenceRule
+                          ]
+                        };
+
+                        var time = parentAppointment?.startTime;
+                        var hour = "${time?.hour}";
+                        var name = parentAppointment?.subject;
+                        DateFormat formatter = DateFormat("MM-dd-yy");
+                        var docName = formatter.format(time!);
+                        bool created = false;
+                        Schedule? schedule;
+
+                        CollectionReference schedules =
+                            FirebaseFirestore.instance.collection("schedules");
+                        final snapshot = await schedules.get();
                         if (_delete == _Delete.event) {
                           if (widget.selectedAppointment.recurrenceId != null) {
+                            schedules.doc(docName).delete();
                             widget.events.appointments!
                                 .remove(widget.selectedAppointment);
                             widget.events.notifyListeners(
@@ -2000,6 +2106,7 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                         } else {
                           if (parentAppointment!.recurrenceExceptionDates ==
                               null) {
+                            schedules.doc(docName).delete();
                             widget.events.appointments!.removeAt(widget
                                 .events.appointments!
                                 .indexOf(parentAppointment));
@@ -2028,6 +2135,29 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                                 CalendarDataSourceAction.remove,
                                 <Appointment>[parentAppointment]);
                           }
+                          //final docRef =
+                          //  db.collection("schedules").doc(docName);
+
+                          //CollectionReference schedules =
+                          //FirebaseFirestore.instance.collection("schedules");
+                          // Remove the field from the document
+                          //final updates = <String, dynamic>{
+                          //"appointments": FieldValue.delete(),
+                          //};
+
+                          //docRef.update(updates);
+                          db.collection("schedules").doc(docName).delete().then(
+                                (doc) => print("Document deleted"),
+                                onError: (e) =>
+                                    print("Error updating document $e"),
+                              );
+
+                          //schedules.collection.
+
+                          //schedules.doc(docName).update({
+                          ///  "appointments.${widget.selectedAppointment.subject}":
+                          //      FieldValue.arrayUnion([appMap])
+                          //  });
                         }
                         Navigator.pop(context);
                       },
