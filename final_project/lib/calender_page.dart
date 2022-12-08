@@ -68,7 +68,7 @@ class _CalendarPageState extends State<CalendarPage> {
     CollectionReference events =
         FirebaseFirestore.instance.collection("events");
     final snapshot = await events.get();
-    if (snapshot.size > 0) {
+    if (snapshot.size > 0 && dbEvents.length == 0) {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
       data.forEach((element) {
         var event = element.data() as Map;
@@ -77,12 +77,13 @@ class _CalendarPageState extends State<CalendarPage> {
             ageMin: event["ageMin"],
             groupMax: event["groupMax"]);
         dbEvents.add(tmp);
-
-        firebaseEvents.add(
-            DropdownMenuItem(value: event["name"], child: Text(event["name"])));
       });
     } else {
       print('No data available.');
+    }
+    for (Event event in dbEvents) {
+      firebaseEvents
+          .add(DropdownMenuItem(value: event.name, child: Text(event.name)));
     }
     print(dbEvents);
   }
@@ -121,6 +122,7 @@ class _CalendarPageState extends State<CalendarPage> {
           }
         });
       });
+      setState(() {});
     } else {
       print('No data available.');
     }
@@ -356,7 +358,10 @@ SfCalendar _getLakeNixonCalender(
     monthViewSettings: const MonthViewSettings(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
     timeSlotViewSettings: const TimeSlotViewSettings(
-        minimumAppointmentDuration: Duration(minutes: 60)),
+        minimumAppointmentDuration: Duration(minutes: 60),
+        startHour: 7,
+        endHour: 18,
+        nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
     onTap: calendarTapCallback,
   );
 }

@@ -22,10 +22,22 @@ class Event {
 class Schedule {
   const Schedule({required this.name, required this.times});
   final String name;
-  final Map<String, dynamic> times;
+  final Map<String, List<dynamic>> times;
 
   @override
   String toString() {
     return "$name : $times";
+  }
+
+  int getList(String hour) {
+    return times[hour]!.length;
+  }
+
+  void newGroup(String time, String groupName) {
+    times[time] = [groupName];
+  }
+
+  void addGroup(String time, String groupName) {
+    times[time]!.add(groupName);
   }
 }

@@ -964,7 +964,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                         };
 
                         var time = app.startTime;
-                        var hour = "${time.hour}";
+                        String hour = "${time.hour}";
                         var name = app.subject;
                         DateFormat formatter = DateFormat("MM-dd-yy");
                         var docName = formatter.format(time);
@@ -983,8 +983,16 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               created = true;
                               var tmp = element.data() as Map;
                               if (tmp[name] != null) {
-                                schedule =
-                                    Schedule(name: name, times: tmp[name]);
+                                Map<String, List<dynamic>> times =
+                                    Map.from(tmp[name].map((key, value) {
+                                  List<dynamic> values = List.from(value);
+                                  return MapEntry(
+                                      key.toString(),
+                                      values.map((v) {
+                                        return v.toString();
+                                      }).toList());
+                                }));
+                                schedule = Schedule(name: name, times: times);
                               }
                             }
                           });
@@ -996,8 +1004,9 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                           if (schedule != null &&
                               schedule!.times[hour] != null) {
                             int i = indexEvents(schedule!.name);
-                            if (dbEvents[i].groupMax <=
-                                schedule!.times[hour].length) {
+                            int max = dbEvents[i].groupMax;
+                            int current = schedule!.getList(hour);
+                            if (max <= current) {
                               Fluttertoast.showToast(
                                   msg: "CANT ADD EVENT DUE TO RESTRICTIONS",
                                   toastLength: Toast.LENGTH_LONG,
@@ -1007,12 +1016,32 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                               print("CANT ADD EVENT DUE TO RESTRICTIONS");
+                            } else {
+                              schedule!.addGroup(hour, widget.group.name);
+                              Map<String, Object?> map = {
+                                schedule!.name: schedule!.times
+                              };
+                              schedules.doc(docName).update({
+                                "${schedule!.name}.${hour}":
+                                    FieldValue.arrayUnion([widget.group.name])
+                              });
+                              schedules.doc(docName).update({
+                                "appointments.${widget.group.name}":
+                                    FieldValue.arrayUnion([appMap])
+                              });
+                              events[widget.group]!.add(appointment[0]);
+
+                              widget.events.notifyListeners(
+                                  CalendarDataSourceAction.add, appointment);
                             }
                           } else {
-                            Map map = {
-                              hour: [widget.group.name]
-                            };
-                            schedules.doc(docName).update({name: map});
+                            if (schedule != null) {
+                              schedule!.newGroup(hour, widget.group.name);
+                              schedules.doc(docName).update({
+                                "${schedule!.name}.${hour}":
+                                    FieldValue.arrayUnion([widget.group.name])
+                              });
+                            }
                             schedules.doc(docName).update({
                               "appointments.${widget.group.name}":
                                   FieldValue.arrayUnion([appMap])
