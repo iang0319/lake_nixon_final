@@ -1,123 +1,18 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/userCalendar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'Group.dart';
-import 'calender_page.dart';
-import "globals.dart";
-import 'package:firebase_database/firebase_database.dart';
-import "create_event.dart" as Event;
 
-List<Group> groups = <Group>[
-  const Group(name: "Bears"),
-  const Group(name: "Koalas"),
-  const Group(name: "Kangaroos")
-];
-
-class GroupPage extends StatefulWidget {
-  GroupPage({super.key, required this.title});
-
-  final String title;
+class MasterPage extends StatefulWidget {
+  const MasterPage({Key? key}) : super(key: key);
 
   @override
-  State<GroupPage> createState() => _GroupPageState();
+  State<MasterPage> createState() => _MasterPageState();
 }
 
-class _GroupPageState extends State<GroupPage> {
-  String role = "user";
+class _MasterPageState extends State<MasterPage> {
   var eventController = TextEditingController();
   var ageLimitController = TextEditingController();
   var groupSizeController = TextEditingController();
   var descriptionController = TextEditingController();
-
-  Future<void> UserPush(Group group) async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) => UserCalendarPage(
-                title: group.name,
-                group: group,
-                isUser: true,
-              )),
-    );
-    //await Navigator.of(context).push(
-    //MaterialPageRoute(builder: (context) => const StartPage()),
-    //);
-  }
-
-  Future<void> AdminPush(Group group) async {
-    //await Navigator.of(context).push(
-    // MaterialPageRoute(builder: (context) => const SplashScreen()),
-    //);
-
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CalendarPage(
-          title: group.name,
-          group: group,
-          isUser: false,
-        ),
-      ),
-    );
-    //await Navigator.of(context).push(
-    //MaterialPageRoute(builder: (context) => const StartPage()),
-    //);
-  }
-
-  void _checkAuth(Group group) async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    final DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-
-    setState(() {
-      role = snap['role'];
-    });
-
-    if (role == 'user') {
-      UserPush(group);
-    } else {
-      AdminPush(group);
-    }
-  }
-
-  Future<void> _handleCalendar(Group group) async {
-    print("Chat");
-    for (Group g in groups) {
-      createGroup(g);
-    }
-    _checkAuth(group);
-    //await Navigator.of(context).push(
-    //MaterialPageRoute(
-    //builder: (context) => CalendarPage(title: group.name, group: group),
-    //),
-    //);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('List of groups'),
-        ),
-        body: Column(
-          // padding: const EdgeInsets.symmetric(vertical: 8.0),
-          children: groups.map((Group) {
-            return GroupItem(
-              group: Group,
-              onListChanged: _handleCalendar,
-            );
-          }).toList(),
-        ),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () async {
-              //_EventInfoPopupForm(context);
-            }));
-  }
 
   Future<void> _EventInfoPopupForm(BuildContext context) async {
     return showDialog(
@@ -197,9 +92,40 @@ class _GroupPageState extends State<GroupPage> {
       },
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+        appBar: AppBar(title: const Text("Master Page")),
+        body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              children: <Widget>[
+                Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      'Lake Nixon',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 30),
+                    )),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    child: const Text("Add event"),
+                    onPressed: () {
+                      _EventInfoPopupForm(context);
+                    },
+                  ),
+                ),
+              ],
+            )));
+  }
 }
 
-// standard template for FormFields when adding events
 class FormFieldTemplate extends StatelessWidget {
   const FormFieldTemplate(
       {super.key,
