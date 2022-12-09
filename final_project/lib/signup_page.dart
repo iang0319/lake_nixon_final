@@ -1,4 +1,5 @@
 import 'package:final_project/calender_page.dart';
+import 'package:final_project/login_page.dart';
 import 'package:flutter/material.dart';
 import 'GroupPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,15 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  void goBack() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +100,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         }
                       },
                     )),
+                Container(
+                    padding: const EdgeInsets.fromLTRB(10, 100, 0, 0),
+                    child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: ElevatedButton(
+                            child: const Text('Back'), onPressed: goBack)))
               ],
             )));
   }
