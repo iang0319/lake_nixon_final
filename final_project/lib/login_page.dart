@@ -33,13 +33,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> groupPagePush() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => GroupPage(title: "List of groups"),
-      ),
-    );
-  }
+  // Future<void> groupPagePush() async {
+  //   await Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (context) => GroupPage(title: "List of groups"),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           //builder: (context) =>
                           //  GroupPage(title: "List of groups"),
                           //));
-                          startPagePush();
+                          // startPagePush();
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
                             print('No user found for that email.');
