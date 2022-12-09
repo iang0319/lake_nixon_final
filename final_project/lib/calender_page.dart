@@ -427,11 +427,11 @@ SfCalendar _getLakeNixonCalender(
     timeSlotViewSettings: const TimeSlotViewSettings(
         minimumAppointmentDuration: Duration(minutes: 60)),
     onTap: tapped(false, calendarTapCallback),
-        minimumAppointmentDuration: Duration(minutes: 60),
-        startHour: 7,
-        endHour: 18,
-        nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
-    onTap: calendarTapCallback,
+    //minimumAppointmentDuration: Duration(minutes: 60),
+    //startHour: 7,
+    //endHour: 18,
+    //nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
+    //onTap: calendarTapCallback,
   );
 }
 
