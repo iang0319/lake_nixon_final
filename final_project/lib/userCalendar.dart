@@ -15,8 +15,8 @@ List<LakeNixonEvent> appointments = <LakeNixonEvent>[];
 
 //late bool isUser;
 
-class CalendarPage extends StatefulWidget {
-  CalendarPage(
+class UserCalendarPage extends StatefulWidget {
+  UserCalendarPage(
       {super.key,
       required this.title,
       required this.group,
@@ -26,7 +26,7 @@ class CalendarPage extends StatefulWidget {
   final Group group;
   final bool isUser;
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  State<UserCalendarPage> createState() => _UserCalendarPageState();
 }
 
 final List<CalendarView> _allowedViews = <CalendarView>[
@@ -40,8 +40,8 @@ final List<CalendarView> _allowedViews = <CalendarView>[
   //CalendarView.timelineMonth,
 ];
 
-class _CalendarPageState extends State<CalendarPage> {
-  _CalendarPageState();
+class _UserCalendarPageState extends State<UserCalendarPage> {
+  _UserCalendarPageState();
 
   //AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
   late CalendarView _currentView;
@@ -104,7 +104,7 @@ class _CalendarPageState extends State<CalendarPage> {
     CollectionReference events =
         FirebaseFirestore.instance.collection("events");
     final snapshot = await events.get();
-    if (snapshot.size > 0 && dbEvents.length == 0) {
+    if (snapshot.size > 0) {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
       data.forEach((element) {
         var event = element.data() as Map;
@@ -113,13 +113,12 @@ class _CalendarPageState extends State<CalendarPage> {
             ageMin: event["ageMin"],
             groupMax: event["groupMax"]);
         dbEvents.add(tmp);
+
+        firebaseEvents.add(
+            DropdownMenuItem(value: event["name"], child: Text(event["name"])));
       });
     } else {
       print('No data available.');
-    }
-    for (Event event in dbEvents) {
-      firebaseEvents
-          .add(DropdownMenuItem(value: event.name, child: Text(event.name)));
     }
     print(dbEvents);
   }
@@ -158,7 +157,6 @@ class _CalendarPageState extends State<CalendarPage> {
           }
         });
       });
-      setState(() {});
     } else {
       print('No data available.');
     }
@@ -331,7 +329,7 @@ class _CalendarPageState extends State<CalendarPage> {
       //       });
       // } else {
       /// Navigates to the appointment editor page on mobile
-
+      /*
       Navigator.push<Widget>(
         context,
         MaterialPageRoute<Widget>(
@@ -346,6 +344,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 widget.group,
                 firebaseEvents)),
       );
+      */
     }
   }
 
@@ -426,12 +425,7 @@ SfCalendar _getLakeNixonCalender(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
     timeSlotViewSettings: const TimeSlotViewSettings(
         minimumAppointmentDuration: Duration(minutes: 60)),
-    onTap: tapped(false, calendarTapCallback),
-        minimumAppointmentDuration: Duration(minutes: 60),
-        startHour: 7,
-        endHour: 18,
-        nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
-    onTap: calendarTapCallback,
+    onTap: tapped(true, calendarTapCallback),
   );
 }
 
