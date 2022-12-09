@@ -1,33 +1,23 @@
-import 'package:final_project/Group.dart';
 import 'package:final_project/GroupPage.dart';
-import 'package:final_project/calender_page.dart';
-import 'package:final_project/login_page.dart';
-import 'package:final_project/masterPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
-class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
+import 'login_page.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<StartPage> createState() => _StartPageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _StartPageState extends State<StartPage> {
+class _SplashScreenState extends State<SplashScreen> {
   Future<void> groupPagePush() async {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GroupPage(title: "List of groups"),
-      ),
-    );
-  }
-
-  Future<void> masterCalendar(Group group) async {
-    //print("Chat");
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => MasterPage(),
       ),
     );
   }
@@ -73,15 +63,6 @@ class _StartPageState extends State<StartPage> {
                         },
                       ),
                     )),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    child: const Text("Master Calendar"),
-                    onPressed: () {
-                      masterCalendar(const Group(name: "Master"));
-                    },
-                  ),
-                ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
