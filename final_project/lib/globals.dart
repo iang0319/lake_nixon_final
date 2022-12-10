@@ -1,11 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/GroupPage.dart';
 import 'package:final_project/LakeNixonEvent.dart';
+import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'Group.dart';
 import "package:final_project/calender_page.dart";
 import "Event.dart";
+
+Color nixonblue = const Color.fromRGBO(165, 223, 249, 1);
+Color nixonyellow = const Color.fromRGBO(255, 248, 153, 1);
+Color nixonbrown = const Color.fromRGBO(137, 116, 73, 1);
+Color nixongreen = const Color.fromRGBO(81, 146, 78, 1);
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
