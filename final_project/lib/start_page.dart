@@ -54,7 +54,7 @@ class _StartPageState extends State<StartPage> {
               style: TextStyle(
                   //check here later --- can't insert nixonbrown for some reason?
                   color: Color.fromRGBO(137, 116, 73, 1))),
-          backgroundColor: nixonyellow,
+          backgroundColor: nixonblue,
         ),
         body: Padding(
             padding: const EdgeInsets.all(10),

@@ -101,7 +101,11 @@ class _GroupPageState extends State<GroupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('List of groups'),
+          title: const Text("List of Groups",
+              style: TextStyle(
+                  //check here later --- can't insert nixonbrown for some reason?
+                  color: Color.fromRGBO(137, 116, 73, 1))),
+          backgroundColor: nixonblue,
         ),
         body: Column(
           // padding: const EdgeInsets.symmetric(vertical: 8.0),

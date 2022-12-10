@@ -1,3 +1,4 @@
+import 'package:final_project/globals.dart';
 import 'package:flutter/material.dart';
 
 class Group {
@@ -53,16 +54,18 @@ class GroupItem extends StatelessWidget {
     return Card(
       elevation: 10.0,
       child: ListTile(
+        tileColor: nixonyellow,
+        iconColor: nixonblue,
         onTap: () {
           onListChanged(group);
         },
         leading: CircleAvatar(
-          backgroundColor: _getColor(context),
-          child: Text(group.abbrev()),
+          backgroundColor: nixonblue,
+          child: Text(group.abbrev(), style: TextStyle(color: nixonbrown)),
         ),
         title: Text(
           group.name,
-          style: _getTextStyle(context),
+          style: TextStyle(color: nixonbrown),
         ),
       ),
     );
