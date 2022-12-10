@@ -1,6 +1,7 @@
 import 'package:final_project/Group.dart';
 import 'package:final_project/GroupPage.dart';
 import 'package:final_project/calender_page.dart';
+import 'package:final_project/globals.dart';
 import 'package:final_project/login_page.dart';
 import 'package:final_project/masterPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,7 +49,13 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: const Text("Action Page")),
+        appBar: AppBar(
+          title: const Text("Action Page",
+              style: TextStyle(
+                  //check here later --- can't insert nixonbrown for some reason?
+                  color: Color.fromRGBO(137, 116, 73, 1))),
+          backgroundColor: nixonyellow,
+        ),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -59,7 +66,7 @@ class _StartPageState extends State<StartPage> {
                     child: const Text(
                       'Welcome to Lake Nixon!',
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Color.fromRGBO(165, 223, 249, 1),
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
@@ -67,6 +74,9 @@ class _StartPageState extends State<StartPage> {
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(nixongreen)),
                         child: const Text("Groups"),
                         onPressed: () {
                           groupPagePush();
@@ -76,6 +86,9 @@ class _StartPageState extends State<StartPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixongreen)),
                     child: const Text("Master Calendar"),
                     onPressed: () {
                       masterCalendar(const Group(name: "Master"));
@@ -85,6 +98,9 @@ class _StartPageState extends State<StartPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixonbrown)),
                     child: const Text("Logout"),
                     onPressed: () {
                       logout();
