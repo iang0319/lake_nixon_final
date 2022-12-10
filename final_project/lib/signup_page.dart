@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/calender_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'GroupPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -89,8 +90,24 @@ class _SignupScreenState extends State<SignupScreen> {
                           });
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
+                            Fluttertoast.showToast(
+                                msg: "Password entered is too weak",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                             const Text('The password provided is too weak.');
                           } else if (e.code == 'email-already-in-use') {
+                            Fluttertoast.showToast(
+                                msg: "An account already exists for that email",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                             const Text(
                                 'The account already exists for that email.');
                           }

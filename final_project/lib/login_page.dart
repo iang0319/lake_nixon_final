@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 msg: "User not found under that email address",
                                 toastLength: Toast.LENGTH_LONG,
                                 gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
+                                timeInSecForIosWeb: 3,
                                 backgroundColor: Colors.red,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
