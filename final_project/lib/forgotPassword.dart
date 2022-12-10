@@ -96,47 +96,98 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
-                      try {
-                        final credential =
-                            await FirebaseAuth.instance.sendPasswordResetEmail(
-                          email: _emailController.text,
-                        );
-                        //await Navigator.of(context).push(MaterialPageRoute(
-                        //builder: (context) =>
-                        //  GroupPage(title: "List of groups"),
-                        //));
-                        //startPagePush();
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
+                      if (_emailController.text.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please enter an email",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 3,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else if (!_emailController.text.contains("@")) {
+                        Fluttertoast.showToast(
+                            msg: "Please enter an email with proper format",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 3,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        try {
+                          FirebaseAuth.instance.sendPasswordResetEmail(
+                              email: _emailController.text);
+
+                          print("Test");
+                          /*
                           Fluttertoast.showToast(
-                              msg: "User not found under that email address",
+                              msg: "Email sent to reset password",
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.CENTER,
                               timeInSecForIosWeb: 3,
                               backgroundColor: Colors.red,
                               textColor: Colors.white,
                               fontSize: 16.0);
-                          print('No user found for that email.');
+                              */
+                          //Navigator.pop(context);
+                          //await Navigator.of(context).push(MaterialPageRoute(
+                          //builder: (context) =>
+                          //  GroupPage(title: "List of groups"),
+                          //));
+                          //startPagePush();
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            Fluttertoast.showToast(
+                                msg: "User not found under that email address",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            print('No user found for that email.');
+                          } else if (e.code == 'invalid-email') {
+                            Fluttertoast.showToast(
+                                msg: "Improper email format",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          } else if (e.code == 'internal-error') {
+                            Fluttertoast.showToast(
+                                msg: "Please input in email format",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
                         }
-                        print(_emailController.text);
-
-                        //login();
+                        Fluttertoast.showToast(
+                            msg: "Email sent to reset password",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 3,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pop(context);
                       }
                     },
-                    child: const Text("Send link to reset password"),
+                    child: const Text("Submit"),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   const Text(
-                    'Password',
+                    '(Note: Also check junk mailbox for link).',
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  const SizedBox(height: 20),
-                  const SizedBox(height: 20),
+                  )
                 ],
               ),
             ),
