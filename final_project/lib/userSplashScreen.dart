@@ -39,7 +39,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: const Text("Action Page")),
+        appBar: AppBar(
+            title: const Text(
+          "Home Page",
+          style: TextStyle(fontFamily: 'Fruit', color: Colors.white),
+        )),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -50,18 +54,29 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: const Text(
                       'Welcome to Lake Nixon!',
                       style: TextStyle(
+                          //nixonblue
                           color: Color.fromRGBO(165, 223, 249, 1),
+                          fontFamily: 'Fruit',
                           fontWeight: FontWeight.w500,
-                          fontSize: 30),
+                          fontSize: 50),
                     )),
+                Container(
+                    child: const Image(
+                  image: AssetImage('images/lakenixonlogo.png'),
+                  height: 400,
+                )),
                 Container(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
+                      height: 80,
                       child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStatePropertyAll<Color>(nixongreen)),
-                        child: const Text("Groups"),
+                        child: const Text(
+                          'Select Group',
+                          style: TextStyle(fontSize: 60, fontFamily: 'Fruit'),
+                        ),
                         onPressed: () {
                           groupPagePush();
                         },

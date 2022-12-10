@@ -56,12 +56,18 @@ class GroupItem extends StatelessWidget {
       child: ListTile(
         tileColor: nixonyellow,
         iconColor: nixonblue,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 1),
+          borderRadius: BorderRadius.circular(5),
+        ),
         onTap: () {
           onListChanged(group);
         },
         leading: CircleAvatar(
           backgroundColor: nixonblue,
-          child: Text(group.abbrev(), style: TextStyle(color: nixonbrown)),
+          child: Text(group.abbrev(),
+              style: TextStyle(
+                  color: nixonbrown, fontFamily: 'Fruit', fontSize: 30)),
         ),
         title: Text(
           group.name,

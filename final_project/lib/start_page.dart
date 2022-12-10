@@ -64,32 +64,37 @@ class _StartPageState extends State<StartPage> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'Welcome to Lake Nixon!',
+                      'Lake Nixon Admin',
                       style: TextStyle(
-                          color: Color.fromRGBO(165, 223, 249, 1),
+                          //nixonbrown
+                          color: Color.fromRGBO(137, 116, 73, 1),
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
                 Container(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
+                      height: 80,
                       child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStatePropertyAll<Color>(nixongreen)),
-                        child: const Text("Groups"),
+                        child: const Text("Groups",
+                            style: TextStyle(fontSize: 40)),
                         onPressed: () {
                           groupPagePush();
                         },
                       ),
                     )),
                 Container(
+                  height: 100,
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll<Color>(nixongreen)),
-                    child: const Text("Master Calendar"),
+                    child: const Text("Master Calendar",
+                        style: TextStyle(fontSize: 40)),
                     onPressed: () {
                       masterCalendar(const Group(name: "Master"));
                     },
