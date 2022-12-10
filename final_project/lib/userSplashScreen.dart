@@ -1,4 +1,5 @@
 import 'package:final_project/GroupPage.dart';
+import 'package:final_project/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: const Text(
                       'Welcome to Lake Nixon!',
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Color.fromRGBO(165, 223, 249, 1),
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
@@ -57,6 +58,9 @@ class _SplashScreenState extends State<SplashScreen> {
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(nixongreen)),
                         child: const Text("Groups"),
                         onPressed: () {
                           groupPagePush();
@@ -66,6 +70,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixonbrown)),
                     child: const Text("Logout"),
                     onPressed: () {
                       logout();
