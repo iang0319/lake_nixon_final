@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           color: Color.fromRGBO(165, 223, 249, 1),
                           fontFamily: 'Fruit',
                           fontWeight: FontWeight.w500,
-                          fontSize: 50),
+                          fontSize: 35),
                     )),
                 Container(
                     child: const Image(
@@ -83,11 +83,13 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                     )),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(nixonbrown)),
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(nixonbrown),
+                    ),
                     child: const Text("Logout"),
                     onPressed: () {
                       logout();
