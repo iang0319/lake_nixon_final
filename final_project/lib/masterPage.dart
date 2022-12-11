@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/globals.dart';
 import 'package:flutter/material.dart';
 
 class MasterPage extends StatefulWidget {
@@ -97,7 +98,13 @@ class _MasterPageState extends State<MasterPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: const Text("Master Page")),
+        appBar: AppBar(
+          title: const Text("List of Groups",
+              style: TextStyle(
+                  //check here later --- can't insert nixonbrown for some reason?
+                  color: Color.fromRGBO(137, 116, 73, 1))),
+          backgroundColor: nixonblue,
+        ),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(

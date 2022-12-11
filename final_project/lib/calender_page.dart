@@ -368,7 +368,9 @@ class _CalendarPageState extends State<CalendarPage> {
     final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.group.name} calendar"),
+        title: Text("${widget.group.name} calendar",
+            style: TextStyle(color: nixonblue, fontFamily: 'Fruit')),
+        backgroundColor: nixonblue,
       ),
       body: Row(children: <Widget>[
         Expanded(

@@ -62,7 +62,7 @@ class _UserSplashScreenState extends State<UserSplashScreen> {
       body: Center(
           child: Column(children: <Widget>[
         Container(
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.all(10),
             child: const Text(
               'Authenticating',

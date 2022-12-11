@@ -1,4 +1,5 @@
 import 'package:final_project/GroupPage.dart';
+import 'package:final_project/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -38,7 +39,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: const Text("Action Page")),
+        appBar: AppBar(
+            title: const Text(
+          "Home Page",
+          style: TextStyle(fontFamily: 'Fruit', color: Colors.white),
+        )),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -49,23 +54,42 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: const Text(
                       'Welcome to Lake Nixon!',
                       style: TextStyle(
-                          color: Colors.blue,
+                          //nixonblue
+                          color: Color.fromRGBO(165, 223, 249, 1),
+                          fontFamily: 'Fruit',
                           fontWeight: FontWeight.w500,
-                          fontSize: 30),
+                          fontSize: 35),
                     )),
+                Container(
+                    child: const Image(
+                  image: AssetImage('images/lakenixonlogo.png'),
+                  height: 400,
+                )),
                 Container(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
+                      height: 80,
                       child: ElevatedButton(
-                        child: const Text("Groups"),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(nixongreen)),
+                        child: const Text(
+                          'Select Group',
+                          style: TextStyle(fontSize: 60, fontFamily: 'Fruit'),
+                        ),
                         onPressed: () {
                           groupPagePush();
                         },
                       ),
                     )),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(nixonbrown),
+                    ),
                     child: const Text("Logout"),
                     onPressed: () {
                       logout();
