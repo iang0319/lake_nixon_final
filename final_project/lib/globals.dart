@@ -17,6 +17,36 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 
 List<Event> dbEvents = [];
 
+Map<Group, List<Appointment>> events = {};
+
+var assignments = {};
+
+var events2 = {};
+
+List<Group> groups = <Group>[
+  const Group(name: "Chipmunks", color: Color(0xFF0F8644), age: 1),
+  const Group(name: "Hummingbirds", color: Color(0xFF8B1FA9), age: 1),
+  const Group(name: "Tadpoles", color: Color(0xFFD20100), age: 1),
+  const Group(name: "Sparrows", color: Color(0xFF5DADE2), age: 1),
+  const Group(name: "Salamanders", color: Color(0xFFDC7633), age: 1),
+  const Group(name: "Robins", color: Color(0xFFDEB6F1), age: 1),
+  const Group(name: "Minks", color: Color(0xFF909497), age: 3),
+  const Group(name: "Otters", color: Color(0xFF117864), age: 3),
+  const Group(name: "Raccoons", color: Color(0xFF2E4053), age: 3),
+  const Group(name: "Kingfishers", color: Color(0xFFF4D03F), age: 3),
+  const Group(name: "Squirrels", color: Color(0xFFEA45E1), age: 3),
+  const Group(name: "Blue Jays", color: Color(0xFF2471A3), age: 3),
+  const Group(name: "Deer", color: Color(0xFF504040), age: 5),
+  const Group(name: "Crows", color: Color(0xFF1C2833), age: 5),
+  const Group(name: "Bears", color: Color(0xFF60EA7A), age: 5),
+  const Group(name: "Foxes", color: Color(0xFFD35400), age: 5),
+  const Group(name: "Herons", color: Color(0xFF456CEA), age: 5),
+  const Group(name: "Wolves", color: Color(0xFF566573), age: 5),
+  const Group(name: "Copperheads", color: Color(0xFFD68910), age: 6),
+  const Group(name: "Timber Rattlers", color: Color(0xFFABEBC6), age: 8),
+  const Group(name: "Admin", color: Color(0xFFFFFFFF), age: 9999)
+];
+
 int indexEvents(String name) {
   int count = 0;
   for (Event element in dbEvents) {
@@ -27,10 +57,6 @@ int indexEvents(String name) {
   }
   return -1;
 }
-
-var events2 = {};
-
-Map<Group, List<Appointment>> events = {};
 
 Group? indexGroups(String name) {
   int count = 0;
@@ -45,8 +71,6 @@ Group? indexGroups(String name) {
   });
   return group;
 }
-
-var assignments = {};
 
 void createGroup(Group group) {
   if (events.containsKey(group)) {

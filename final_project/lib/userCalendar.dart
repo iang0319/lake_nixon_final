@@ -20,11 +20,13 @@ class UserCalendarPage extends StatefulWidget {
       {super.key,
       required this.title,
       required this.group,
-      required this.isUser});
+      required this.isUser,
+      required this.master});
 
   final String title;
   final Group group;
   final bool isUser;
+  final bool master;
   @override
   State<UserCalendarPage> createState() => _UserCalendarPageState();
 }

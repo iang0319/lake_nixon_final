@@ -20,11 +20,13 @@ class CalendarPage extends StatefulWidget {
       {super.key,
       required this.title,
       required this.group,
-      required this.isUser});
+      required this.isUser,
+      required this.master});
 
   final String title;
   final Group group;
   final bool isUser;
+  final bool master;
   @override
   State<CalendarPage> createState() => _CalendarPageState();
 }
@@ -72,10 +74,10 @@ class _CalendarPageState extends State<CalendarPage> {
     _calendarController.view = _currentView;
     bool user = widget.isUser;
     //_checkAuth();
+    //PRoblem of having to back out seems to come from these being futures
     getEvents();
-    getSavedEvents();
+    //getSavedEvents();
     _events = AppointmentDataSource(_getDataSource(widget.group));
-    print(_events);
 
     super.initState();
   }
@@ -115,53 +117,13 @@ class _CalendarPageState extends State<CalendarPage> {
         dbEvents.add(tmp);
       });
     } else {
-      print('No data available.');
+      print('No data available.3');
     }
     for (Event event in dbEvents) {
       firebaseEvents
           .add(DropdownMenuItem(value: event.name, child: Text(event.name)));
     }
     print(dbEvents);
-  }
-
-  Future<void> getSavedEvents() async {
-    CollectionReference schedules =
-        FirebaseFirestore.instance.collection("schedules");
-    final snapshot = await schedules.get();
-    if (snapshot.size > 0) {
-      List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
-      data.forEach((element) {
-        var event = element.data() as Map;
-        Map apps = event["appointments"];
-
-        apps.forEach((key, value) {
-          for (var _app in value) {
-            var app = _app["appointment"];
-            var test = app[2];
-            String valueString = test.split('(0x')[1].split(')')[0];
-            int value = int.parse(valueString, radix: 16);
-            Color color = new Color(value);
-            print(app[6]);
-            Appointment tmp = Appointment(
-                startTime: app[0].toDate(),
-                endTime: app[1].toDate(),
-                color: color,
-                startTimeZone: app[3],
-                endTimeZone: app[4],
-                notes: app[5],
-                isAllDay: app[6],
-                subject: app[7],
-                resourceIds: app[8],
-                recurrenceRule: app[9]);
-            var group = indexGroups(key);
-            events[group]!.add(tmp);
-          }
-        });
-      });
-      setState(() {});
-    } else {
-      print('No data available.');
-    }
   }
 
   List<Appointment> _getDataSource(Group group) {
@@ -188,10 +150,15 @@ class _CalendarPageState extends State<CalendarPage> {
     //_colorCollection.add(const Color(0xFF0A8043));
 
     _timeZoneCollection.add('Central Standard Time');
-
-    List<Appointment> appointments = <Appointment>[];
-
-    return events[group] as List<Appointment>;
+    if (widget.master) {
+      List<Appointment> appointments = <Appointment>[];
+      events.forEach((key, value) {
+        appointments.insertAll(appointments.length, value);
+      });
+      return appointments;
+    } else {
+      return events[group] as List<Appointment>;
+    }
   }
 
   void _onViewChanged(ViewChangedDetails viewChangedDetails) {
@@ -234,104 +201,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
       final DateTime selectedDate = calendarTapDetails.date!;
       final CalendarElement targetElement = calendarTapDetails.targetElement;
-
-      /// To open the appointment editor for web,
-      /// when the screen width is greater than 767.
-      // if (model.isWebFullView && !model.isMobileResolution) {
-      //   final bool isAppointmentTapped =
-      //       calendarTapDetails.targetElement == CalendarElement.appointment;
-      //   showDialog<Widget>(
-      //       context: context,
-      //       builder: (BuildContext context) {
-      //         final List<Appointment> appointment = <Appointment>[];
-      //         Appointment? newAppointment;
-
-      //         /// Creates a new appointment, which is displayed on the tapped
-      //         /// calendar element, when the editor is opened.
-      //         if (_selectedAppointment == null) {
-      //           _isAllDay = calendarTapDetails.targetElement ==
-      //               CalendarElement.allDayPanel;
-      //           _selectedColorIndex = 0;
-      //           _subject = '';
-      //           final DateTime date = calendarTapDetails.date!;
-
-      //           newAppointment = Appointment(
-      //             startTime: date,
-      //             endTime: date.add(const Duration(hours: 1)),
-      //             color: _colorCollection[_selectedColorIndex],
-      //             isAllDay: _isAllDay,
-      //             subject: _subject == '' ? '(No title)' : _subject,
-      //           );
-      //           appointment.add(newAppointment);
-
-      //           _dataSource.appointments.add(appointment[0]);
-
-      //           SchedulerBinding.instance
-      //               .addPostFrameCallback((Duration duration) {
-      //             _dataSource.notifyListeners(
-      //                 CalendarDataSourceAction.add, appointment);
-      //           });
-
-      //           _selectedAppointment = newAppointment;
-      //         }
-
-      //         return WillPopScope(
-      //           onWillPop: () async {
-      //             if (newAppointment != null) {
-      //               /// To remove the created appointment when the pop-up closed
-      //               /// without saving the appointment.
-      //               _dataSource.appointments.removeAt(
-      //                   _dataSource.appointments.indexOf(newAppointment));
-      //               _dataSource.notifyListeners(CalendarDataSourceAction.remove,
-      //                   <Appointment>[newAppointment]);
-      //             }
-      //             return true;
-      //           },
-      //           child: Center(
-      //               child: SizedBox(
-      //                   width: isAppointmentTapped ? 400 : 500,
-      //                   height: isAppointmentTapped
-      //                       ? (_selectedAppointment!.location == null ||
-      //                               _selectedAppointment!.location!.isEmpty
-      //                           ? 150
-      //                           : 200)
-      //                       : 400,
-      //                   child: Theme(
-      //                       data: model.themeData,
-      //                       child: Card(
-      //                         margin: EdgeInsets.zero,
-      //                         color: model.cardThemeColor,
-      //                         shape: const RoundedRectangleBorder(
-      //                             borderRadius:
-      //                                 BorderRadius.all(Radius.circular(4))),
-      //                         child: isAppointmentTapped
-      //                             ? displayAppointmentDetails(
-      //                                 context,
-      //                                 targetElement,
-      //                                 selectedDate,
-      //                                 model,
-      //                                 _selectedAppointment!,
-      //                                 _colorCollection,
-      //                                 _colorNames,
-      //                                 _dataSource,
-      //                                 _timeZoneCollection,
-      //                                 _visibleDates)
-      //                             : PopUpAppointmentEditor(
-      //                                 model,
-      //                                 newAppointment,
-      //                                 appointment,
-      //                                 _dataSource,
-      //                                 _colorCollection,
-      //                                 _colorNames,
-      //                                 _selectedAppointment!,
-      //                                 _timeZoneCollection,
-      //                                 _visibleDates),
-      //                       )))),
-      //         );
-      //       });
-      // } else {
-      /// Navigates to the appointment editor page on mobile
-
       Navigator.push<Widget>(
         context,
         MaterialPageRoute<Widget>(
@@ -345,7 +214,19 @@ class _CalendarPageState extends State<CalendarPage> {
                 _timeZoneCollection,
                 widget.group,
                 firebaseEvents)),
-      );
+      ).then((value) {
+        setState(() {});
+      });
+    }
+  }
+
+  Widget _getCalendar() {
+    if (widget.master) {
+      return _getMasterCalender(
+          _calendarController, _events, _onViewChanged, _onCalendarTapped);
+    } else {
+      return _getLakeNixonCalender(
+          _calendarController, _events, _onViewChanged, _onCalendarTapped);
     }
   }
 
@@ -362,8 +243,7 @@ class _CalendarPageState extends State<CalendarPage> {
             backgroundColor: theme,
           ),
         ),
-        child: _getLakeNixonCalender(
-            _calendarController, _events, _onViewChanged, _onCalendarTapped));
+        child: _getCalendar());
 
     final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -422,7 +302,7 @@ SfCalendar _getLakeNixonCalender(
     allowedViews: _allowedViews,
     //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
-    allowDragAndDrop: false,
+    allowDragAndDrop: true,
     showDatePickerButton: true,
     monthViewSettings: const MonthViewSettings(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
@@ -432,7 +312,32 @@ SfCalendar _getLakeNixonCalender(
         endHour: 18,
         nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
     onTap: tapped(false, calendarTapCallback),
-    //onTap: calendarTapCallback,
+  );
+}
+
+SfCalendar _getMasterCalender(
+    [CalendarController? calendarController,
+    CalendarDataSource? calendarDataSource,
+    ViewChangedCallback? viewChangedCallback,
+    dynamic calendarTapCallback]) {
+  //bool isUser = true;
+  //_checkAuth(isUser);
+  return SfCalendar(
+    controller: calendarController,
+    dataSource: calendarDataSource,
+    allowedViews: _allowedViews,
+    //showNavigationArrow: model.isWebFullView,
+    onViewChanged: viewChangedCallback,
+    allowDragAndDrop: true,
+    showDatePickerButton: true,
+    monthViewSettings: const MonthViewSettings(
+        appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+    timeSlotViewSettings: const TimeSlotViewSettings(
+        minimumAppointmentDuration: Duration(minutes: 60),
+        startHour: 7,
+        endHour: 18,
+        nonWorkingDays: <int>[DateTime.saturday, DateTime.sunday]),
+    onTap: tapped(false, calendarTapCallback),
   );
 }
 
@@ -481,17 +386,3 @@ class AppointmentDataSource extends CalendarDataSource {
     return meetingData;
   }
 }
-
-// The event class should allow us to add additional information to our appointments
-// class Event {
-//   Event({required this.appointment, this.ageMinimum, this.groupMaximum});
-
-//   // The Event class primarily contains Appointment.
-//   final Appointment appointment;
-
-//   // The minimum age of the people allowed at one activitiy
-//   final int? ageMinimum;
-
-//   // The maximum number of groups allowed at one activity
-//   final int? groupMaximum;
-// }
