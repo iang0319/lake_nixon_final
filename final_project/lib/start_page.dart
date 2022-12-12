@@ -157,12 +157,16 @@ class _StartPageState extends State<StartPage> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll<Color>(nixonbrown)),
-                    child: const Text("Logout"),
+                    child: const Text(
+                      "Logout",
+                      style: TextStyle(fontFamily: 'Fruit', fontSize: 30),
+                    ),
                     onPressed: () {
                       logout();
                       logoutScreenPush();
