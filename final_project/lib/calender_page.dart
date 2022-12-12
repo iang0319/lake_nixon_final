@@ -13,8 +13,6 @@ import 'package:final_project/globals.dart';
 
 List<LakeNixonEvent> appointments = <LakeNixonEvent>[];
 
-//late bool isUser;
-
 class CalendarPage extends StatefulWidget {
   CalendarPage(
       {super.key,
@@ -33,30 +31,20 @@ class CalendarPage extends StatefulWidget {
 
 final List<CalendarView> _allowedViews = <CalendarView>[
   CalendarView.workWeek,
-  //CalendarView.week,
   CalendarView.day,
-  //CalendarView.month,
   CalendarView.timelineDay,
-  //CalendarView.timelineWeek,
   CalendarView.timelineWorkWeek,
-  //CalendarView.timelineMonth,
 ];
 
 class _CalendarPageState extends State<CalendarPage> {
   _CalendarPageState();
 
-  //AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
   late CalendarView _currentView;
-
-  //bool isUser = true;
-  //var isUser;
 
   /// Global key used to maintain the state, when we change the parent of the
   /// widget
   final GlobalKey _globalKey = GlobalKey();
-  final ScrollController _controller = ScrollController();
   final CalendarController _calendarController = CalendarController();
-  //LakeNixonEvent? _selectedAppointment;
   Appointment? _selectedAppointment;
   final List<String> _colorNames = <String>[];
   final List<Color> _colorCollection = <Color>[];
@@ -65,57 +53,31 @@ class _CalendarPageState extends State<CalendarPage> {
   List<DropdownMenuItem<String>> firebaseEvents = [];
   List<Appointment> savedEvents = [];
 
-  //bool get user => widget.isUser;
-  //bool user = widget.isUser;
-
   @override
   void initState() {
     _currentView = CalendarView.workWeek;
     _calendarController.view = _currentView;
     bool user = widget.isUser;
-    //_checkAuth();
-    //PRoblem of having to back out seems to come from these being futures
     getEvents();
-    //getSavedEvents();
     _events = AppointmentDataSource(_getDataSource(widget.group));
 
     super.initState();
   }
-  /*
-  Future<void> _checkAuth() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    String role = "";
-
-    final DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-
-    role = snap['role'];
-
-    if (role == 'user') {
-      isUser = true;
-    } else {
-      isUser = false;
-    }
-  }
-  */
 
   Future<void> getEvents() async {
     CollectionReference events =
         FirebaseFirestore.instance.collection("events");
     final snapshot = await events.get();
-    if (snapshot.size > 0 && dbEvents.length == 0) {
+    if (snapshot.size > 0 && dbEvents.isEmpty) {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
-      data.forEach((element) {
+      for (var element in data) {
         var event = element.data() as Map;
         var tmp = Event(
             name: event["name"],
             ageMin: event["ageMin"],
             groupMax: event["groupMax"]);
         dbEvents.add(tmp);
-      });
+      }
     } else {
       print('No data available.3');
     }
@@ -187,7 +149,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
     //_colorCollection.add(const Color(0xFF0A8043));
 
-    _timeZoneCollection.add('Central Standard Time');
     if (widget.master) {
       List<Appointment> appointments = <Appointment>[];
       events.forEach((key, value) {
@@ -249,7 +210,6 @@ class _CalendarPageState extends State<CalendarPage> {
                 _colorCollection,
                 _colorNames,
                 _events,
-                _timeZoneCollection,
                 widget.group,
                 firebaseEvents)),
       ).then((value) {
@@ -299,26 +259,6 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 }
 
-/*
-void _checkAuth(bool userAcc) async {
-  User? user = FirebaseAuth.instance.currentUser;
-
-  String role = "";
-
-  final DocumentSnapshot snap =
-      await FirebaseFirestore.instance.collection("users").doc(user?.uid).get();
-
-  role = snap['role'];
-
-  if (role == 'user') {
-    userAcc = true;
-    print("Hello");
-  } else {
-    userAcc = false;
-    print("Bye");
-  }
-}
-*/
 dynamic tapped(bool user, dynamic tap) {
   if (user == true) {
     return null;
@@ -332,13 +272,10 @@ SfCalendar _getLakeNixonCalender(
     CalendarDataSource? calendarDataSource,
     ViewChangedCallback? viewChangedCallback,
     dynamic calendarTapCallback]) {
-  //bool isUser = true;
-  //_checkAuth(isUser);
   return SfCalendar(
     controller: calendarController,
     dataSource: calendarDataSource,
     allowedViews: _allowedViews,
-    //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
     allowDragAndDrop: true,
     showDatePickerButton: true,
@@ -358,13 +295,10 @@ SfCalendar _getMasterCalender(
     CalendarDataSource? calendarDataSource,
     ViewChangedCallback? viewChangedCallback,
     dynamic calendarTapCallback]) {
-  //bool isUser = true;
-  //_checkAuth(isUser);
   return SfCalendar(
     controller: calendarController,
     dataSource: calendarDataSource,
     allowedViews: _allowedViews,
-    //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
     allowDragAndDrop: true,
     showDatePickerButton: true,
