@@ -888,7 +888,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                           };
                           test[g.name] = appMap;
                           appointment.add(tmpApp);
-                          print(appointment);
                         }
 
                         var time = app.startTime;
@@ -1296,7 +1295,7 @@ typedef _PickerChanged = void Function(
 /// Details for the [_PickerChanged].
 class _PickerChangedDetails {
   _PickerChangedDetails(
-      {this.index = -1,
+      {this.index = 1,
       this.resourceId,
       this.selectedRule = _SelectRule.doesNotRepeat});
 
@@ -1755,7 +1754,7 @@ class _EditDialogState extends State<_EditDialog> {
                 Container(
                   height: 30,
                   padding: const EdgeInsets.only(left: 25, top: 5),
-                  child: Text(
+                  child: const Text(
                     'Save recurring event',
                     style: TextStyle(
                         color: defaultTextColor, fontWeight: FontWeight.w500),
@@ -1796,10 +1795,10 @@ class _EditDialogState extends State<_EditDialog> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Cancel',
                         style: TextStyle(
-                            color: const Color(0xff4169e1),
+                            color: Color(0xff4169e1),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -1938,11 +1937,11 @@ class _EditDialogState extends State<_EditDialog> {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Save',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xff4169e1),
+                          color: Color(0xff4169e1),
                         ),
                       ),
                     ),
@@ -1993,7 +1992,7 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                 Container(
                   height: 30,
                   padding: const EdgeInsets.only(left: 25, top: 5),
-                  child: Text(
+                  child: const Text(
                     'Delete recurring event',
                     style: TextStyle(
                         color: defaultTextColor, fontWeight: FontWeight.w500),
@@ -2034,10 +2033,10 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Cancel',
                         style: TextStyle(
-                            color: const Color(0xff4169e1),
+                            color: Color(0xff4169e1),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -2146,11 +2145,11 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                         }
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Delete',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xff4169e1),
+                          color: Color(0xff4169e1),
                         ),
                       ),
                     ),
@@ -2579,7 +2578,7 @@ class _CustomRuleState extends State<_CustomRule> {
                       keyboardType: TextInputType.number,
                       // ignore: always_specify_types
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 13,
                           color: defaultTextColor,
                           fontWeight: FontWeight.w400),
@@ -2604,7 +2603,7 @@ class _CustomRuleState extends State<_CustomRule> {
                         focusColor: Colors.transparent,
                         isExpanded: true,
                         underline: Container(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 13,
                             color: defaultTextColor,
                             fontWeight: FontWeight.w400),
@@ -2839,7 +2838,7 @@ class _CustomRuleState extends State<_CustomRule> {
                         focusColor: Colors.transparent,
                         isExpanded: true,
                         underline: Container(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 13,
                             color: defaultTextColor,
                             fontWeight: FontWeight.w400),
@@ -3007,7 +3006,7 @@ class _CustomRuleState extends State<_CustomRule> {
                                 child: Text(
                                   DateFormat('MM/dd/yyyy')
                                       .format(_selectedDate),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 13,
                                       color: defaultTextColor,
                                       fontWeight: FontWeight.w400),
@@ -3083,7 +3082,7 @@ class _CustomRuleState extends State<_CustomRule> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
                             ],
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 13,
                                 color: defaultTextColor,
                                 fontWeight: FontWeight.w400),
