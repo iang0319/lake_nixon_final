@@ -33,12 +33,12 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: ListView(
               children: <Widget>[
                 Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(0),
                     child: const Image(
                         image: AssetImage('images/lakenixonlogo.png'))),
                 Container(
@@ -46,7 +46,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     padding: const EdgeInsets.all(10),
                     child: const Text(
                       'Sign up',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Fruit',
+                          //nixongreen
+                          color: Color.fromRGBO(81, 146, 78, 1)),
                     )),
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -76,7 +80,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll<Color>(nixongreen)),
-                      child: const Text('Create'),
+                      child: const Text(
+                        'Create',
+                        style: TextStyle(fontFamily: 'Fruit', fontSize: 30),
+                      ),
                       onPressed: () async {
                         bool success = false;
                         try {
@@ -137,7 +144,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 backgroundColor:
                                     MaterialStatePropertyAll<Color>(
                                         nixonbrown)),
-                            child: const Text('Back'),
+                            child: const Text(
+                              'Back',
+                              style: TextStyle(fontFamily: 'Fruit'),
+                            ),
                             onPressed: goBack)))
               ],
             )));

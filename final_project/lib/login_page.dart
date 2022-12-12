@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'GroupPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'globals.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -63,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <Widget>[
                 Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: const Image(
                         image: AssetImage('images/lakenixonlogo.png'))
 
@@ -81,7 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(10),
                     child: const Text(
                       'Sign in',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Fruit',
+                          //nixongreen
+                          color: Color.fromRGBO(81, 146, 78, 1)),
                     )),
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -119,7 +124,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll<Color>(nixongreen)),
-                      child: const Text('Login'),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(fontFamily: 'Fruit', fontSize: 30),
+                      ),
                       onPressed: () async {
                         try {
                           final credential = await FirebaseAuth.instance
