@@ -23,14 +23,13 @@ class _MasterPageState extends State<MasterPage> {
   var eventController = TextEditingController();
   var ageLimitController = TextEditingController();
   var groupSizeController = TextEditingController();
-  var descriptionController = TextEditingController();
 
   Future<void> _EventInfoPopupForm(BuildContext context) async {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add Event'),
+          title: const Text('Add Event'),
           content: SingleChildScrollView(
             child: SizedBox(
               height: 200,
@@ -51,10 +50,6 @@ class _MasterPageState extends State<MasterPage> {
                       controller: groupSizeController,
                       decoration: 'Group Size',
                       formkey: "YearField"),
-                  FormFieldTemplate(
-                      controller: descriptionController,
-                      decoration: 'Description',
-                      formkey: "MeetField"),
                 ],
               ),
             ),
@@ -62,7 +57,7 @@ class _MasterPageState extends State<MasterPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               key: const Key("OKButton"),
@@ -93,10 +88,9 @@ class _MasterPageState extends State<MasterPage> {
                 eventController.clear();
                 ageLimitController.clear();
                 groupSizeController.clear();
-                descriptionController.clear();
                 Navigator.pop(context);
               },
-              child: Text('Send'),
+              child: const Text('Send'),
             ),
           ],
         );
