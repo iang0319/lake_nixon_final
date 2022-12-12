@@ -33,13 +33,9 @@ class CalendarPage extends StatefulWidget {
 
 final List<CalendarView> _allowedViews = <CalendarView>[
   CalendarView.workWeek,
-  //CalendarView.week,
   CalendarView.day,
-  //CalendarView.month,
   CalendarView.timelineDay,
-  //CalendarView.timelineWeek,
   CalendarView.timelineWorkWeek,
-  //CalendarView.timelineMonth,
 ];
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -47,9 +43,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
   //AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
   late CalendarView _currentView;
-
-  //bool isUser = true;
-  //var isUser;
 
   /// Global key used to maintain the state, when we change the parent of the
   /// widget
@@ -65,18 +58,12 @@ class _CalendarPageState extends State<CalendarPage> {
   List<DropdownMenuItem<String>> firebaseEvents = [];
   List<Appointment> savedEvents = [];
 
-  //bool get user => widget.isUser;
-  //bool user = widget.isUser;
-
   @override
   void initState() {
     _currentView = CalendarView.workWeek;
     _calendarController.view = _currentView;
     bool user = widget.isUser;
-    //_checkAuth();
-    //PRoblem of having to back out seems to come from these being futures
     getEvents();
-    //getSavedEvents();
     _events = AppointmentDataSource(_getDataSource(widget.group));
 
     super.initState();
@@ -88,14 +75,14 @@ class _CalendarPageState extends State<CalendarPage> {
     final snapshot = await events.get();
     if (snapshot.size > 0 && dbEvents.length == 0) {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
-      data.forEach((element) {
+      for (var element in data) {
         var event = element.data() as Map;
         var tmp = Event(
             name: event["name"],
             ageMin: event["ageMin"],
             groupMax: event["groupMax"]);
         dbEvents.add(tmp);
-      });
+      }
     } else {
       print('No data available.3');
     }
@@ -167,7 +154,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
     //_colorCollection.add(const Color(0xFF0A8043));
 
-    _timeZoneCollection.add('Central Standard Time');
     if (widget.master) {
       List<Appointment> appointments = <Appointment>[];
       events.forEach((key, value) {

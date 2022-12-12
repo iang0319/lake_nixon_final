@@ -148,8 +148,8 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
         }
       },
       child: Text(DateFormat('MMM dd, yyyy').format(_startDate),
-          style:
-              TextStyle(fontWeight: FontWeight.w500, color: defaultTextColor),
+          style: const TextStyle(
+              fontWeight: FontWeight.w500, color: defaultTextColor),
           textAlign: TextAlign.left),
     );
 
@@ -188,7 +188,8 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
       },
       child: Text(
         DateFormat('hh:mm a').format(_startDate),
-        style: TextStyle(fontWeight: FontWeight.w500, color: defaultTextColor),
+        style: const TextStyle(
+            fontWeight: FontWeight.w500, color: defaultTextColor),
         textAlign: TextAlign.left,
       ),
     );
@@ -231,7 +232,8 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
       },
       child: Text(
         DateFormat('hh:mm a').format(_endDate),
-        style: TextStyle(fontWeight: FontWeight.w500, color: defaultTextColor),
+        style: const TextStyle(
+            fontWeight: FontWeight.w500, color: defaultTextColor),
         textAlign: TextAlign.left,
       ),
     );
@@ -273,8 +275,8 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
         }
       },
       child: Text(DateFormat('MMM dd, yyyy').format(_endDate),
-          style:
-              TextStyle(fontWeight: FontWeight.w500, color: defaultTextColor),
+          style: const TextStyle(
+              fontWeight: FontWeight.w500, color: defaultTextColor),
           textAlign: TextAlign.left),
     );
 
@@ -283,7 +285,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
           height: 50,
           child: ListTile(
             trailing: IconButton(
-              icon: Icon(Icons.close, color: defaultColor),
+              icon: const Icon(Icons.close, color: defaultColor),
               splashRadius: 20,
               onPressed: () {
                 if (widget.newAppointment != null &&
@@ -309,14 +311,14 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
             leading: const Text(''),
             title: TextField(
               autofocus: true,
-              cursorColor: Color(0xff4169e1),
+              cursorColor: const Color(0xff4169e1),
               controller: TextEditingController(text: _subject),
               onChanged: (String value) {
                 _subject = value;
               },
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 20,
                   color: defaultTextColor,
                   fontWeight: FontWeight.w400),
@@ -337,7 +339,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
             leading: Container(
                 width: 30,
                 alignment: Alignment.centerRight,
-                child: Icon(
+                child: const Icon(
                   Icons.access_time,
                   size: 20,
                   color: defaultColor,
@@ -371,7 +373,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
             leading: Container(
                 width: 30,
                 alignment: Alignment.centerRight,
-                child: Icon(
+                child: const Icon(
                   Icons.location_on,
                   color: defaultColor,
                   size: 20,
@@ -384,7 +386,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
               },
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 color: defaultTextColor,
               ),
@@ -404,7 +406,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
             leading: Container(
                 width: 30,
                 alignment: Alignment.centerRight,
-                child: Icon(
+                child: const Icon(
                   Icons.subject,
                   size: 20,
                   color: defaultColor,
@@ -416,7 +418,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
               },
               keyboardType: TextInputType.multiline,
               maxLines: 1,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 color: defaultTextColor,
               ),
@@ -432,7 +434,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
               leading: Container(
                   width: 30,
                   alignment: Alignment.centerRight,
-                  child: Icon(
+                  child: const Icon(
                     Icons.people,
                     color: defaultColor,
                     size: 20,
@@ -463,7 +465,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  child: _getResourceEditor(TextStyle(
+                  child: _getResourceEditor(const TextStyle(
                       fontSize: 15,
                       color: defaultColor,
                       fontWeight: FontWeight.w300)),
@@ -503,7 +505,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   widget.colorNames[_selectedColorIndex],
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.w500, color: defaultTextColor),
                   textAlign: TextAlign.start,
                 ),
@@ -551,7 +553,7 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                               return const Text("hello");
                             });
                       },
-                      child: Text(
+                      child: const Text(
                         'MORE OPTIONS',
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
