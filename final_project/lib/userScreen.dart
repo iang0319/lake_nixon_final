@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/globals.dart';
 import 'package:final_project/start_page.dart';
 import 'package:final_project/userSplashScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,11 +64,13 @@ class _UserSplashScreenState extends State<UserSplashScreen> {
           child: Column(children: <Widget>[
         Container(
             alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
             child: const Text(
               'Authenticating',
               style: TextStyle(
-                  color: Colors.blue,
+                  fontFamily: 'Fruit',
+                  //nixongreen
+                  color: Color.fromRGBO(81, 146, 78, 1),
                   fontWeight: FontWeight.w500,
                   fontSize: 30),
             )),
