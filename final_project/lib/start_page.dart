@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/Group.dart';
 import 'package:final_project/GroupPage.dart';
 import 'package:final_project/calender_page.dart';
+import 'package:final_project/globals.dart';
 import 'package:final_project/login_page.dart';
 import 'package:final_project/masterPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,7 +100,13 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: const Text("Action Page")),
+        appBar: AppBar(
+          title: const Text("Action Page",
+              style: TextStyle(
+                  //check here later --- can't insert nixonbrown for some reason?
+                  color: Color.fromRGBO(137, 116, 73, 1))),
+          backgroundColor: nixonblue,
+        ),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -108,26 +115,37 @@ class _StartPageState extends State<StartPage> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'Welcome to Lake Nixon!',
+                      'Lake Nixon Admin',
                       style: TextStyle(
-                          color: Colors.blue,
+                          //nixonbrown
+                          color: Color.fromRGBO(137, 116, 73, 1),
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
                 Container(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
+                      height: 80,
                       child: ElevatedButton(
-                        child: const Text("Groups"),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(nixongreen)),
+                        child: const Text("Groups",
+                            style: TextStyle(fontSize: 40)),
                         onPressed: () {
                           groupPagePush();
                         },
                       ),
                     )),
                 Container(
+                  height: 100,
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    child: const Text("Master Calendar"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixongreen)),
+                    child: const Text("Master Calendar",
+                        style: TextStyle(fontSize: 40)),
                     onPressed: () {
                       masterCalendar(const Group(
                           name: "Admin", color: Color(0xFFFFFFFF), age: 99999));
@@ -137,6 +155,9 @@ class _StartPageState extends State<StartPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixonbrown)),
                     child: const Text("Logout"),
                     onPressed: () {
                       logout();
