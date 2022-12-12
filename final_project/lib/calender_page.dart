@@ -153,6 +153,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFFFFFFFF));
 
     //_colorCollection.add(const Color(0xFF0A8043));
+    _timeZoneCollection.add("Central Standard Time");
 
     if (widget.master) {
       List<Appointment> appointments = <Appointment>[];
