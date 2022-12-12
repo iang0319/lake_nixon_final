@@ -93,29 +93,29 @@ class _SplashScreenState extends State<SplashScreen> {
         appBar: AppBar(
             automaticallyImplyLeading: false,
             title: const Text(
-              "Home Page",
-              style: TextStyle(fontFamily: 'Fruit', color: Colors.white),
-            )),
+          "Welcome to Lake Nixon!",
+          style:
+              TextStyle(fontFamily: 'Fruit', color: Colors.white, fontSize: 35),
+        )),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
               children: <Widget>[
-                Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Welcome to Lake Nixon!',
-                      style: TextStyle(
-                          //nixonblue
-                          color: Color.fromRGBO(165, 223, 249, 1),
-                          fontFamily: 'Fruit',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 35),
-                    )),
+                // Container(
+                //     alignment: Alignment.center,
+                //     padding: const EdgeInsets.all(10),
+                //     child: const Text(
+                //       'Welcome to Lake Nixon!',
+                //       style: TextStyle(
+                //           //nixonblue
+                //           color: Color.fromRGBO(165, 223, 249, 1),
+                //           fontFamily: 'Fruit',
+                //           fontWeight: FontWeight.w500,
+                //           fontSize: 35),
+                //     )),
                 Container(
                     child: const Image(
                   image: AssetImage('images/lakenixonlogo.png'),
-                  height: 400,
                 )),
                 Container(
                     padding: const EdgeInsets.all(10),
@@ -139,10 +139,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll<Color>(nixonbrown),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixonbrown)),
+                    child: const Text(
+                      "Logout",
+                      style: TextStyle(fontFamily: 'Fruit', fontSize: 30),
                     ),
-                    child: const Text("Logout"),
                     onPressed: () {
                       logout();
                       logoutScreenPush();

@@ -53,31 +53,29 @@ class GroupItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        flex: 10,
-        child: Card(
-          elevation: 10.0,
-          child: ListTile(
-            tileColor: nixonyellow,
-            iconColor: nixonblue,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            onTap: () {
-              onListChanged(group);
-            },
-            leading: CircleAvatar(
-              backgroundColor: nixonblue,
-              child: Text(group.abbrev(),
-                  style: TextStyle(
-                      color: nixonbrown, fontFamily: 'Fruit', fontSize: 30)),
-            ),
-            title: Text(
-              group.name,
-              style: TextStyle(color: nixonbrown),
-            ),
-          ),
-        ));
+    return Card(
+      elevation: 10.0,
+      child: ListTile(
+        tileColor: nixonyellow,
+        iconColor: nixonblue,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 1),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        onTap: () {
+          onListChanged(group);
+        },
+        leading: CircleAvatar(
+          backgroundColor: nixonblue,
+          child: Text(group.abbrev(),
+              style: TextStyle(
+                  color: nixonbrown, fontFamily: 'Fruit', fontSize: 30)),
+        ),
+        title: Text(
+          group.name,
+          style: TextStyle(color: nixonbrown),
+        ),
+      ),
+    );
   }
 }
