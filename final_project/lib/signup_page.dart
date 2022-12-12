@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/calender_page.dart';
+import 'package:final_project/globals.dart';
+import 'package:final_project/login_page.dart';
 import 'package:flutter/material.dart';
 import 'GroupPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,6 +19,15 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void goBack() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +38,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Lake Nixon',
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 30),
-                    )),
+                    child: const Image(
+                        image: AssetImage('images/lakenixonlogo.png'))),
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
@@ -66,6 +72,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 50,
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll<Color>(nixongreen)),
                       child: const Text('Create'),
                       onPressed: () async {
                         bool success = false;
@@ -102,6 +111,17 @@ class _SignupScreenState extends State<SignupScreen> {
                         }
                       },
                     )),
+                Container(
+                    padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                    child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll<Color>(
+                                        nixonbrown)),
+                            child: const Text('Back'),
+                            onPressed: goBack)))
               ],
             )));
   }

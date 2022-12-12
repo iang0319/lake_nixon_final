@@ -8,6 +8,11 @@ import 'Group.dart';
 import "package:final_project/calender_page.dart";
 import "Event.dart";
 
+Color nixonblue = const Color.fromRGBO(165, 223, 249, 1);
+Color nixonyellow = const Color.fromRGBO(255, 248, 153, 1);
+Color nixonbrown = const Color.fromRGBO(137, 116, 73, 1);
+Color nixongreen = const Color.fromRGBO(81, 146, 78, 1);
+
 FirebaseFirestore db = FirebaseFirestore.instance;
 
 List<Event> dbEvents = [];
