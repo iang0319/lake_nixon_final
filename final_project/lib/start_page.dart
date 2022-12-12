@@ -101,10 +101,13 @@ class _StartPageState extends State<StartPage> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Action Page",
-              style: TextStyle(
-                  //check here later --- can't insert nixonbrown for some reason?
-                  color: Color.fromRGBO(137, 116, 73, 1))),
+          title: const Text(
+            "Action Page",
+            style: TextStyle(
+                //check here later --- can't insert nixonbrown for some reason?
+                color: Color.fromRGBO(137, 116, 73, 1),
+                fontFamily: 'Fruit'),
+          ),
           backgroundColor: nixonblue,
         ),
         body: Padding(
@@ -119,7 +122,7 @@ class _StartPageState extends State<StartPage> {
                       style: TextStyle(
                           //nixonbrown
                           color: Color.fromRGBO(137, 116, 73, 1),
-                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Fruit',
                           fontSize: 30),
                     )),
                 Container(
@@ -131,7 +134,8 @@ class _StartPageState extends State<StartPage> {
                             backgroundColor:
                                 MaterialStatePropertyAll<Color>(nixongreen)),
                         child: const Text("Groups",
-                            style: TextStyle(fontSize: 40)),
+                            style:
+                                TextStyle(fontSize: 40, fontFamily: 'Fruit')),
                         onPressed: () {
                           groupPagePush();
                         },
@@ -145,7 +149,7 @@ class _StartPageState extends State<StartPage> {
                         backgroundColor:
                             MaterialStatePropertyAll<Color>(nixongreen)),
                     child: const Text("Master Calendar",
-                        style: TextStyle(fontSize: 40)),
+                        style: TextStyle(fontSize: 40, fontFamily: 'Fruit')),
                     onPressed: () {
                       masterCalendar(const Group(
                           name: "Admin", color: Color(0xFFFFFFFF), age: 99999));
