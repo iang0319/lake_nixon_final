@@ -34,9 +34,16 @@ class _GroupPageState extends State<GroupPage> {
                 master: false,
               )),
     );
+    //await Navigator.of(context).push(
+    //MaterialPageRoute(builder: (context) => const StartPage()),
+    //);
   }
 
   Future<void> AdminPush(Group group) async {
+    //await Navigator.of(context).push(
+    // MaterialPageRoute(builder: (context) => const SplashScreen()),
+    //);
+
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CalendarPage(
@@ -47,6 +54,9 @@ class _GroupPageState extends State<GroupPage> {
         ),
       ),
     );
+    //await Navigator.of(context).push(
+    //MaterialPageRoute(builder: (context) => const StartPage()),
+    //);
   }
 
   void _checkAuth(Group group) async {
@@ -72,6 +82,11 @@ class _GroupPageState extends State<GroupPage> {
     print("Chat");
 
     _checkAuth(group);
+    //await Navigator.of(context).push(
+    //MaterialPageRoute(
+    //builder: (context) => CalendarPage(title: group.name, group: group),
+    //),
+    //);
   }
 
   @override
@@ -88,6 +103,7 @@ class _GroupPageState extends State<GroupPage> {
       body: Container(
           padding: const EdgeInsets.fromLTRB(10, 20, 40, 0),
           child: ListView(
+            // padding: const EdgeInsets.symmetric(vertical: 8.0),
             children: groups.map((Group) {
               return GroupItem(
                 group: Group,
@@ -95,6 +111,11 @@ class _GroupPageState extends State<GroupPage> {
               );
             }).toList(),
           )),
+      // floatingActionButton: FloatingActionButton(
+      //     child: const Icon(Icons.add),
+      //     onPressed: () async {
+      //       //_EventInfoPopupForm(context);
+      //     })
     );
   }
 
@@ -124,6 +145,10 @@ class _GroupPageState extends State<GroupPage> {
                       controller: groupSizeController,
                       decoration: 'Group Size',
                       formkey: "YearField"),
+                  FormFieldTemplate(
+                      controller: descriptionController,
+                      decoration: 'Description',
+                      formkey: "MeetField"),
                 ],
               ),
             ),
@@ -141,6 +166,17 @@ class _GroupPageState extends State<GroupPage> {
                     FirebaseFirestore.instance.collection("events");
                 final snapshot = await events.get();
 
+                // Example of reading in a collection and getting each doc
+
+                // if (snapshot.size > 0) {
+                //   List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
+                //   data.forEach((element) {
+                //     print(element.data());
+                //   });
+                // } else {
+                //   print('No data available.');
+                // }
+
                 //This is where we write database, specfically to the event collection. You can change collection just up a couple lines
                 int count = snapshot.size;
                 events.doc("$count").set({
@@ -151,6 +187,7 @@ class _GroupPageState extends State<GroupPage> {
                 eventController.clear();
                 ageLimitController.clear();
                 groupSizeController.clear();
+                descriptionController.clear();
                 Navigator.pop(context);
               },
               child: Text('Send'),
