@@ -119,6 +119,7 @@ class _MasterPageState extends State<MasterPage> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          //automaticallyImplyLeading: false,
           title: const Text("Master Calendar",
               style: TextStyle(
                   //check here later --- can't insert nixonbrown for some reason?
