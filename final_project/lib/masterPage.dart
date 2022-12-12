@@ -116,6 +116,7 @@ class _MasterPageState extends State<MasterPage> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text("List of Groups",
               style: TextStyle(
                   //check here later --- can't insert nixonbrown for some reason?
