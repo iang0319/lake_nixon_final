@@ -1199,6 +1199,19 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                   fontSize: 16.0);
                               print("CANT ADD EVENT DUE TO RESTRICTIONS");
                             }
+                          } else {
+                            schedules.doc(docName).update({
+                              "$name.$hour":
+                                  FieldValue.arrayUnion([widget.group.name])
+                            });
+                            schedules.doc(docName).update({
+                              "appointments.${widget.group.name}":
+                                  FieldValue.arrayUnion([appMap])
+                            });
+                            events[widget.group]!.add(appointment[0]);
+
+                            widget.events.notifyListeners(
+                                CalendarDataSourceAction.add, appointment);
                           }
                         } else {
                           Fluttertoast.showToast(
