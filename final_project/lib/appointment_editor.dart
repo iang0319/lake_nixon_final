@@ -27,88 +27,6 @@ enum _SelectRule {
   custom
 }
 
-class _CalendarTimeZonePicker extends StatefulWidget {
-  const _CalendarTimeZonePicker(
-      this.backgroundColor, this.timeZoneCollection, this.selectedTimeZoneIndex,
-      {required this.onChanged});
-
-  final Color backgroundColor;
-
-  final List<String> timeZoneCollection;
-
-  final int selectedTimeZoneIndex;
-
-  final _PickerChanged onChanged;
-
-  @override
-  State<StatefulWidget> createState() {
-    return _CalendarTimeZonePickerState();
-  }
-}
-
-class _CalendarTimeZonePickerState extends State<_CalendarTimeZonePicker> {
-  int _selectedTimeZoneIndex = -1;
-
-  @override
-  void initState() {
-    _selectedTimeZoneIndex = widget.selectedTimeZoneIndex;
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(_CalendarTimeZonePicker oldWidget) {
-    _selectedTimeZoneIndex = widget.selectedTimeZoneIndex;
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-        data: ThemeData(
-          brightness: Brightness.light,
-          colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: theme,
-          ),
-        ),
-        child: AlertDialog(
-          content: SizedBox(
-              width: double.maxFinite,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: widget.timeZoneCollection.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                      height: 50,
-                      child: ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 10),
-                        leading: Icon(
-                          index == _selectedTimeZoneIndex
-                              ? Icons.check_box
-                              : Icons.check_box_outline_blank,
-                          color: widget.backgroundColor,
-                        ),
-                        title: Text(widget.timeZoneCollection[index]),
-                        onTap: () {
-                          setState(() {
-                            _selectedTimeZoneIndex = index;
-                            widget
-                                .onChanged(_PickerChangedDetails(index: index));
-                          });
-
-                          // ignore: always_specify_types
-                          Future.delayed(const Duration(milliseconds: 200), () {
-                            // When task is over, close the dialog
-                            Navigator.pop(context);
-                          });
-                        },
-                      ));
-                },
-              )),
-        ));
-  }
-}
-
 class AppointmentEditor extends StatefulWidget {
   /// Holds the value of appointment editor
   const AppointmentEditor(
@@ -558,31 +476,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               ),
                             )),
                 ])),
-            ListTile(
-              contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-              leading: Icon(
-                Icons.public,
-                color: defaultColor,
-              ),
-              title: Text(widget.timeZoneCollection[_selectedTimeZoneIndex]),
-              onTap: () {
-                showDialog<Widget>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return _CalendarTimeZonePicker(
-                      const Color(0xff4169e1),
-                      widget.timeZoneCollection,
-                      _selectedTimeZoneIndex,
-                      onChanged: (_PickerChangedDetails details) {
-                        _selectedTimeZoneIndex = details.index;
-                      },
-                    );
-                  },
-                ).then((dynamic value) => setState(() {
-                      /// update the time zone changes
-                    }));
-              },
-            ),
             ListTile(
               contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
               leading: Icon(
