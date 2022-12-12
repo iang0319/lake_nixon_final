@@ -420,13 +420,6 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                 fontSize: 15,
                 color: defaultTextColor,
               ),
-              decoration: const InputDecoration(
-                filled: true,
-                contentPadding: EdgeInsets.fromLTRB(5, 10, 10, 10),
-                fillColor: Colors.transparent,
-                border: InputBorder.none,
-                hintText: 'Add description',
-              ),
             ),
           )),
       if (widget.events.resources == null || widget.events.resources!.isEmpty)
@@ -556,30 +549,6 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
                                 resourceIds: _resourceIds,
                               );
                               return const Text("hello");
-                              // return WillPopScope(
-                              //   onWillPop: () async {
-                              //     if (widget.newAppointment != null) {
-                              //       widget.events.appointments!.removeAt(widget
-                              //           .events.appointments!
-                              //           .indexOf(widget.newAppointment));
-                              //       widget.events.notifyListeners(
-                              //           CalendarDataSourceAction.remove,
-                              //           <Appointment>[widget.newAppointment!]);
-                              //     }
-                              //     return true;
-                              //   },
-                              //   child: AppointmentEditorWeb(
-                              //     widget.model,
-                              //     selectedApp,
-                              //     widget.colorCollection,
-                              //     widget.colorNames,
-                              //     widget.events,
-                              //     widget.timeZoneCollection,
-                              //     widget.appointment,
-                              //     widget.visibleDates,
-                              //     widget.newAppointment,
-                              //   ),
-                              // );
                             });
                       },
                       child: Text(

@@ -81,26 +81,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
     super.initState();
   }
-  /*
-  Future<void> _checkAuth() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    String role = "";
-
-    final DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-
-    role = snap['role'];
-
-    if (role == 'user') {
-      isUser = true;
-    } else {
-      isUser = false;
-    }
-  }
-  */
 
   Future<void> getEvents() async {
     CollectionReference events =
@@ -299,26 +279,6 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 }
 
-/*
-void _checkAuth(bool userAcc) async {
-  User? user = FirebaseAuth.instance.currentUser;
-
-  String role = "";
-
-  final DocumentSnapshot snap =
-      await FirebaseFirestore.instance.collection("users").doc(user?.uid).get();
-
-  role = snap['role'];
-
-  if (role == 'user') {
-    userAcc = true;
-    print("Hello");
-  } else {
-    userAcc = false;
-    print("Bye");
-  }
-}
-*/
 dynamic tapped(bool user, dynamic tap) {
   if (user == true) {
     return null;
@@ -332,13 +292,10 @@ SfCalendar _getLakeNixonCalender(
     CalendarDataSource? calendarDataSource,
     ViewChangedCallback? viewChangedCallback,
     dynamic calendarTapCallback]) {
-  //bool isUser = true;
-  //_checkAuth(isUser);
   return SfCalendar(
     controller: calendarController,
     dataSource: calendarDataSource,
     allowedViews: _allowedViews,
-    //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
     allowDragAndDrop: true,
     showDatePickerButton: true,
@@ -358,13 +315,10 @@ SfCalendar _getMasterCalender(
     CalendarDataSource? calendarDataSource,
     ViewChangedCallback? viewChangedCallback,
     dynamic calendarTapCallback]) {
-  //bool isUser = true;
-  //_checkAuth(isUser);
   return SfCalendar(
     controller: calendarController,
     dataSource: calendarDataSource,
     allowedViews: _allowedViews,
-    //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
     allowDragAndDrop: true,
     showDatePickerButton: true,
