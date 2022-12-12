@@ -102,7 +102,7 @@ class _GroupPageState extends State<GroupPage> {
       ),
       body: Container(
           padding: const EdgeInsets.fromLTRB(10, 20, 40, 0),
-          child: Column(
+          child: ListView(
             // padding: const EdgeInsets.symmetric(vertical: 8.0),
             children: groups.map((Group) {
               return GroupItem(
