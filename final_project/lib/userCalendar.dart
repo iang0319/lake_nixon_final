@@ -48,6 +48,9 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
   //AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
   late CalendarView _currentView;
 
+  //bool isUser = true;
+  //var isUser;
+
   /// Global key used to maintain the state, when we change the parent of the
   /// widget
   final GlobalKey _globalKey = GlobalKey();
@@ -62,6 +65,9 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
   List<DropdownMenuItem<String>> firebaseEvents = [];
   List<Appointment> savedEvents = [];
 
+  //bool get user => widget.isUser;
+  //bool user = widget.isUser;
+
   @override
   void initState() {
     _currentView = CalendarView.workWeek;
@@ -75,6 +81,26 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
 
     super.initState();
   }
+  /*
+  Future<void> _checkAuth() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    String role = "";
+
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user?.uid)
+        .get();
+
+    role = snap['role'];
+
+    if (role == 'user') {
+      isUser = true;
+    } else {
+      isUser = false;
+    }
+  }
+  */
 
   Future<void> getEvents() async {
     CollectionReference events =
@@ -148,6 +174,7 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
     _colorNames.add('Blue');
     _colorNames.add('Peach');
     _colorNames.add('Gray');
+    //_colorNames.add("Green");
 
     _colorCollection.add(const Color(0xFF0F8644));
     _colorCollection.add(const Color(0xFF8B1FA9));
@@ -158,6 +185,8 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
     _colorCollection.add(const Color(0xFF3D4FB5));
     _colorCollection.add(const Color(0xFFE47C73));
     _colorCollection.add(const Color(0xFF636363));
+    //_colorCollection.add(const Color(0xFF0A8043));
+
     _timeZoneCollection.add('Central Standard Time');
 
     List<Appointment> appointments = <Appointment>[];
@@ -205,6 +234,119 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
 
       final DateTime selectedDate = calendarTapDetails.date!;
       final CalendarElement targetElement = calendarTapDetails.targetElement;
+
+      /// To open the appointment editor for web,
+      /// when the screen width is greater than 767.
+      // if (model.isWebFullView && !model.isMobileResolution) {
+      //   final bool isAppointmentTapped =
+      //       calendarTapDetails.targetElement == CalendarElement.appointment;
+      //   showDialog<Widget>(
+      //       context: context,
+      //       builder: (BuildContext context) {
+      //         final List<Appointment> appointment = <Appointment>[];
+      //         Appointment? newAppointment;
+
+      //         /// Creates a new appointment, which is displayed on the tapped
+      //         /// calendar element, when the editor is opened.
+      //         if (_selectedAppointment == null) {
+      //           _isAllDay = calendarTapDetails.targetElement ==
+      //               CalendarElement.allDayPanel;
+      //           _selectedColorIndex = 0;
+      //           _subject = '';
+      //           final DateTime date = calendarTapDetails.date!;
+
+      //           newAppointment = Appointment(
+      //             startTime: date,
+      //             endTime: date.add(const Duration(hours: 1)),
+      //             color: _colorCollection[_selectedColorIndex],
+      //             isAllDay: _isAllDay,
+      //             subject: _subject == '' ? '(No title)' : _subject,
+      //           );
+      //           appointment.add(newAppointment);
+
+      //           _dataSource.appointments.add(appointment[0]);
+
+      //           SchedulerBinding.instance
+      //               .addPostFrameCallback((Duration duration) {
+      //             _dataSource.notifyListeners(
+      //                 CalendarDataSourceAction.add, appointment);
+      //           });
+
+      //           _selectedAppointment = newAppointment;
+      //         }
+
+      //         return WillPopScope(
+      //           onWillPop: () async {
+      //             if (newAppointment != null) {
+      //               /// To remove the created appointment when the pop-up closed
+      //               /// without saving the appointment.
+      //               _dataSource.appointments.removeAt(
+      //                   _dataSource.appointments.indexOf(newAppointment));
+      //               _dataSource.notifyListeners(CalendarDataSourceAction.remove,
+      //                   <Appointment>[newAppointment]);
+      //             }
+      //             return true;
+      //           },
+      //           child: Center(
+      //               child: SizedBox(
+      //                   width: isAppointmentTapped ? 400 : 500,
+      //                   height: isAppointmentTapped
+      //                       ? (_selectedAppointment!.location == null ||
+      //                               _selectedAppointment!.location!.isEmpty
+      //                           ? 150
+      //                           : 200)
+      //                       : 400,
+      //                   child: Theme(
+      //                       data: model.themeData,
+      //                       child: Card(
+      //                         margin: EdgeInsets.zero,
+      //                         color: model.cardThemeColor,
+      //                         shape: const RoundedRectangleBorder(
+      //                             borderRadius:
+      //                                 BorderRadius.all(Radius.circular(4))),
+      //                         child: isAppointmentTapped
+      //                             ? displayAppointmentDetails(
+      //                                 context,
+      //                                 targetElement,
+      //                                 selectedDate,
+      //                                 model,
+      //                                 _selectedAppointment!,
+      //                                 _colorCollection,
+      //                                 _colorNames,
+      //                                 _dataSource,
+      //                                 _timeZoneCollection,
+      //                                 _visibleDates)
+      //                             : PopUpAppointmentEditor(
+      //                                 model,
+      //                                 newAppointment,
+      //                                 appointment,
+      //                                 _dataSource,
+      //                                 _colorCollection,
+      //                                 _colorNames,
+      //                                 _selectedAppointment!,
+      //                                 _timeZoneCollection,
+      //                                 _visibleDates),
+      //                       )))),
+      //         );
+      //       });
+      // } else {
+      /// Navigates to the appointment editor page on mobile
+      /*
+      Navigator.push<Widget>(
+        context,
+        MaterialPageRoute<Widget>(
+            builder: (BuildContext context) => AppointmentEditor(
+                _selectedAppointment,
+                targetElement,
+                selectedDate,
+                _colorCollection,
+                _colorNames,
+                _events,
+                _timeZoneCollection,
+                widget.group,
+                firebaseEvents)),
+      );
+      */
     }
   }
 
@@ -240,6 +382,26 @@ class _UserCalendarPageState extends State<UserCalendarPage> {
   }
 }
 
+/*
+void _checkAuth(bool userAcc) async {
+  User? user = FirebaseAuth.instance.currentUser;
+
+  String role = "";
+
+  final DocumentSnapshot snap =
+      await FirebaseFirestore.instance.collection("users").doc(user?.uid).get();
+
+  role = snap['role'];
+
+  if (role == 'user') {
+    userAcc = true;
+    print("Hello");
+  } else {
+    userAcc = false;
+    print("Bye");
+  }
+}
+*/
 dynamic tapped(bool user, dynamic tap) {
   if (user == true) {
     return null;
@@ -253,10 +415,13 @@ SfCalendar _getLakeNixonCalender(
     CalendarDataSource? calendarDataSource,
     ViewChangedCallback? viewChangedCallback,
     dynamic calendarTapCallback]) {
+  //bool isUser = true;
+  //_checkAuth(isUser);
   return SfCalendar(
     controller: calendarController,
     dataSource: calendarDataSource,
     allowedViews: _allowedViews,
+    //showNavigationArrow: model.isWebFullView,
     onViewChanged: viewChangedCallback,
     allowDragAndDrop: false,
     showDatePickerButton: true,
@@ -316,3 +481,17 @@ class AppointmentDataSource extends CalendarDataSource {
     return meetingData;
   }
 }
+
+// The event class should allow us to add additional information to our appointments
+// class Event {
+//   Event({required this.appointment, this.ageMinimum, this.groupMaximum});
+
+//   // The Event class primarily contains Appointment.
+//   final Appointment appointment;
+
+//   // The minimum age of the people allowed at one activitiy
+//   final int? ageMinimum;
+
+//   // The maximum number of groups allowed at one activity
+//   final int? groupMaximum;
+// }

@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget checkLogin() {
     if (FirebaseAuth.instance.currentUser != null) {
       return const StartPage();
+      //return GroupPage(title: "List of groups");
     } else {
       return const LoginScreen();
     }
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        //home: CalendarPage(title: 'Calendar Page'),
+        //home: GroupPage(title: "List of groups"),
         home: checkLogin());
   }
 }

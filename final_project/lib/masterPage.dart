@@ -72,6 +72,15 @@ class _MasterPageState extends State<MasterPage> {
 
                 // Example of reading in a collection and getting each doc
 
+                // if (snapshot.size > 0) {
+                //   List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
+                //   data.forEach((element) {
+                //     print(element.data());
+                //   });
+                // } else {
+                //   print('No data available.');
+                // }
+
                 //This is where we write database, specfically to the event collection. You can change collection just up a couple lines
                 int count = snapshot.size;
                 events.doc("$count").set({
@@ -107,6 +116,7 @@ class _MasterPageState extends State<MasterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
         appBar: AppBar(
           title: const Text("Master Calendar",
