@@ -185,11 +185,9 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
   String? _notes;
   String? _location;
-  //List<Group> _groupsTest;
   List<Object>? _resourceIds;
   List<CalendarResource> _selectedResources = <CalendarResource>[];
   List<CalendarResource> _unSelectedResources = <CalendarResource>[];
-  //List<DropdownMenuItem<String>> firebaseEvents = [];
   String dropdownValue = "Lunch";
   late String _subject;
 
@@ -199,16 +197,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   late int _interval;
 
   _SelectRule? _rule = _SelectRule.doesNotRepeat;
-  /*
-  static final List<Group> _groups = [
-    Group(name: "Lion"),
-    Group(name: "Flamingo"),
-    Group(name: "Hippo"),
-    Group(name: "Owl"),
-    Group(name: "Dragonfly"),
-    Group(name: "Dolphin"),
-  ];
-  */
 
   final _items =
       groups.map((group) => MultiSelectItem<Group>(group, group.name)).toList();
@@ -355,28 +343,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                 },
               ),
             ),
-            /*
-            ListTile(
-              contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-              leading: const Text(''),
-              title: TextField(
-                controller: TextEditingController(text: _subject),
-                onChanged: (String value) {
-                  _subject = value;
-                },
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                style: TextStyle(
-                    fontSize: 25,
-                    color: defaultColor,
-                    fontWeight: FontWeight.w400),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Add title',
-                ),
-              ),
-            ),
-            */
             const Divider(
               height: 1.0,
               thickness: 1,
@@ -711,61 +677,12 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
               height: 1.0,
               thickness: 1,
             ),
-            // ListTile(
-            //   contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-            //   leading: Icon(Icons.lens,
-            //       color: widget.colorCollection[_selectedColorIndex]),
-            //   title: Text(
-            //     widget.colorNames[_selectedColorIndex],
-            //   ),
-            //   onTap: () {
-            //     showDialog<Widget>(
-            //       context: context,
-            //       builder: (BuildContext context) {
-            //         return _CalendarColorPicker(
-            //           widget.colorCollection,
-            //           _selectedColorIndex,
-            //           widget.colorNames,
-            //           onChanged: (_PickerChangedDetails details) {
-            //             _selectedColorIndex = details.index;
-            //           },
-            //         );
-            //       },
-            //     ).then((dynamic value) => setState(() {
-            //           /// update the color picker changes
-            //         }));
-            //   },
-            // ),
             const Divider(
               height: 1.0,
               thickness: 1,
             ),
             Container(),
             Container(),
-            ListTile(
-              contentPadding: const EdgeInsets.all(5),
-              leading: Icon(
-                Icons.subject,
-                color: defaultColor,
-              ),
-              title: TextField(
-                controller: TextEditingController(text: _notes),
-                cursorColor: const Color(0xff4169e1),
-                onChanged: (String value) {
-                  _notes = value;
-                },
-                keyboardType: TextInputType.multiline,
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 18,
-                    color: defaultColor,
-                    fontWeight: FontWeight.w400),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Add description',
-                ),
-              ),
-            ),
           ],
         ));
   }
@@ -803,13 +720,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                       if (widget.selectedAppointment != null) {
                         if (widget.selectedAppointment!.appointmentType !=
                             AppointmentType.normal) {
-                          // final Appointment newAppointment = LakeNixonEvent
-                          //
-                          //
-                          //
-                          //
-                          //
-
                           final Appointment newAppointment = Appointment(
                             startTime: _startDate,
                             endTime: _endDate,
@@ -838,19 +748,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                     _startDate,
                                     _endDate),
                           );
-                          /*
-
-
-                          final Activity newActivity = Activity(
-                              eventName: _subject,
-                              from: _startDate,
-                              to: _endDate,
-                              background:
-                                  widget.colorCollection[_selectedColorIndex],
-                              isAllDay: _isAllDay,
-                              numberGroupsAllowed: 3,
-                              ageLimit: 3);
-                */
 
                           showDialog<Widget>(
                               context: context,
@@ -867,7 +764,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                               const Color(0xff4169e1),
                                         ),
                                       ),
-                                      // ignore: prefer_const_literals_to_create_immutables
                                       child: _EditDialog(
                                           newAppointment,
                                           widget.selectedAppointment!,
@@ -992,7 +888,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                           };
                           test[g.name] = appMap;
                           appointment.add(tmpApp);
-                          print(appointment);
                         }
 
                         var time = app.startTime;
@@ -1259,17 +1154,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                           bool created = false;
                           Schedule? schedule;
 
-                          //db.collection("schedules").doc(docName).delete().then(
-                          //    (doc) => print("Document deleted"),
-                          //  onError: (e) =>
-                          //    print("Error updating document $e"),
-                          // );
-
-                          // db
-                          //   .collection("schedules")
-                          // .doc(docName)
-                          //.collection("appointments");
-
                           db.collection("schedules").doc(docName).update({
                             "appointments.${widget.group.name}":
                                 FieldValue.arrayRemove([appMap])
@@ -1279,13 +1163,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                             "$name.$hour":
                                 FieldValue.arrayRemove([widget.group.name])
                           });
-
-                          //db.collection("schedules").doc(docName).update({
-                          //   "$name.${widget.group.name}":
-                          //"appointments.${widget.group.name}":
-                          //FieldValue.arrayUnion([appMap])
-                          //      FieldValue.delete()
-                          // });
 
                           widget.events.appointments?.removeAt(widget
                               .events.appointments!
@@ -1418,7 +1295,7 @@ typedef _PickerChanged = void Function(
 /// Details for the [_PickerChanged].
 class _PickerChangedDetails {
   _PickerChangedDetails(
-      {this.index = -1,
+      {this.index = 1,
       this.resourceId,
       this.selectedRule = _SelectRule.doesNotRepeat});
 
@@ -1877,7 +1754,7 @@ class _EditDialogState extends State<_EditDialog> {
                 Container(
                   height: 30,
                   padding: const EdgeInsets.only(left: 25, top: 5),
-                  child: Text(
+                  child: const Text(
                     'Save recurring event',
                     style: TextStyle(
                         color: defaultTextColor, fontWeight: FontWeight.w500),
@@ -1918,10 +1795,10 @@ class _EditDialogState extends State<_EditDialog> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Cancel',
                         style: TextStyle(
-                            color: const Color(0xff4169e1),
+                            color: Color(0xff4169e1),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -2060,11 +1937,11 @@ class _EditDialogState extends State<_EditDialog> {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Save',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xff4169e1),
+                          color: Color(0xff4169e1),
                         ),
                       ),
                     ),
@@ -2115,7 +1992,7 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                 Container(
                   height: 30,
                   padding: const EdgeInsets.only(left: 25, top: 5),
-                  child: Text(
+                  child: const Text(
                     'Delete recurring event',
                     style: TextStyle(
                         color: defaultTextColor, fontWeight: FontWeight.w500),
@@ -2156,10 +2033,10 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Cancel',
                         style: TextStyle(
-                            color: const Color(0xff4169e1),
+                            color: Color(0xff4169e1),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -2260,37 +2137,19 @@ class _DeleteDialogState extends State<_DeleteDialog> {
                                 CalendarDataSourceAction.remove,
                                 <Appointment>[parentAppointment]);
                           }
-                          //final docRef =
-                          //  db.collection("schedules").doc(docName);
-
-                          //CollectionReference schedules =
-                          //FirebaseFirestore.instance.collection("schedules");
-                          // Remove the field from the document
-                          //final updates = <String, dynamic>{
-                          //"appointments": FieldValue.delete(),
-                          //};
-
-                          //docRef.update(updates);
                           db.collection("schedules").doc(docName).delete().then(
                                 (doc) => print("Document deleted"),
                                 onError: (e) =>
                                     print("Error updating document $e"),
                               );
-
-                          //schedules.collection.
-
-                          //schedules.doc(docName).update({
-                          ///  "appointments.${widget.selectedAppointment.subject}":
-                          //      FieldValue.arrayUnion([appMap])
-                          //  });
                         }
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Delete',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xff4169e1),
+                          color: Color(0xff4169e1),
                         ),
                       ),
                     ),
@@ -2719,7 +2578,7 @@ class _CustomRuleState extends State<_CustomRule> {
                       keyboardType: TextInputType.number,
                       // ignore: always_specify_types
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 13,
                           color: defaultTextColor,
                           fontWeight: FontWeight.w400),
@@ -2744,7 +2603,7 @@ class _CustomRuleState extends State<_CustomRule> {
                         focusColor: Colors.transparent,
                         isExpanded: true,
                         underline: Container(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 13,
                             color: defaultTextColor,
                             fontWeight: FontWeight.w400),
@@ -2979,7 +2838,7 @@ class _CustomRuleState extends State<_CustomRule> {
                         focusColor: Colors.transparent,
                         isExpanded: true,
                         underline: Container(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 13,
                             color: defaultTextColor,
                             fontWeight: FontWeight.w400),
@@ -3147,7 +3006,7 @@ class _CustomRuleState extends State<_CustomRule> {
                                 child: Text(
                                   DateFormat('MM/dd/yyyy')
                                       .format(_selectedDate),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 13,
                                       color: defaultTextColor,
                                       fontWeight: FontWeight.w400),
@@ -3223,7 +3082,7 @@ class _CustomRuleState extends State<_CustomRule> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
                             ],
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 13,
                                 color: defaultTextColor,
                                 fontWeight: FontWeight.w400),

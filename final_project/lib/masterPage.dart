@@ -23,14 +23,16 @@ class _MasterPageState extends State<MasterPage> {
   var eventController = TextEditingController();
   var ageLimitController = TextEditingController();
   var groupSizeController = TextEditingController();
-  var descriptionController = TextEditingController();
 
   Future<void> _EventInfoPopupForm(BuildContext context) async {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add Event'),
+          title: Text(
+            'Add Event',
+            style: TextStyle(fontFamily: 'Fruit', color: nixongreen),
+          ),
           content: SingleChildScrollView(
             child: SizedBox(
               height: 200,
@@ -51,10 +53,6 @@ class _MasterPageState extends State<MasterPage> {
                       controller: groupSizeController,
                       decoration: 'Group Size',
                       formkey: "YearField"),
-                  FormFieldTemplate(
-                      controller: descriptionController,
-                      decoration: 'Description',
-                      formkey: "MeetField"),
                 ],
               ),
             ),
@@ -62,7 +60,7 @@ class _MasterPageState extends State<MasterPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               key: const Key("OKButton"),
@@ -93,10 +91,9 @@ class _MasterPageState extends State<MasterPage> {
                 eventController.clear();
                 ageLimitController.clear();
                 groupSizeController.clear();
-                descriptionController.clear();
                 Navigator.pop(context);
               },
-              child: Text('Send'),
+              child: const Text('Send'),
             ),
           ],
         );
@@ -122,10 +119,12 @@ class _MasterPageState extends State<MasterPage> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          title: const Text("List of Groups",
+          automaticallyImplyLeading: false,
+          title: const Text("Master Calendar",
               style: TextStyle(
                   //check here later --- can't insert nixonbrown for some reason?
-                  color: Color.fromRGBO(137, 116, 73, 1))),
+                  color: Color.fromRGBO(137, 116, 73, 1),
+                  fontFamily: 'Fruit')),
           backgroundColor: nixonblue,
         ),
         body: Padding(
@@ -135,17 +134,29 @@ class _MasterPageState extends State<MasterPage> {
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
+                    height: 80,
                     child: const Text(
                       'Lake Nixon',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w500,
+                          //nixonblue
+                          color: Color.fromRGBO(165, 223, 249, 1),
+                          fontFamily: 'Fruit',
                           fontSize: 30),
                     )),
                 Container(
                   padding: const EdgeInsets.all(10),
+                  height: 80,
                   child: ElevatedButton(
-                    child: const Text("Add event"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixongreen)),
+                    child: const Text(
+                      "Add event",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Fruit',
+                          fontSize: 30),
+                    ),
                     onPressed: () {
                       _EventInfoPopupForm(context);
                     },
@@ -153,8 +164,16 @@ class _MasterPageState extends State<MasterPage> {
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
+                  height: 80,
                   child: ElevatedButton(
-                    child: const Text("View Master Calendar"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixongreen)),
+                    child: const Text("View Master Calendar",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Fruit',
+                            fontSize: 30)),
                     onPressed: () {
                       for (Group g in groups) {
                         createGroup(g);

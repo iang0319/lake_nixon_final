@@ -1,3 +1,4 @@
+import 'package:final_project/globals.dart';
 import 'package:final_project/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:final_project/globals.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -59,13 +61,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     onTap: () => Navigator.pop(context),
                     child: const Icon(Icons.close),
                   ),
+                  const Image(
+                    image: AssetImage('images/lakenixonlogo.png'),
+                    alignment: Alignment.centerRight,
+                    height: 200,
+                  ),
                   const SizedBox(height: 70),
                   const Text(
                     'Forgot Password?',
+                    textAlign: TextAlign.right,
                     style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      fontFamily: 'Fruit',
+                      fontSize: 45,
+                      //nixonbrown
+                      color: Color.fromRGBO(137, 116, 73, 1),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -78,11 +87,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'Email',
+                    'E-mail',
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 20,
+                      fontFamily: 'Fruit',
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -95,6 +104,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(nixongreen)),
                     onPressed: () async {
                       if (_emailController.text.isEmpty) {
                         Fluttertoast.showToast(
@@ -178,7 +190,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text("Submit"),
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(fontFamily: 'Fruit', fontSize: 20),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Text(
