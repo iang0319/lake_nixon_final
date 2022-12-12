@@ -56,7 +56,8 @@ class GroupItem extends StatelessWidget {
     return Card(
       elevation: 10.0,
       child: ListTile(
-        tileColor: group.color,
+        //group.color
+        tileColor: nixonyellow,
         iconColor: nixonblue,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black, width: 1),
