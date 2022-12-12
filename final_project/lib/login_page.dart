@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       child: const Text(
                         'Sign up',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20, fontFamily: 'Fruit'),
                       ),
                       onPressed: () async {
                         await Navigator.of(context).push(MaterialPageRoute(

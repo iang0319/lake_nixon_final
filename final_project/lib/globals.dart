@@ -44,7 +44,7 @@ List<Group> groups = <Group>[
   const Group(name: "Wolves", color: Color(0xFF566573), age: 5),
   const Group(name: "Copperheads", color: Color(0xFFD68910), age: 6),
   const Group(name: "Timber Rattlers", color: Color(0xFFABEBC6), age: 8),
-  const Group(name: "Admin", color: Color(0xFFFFFFFF), age: 9999)
+  const Group(name: "Admin", color: Color.fromARGB(255, 0, 0, 0), age: 9999)
 ];
 
 int indexEvents(String name) {
