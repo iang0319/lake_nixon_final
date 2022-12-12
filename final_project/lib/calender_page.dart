@@ -136,6 +136,25 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorNames.add('Blue');
     _colorNames.add('Peach');
     _colorNames.add('Gray');
+    _colorNames.add('Light Blue');
+    _colorNames.add('Light Orange');
+    _colorNames.add('Violet');
+    _colorNames.add('Light Gray');
+    _colorNames.add('Green2');
+    _colorNames.add('Navy');
+    _colorNames.add('Yellow');
+    _colorNames.add('Pink');
+    _colorNames.add('Blue2');
+    _colorNames.add('Brown');
+    _colorNames.add('Dark Navy');
+    _colorNames.add('Lighter Green');
+    _colorNames.add('Orange2');
+    _colorNames.add('Blue3');
+    _colorNames.add('Fade Blue');
+    _colorNames.add('Orange3');
+    _colorNames.add('Light Green2');
+    _colorNames.add('Admin');
+
     //_colorNames.add("Green");
 
     _colorCollection.add(const Color(0xFF0F8644));
@@ -147,6 +166,25 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF3D4FB5));
     _colorCollection.add(const Color(0xFFE47C73));
     _colorCollection.add(const Color(0xFF636363));
+    _colorCollection.add(const Color(0xFF5DADE2));
+    _colorCollection.add(const Color(0xFFDC7633));
+    _colorCollection.add(const Color(0xFFDEB6F1));
+    _colorCollection.add(const Color(0xFF909497));
+    _colorCollection.add(const Color(0xFF117864));
+    _colorCollection.add(const Color(0xFF2E4053));
+    _colorCollection.add(const Color(0xFFF4D03F));
+    _colorCollection.add(const Color(0xFFEA45E1));
+    _colorCollection.add(const Color(0xFF2471A3));
+    _colorCollection.add(const Color(0xFF504040));
+    _colorCollection.add(const Color(0xFF1C2833));
+    _colorCollection.add(const Color(0xFF60EA7A));
+    _colorCollection.add(const Color(0xFFD35400));
+    _colorCollection.add(const Color(0xFF456CEA));
+    _colorCollection.add(const Color(0xFF566573));
+    _colorCollection.add(const Color(0xFFD68910));
+    _colorCollection.add(const Color(0xFFABEBC6));
+    _colorCollection.add(const Color(0xFFFFFFFF));
+
     //_colorCollection.add(const Color(0xFF0A8043));
 
     _timeZoneCollection.add('Central Standard Time');
