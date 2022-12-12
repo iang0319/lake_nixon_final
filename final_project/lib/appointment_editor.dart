@@ -182,7 +182,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   late DateTime _endDate;
   late TimeOfDay _endTime;
   bool _isAllDay = false;
-  String _subject = '';
+
   String? _notes;
   String? _location;
   //List<Group> _groupsTest;
@@ -190,7 +190,8 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   List<CalendarResource> _selectedResources = <CalendarResource>[];
   List<CalendarResource> _unSelectedResources = <CalendarResource>[];
   //List<DropdownMenuItem<String>> firebaseEvents = [];
-  String dropdownValue = "Archery";
+  String dropdownValue = "Lunch";
+  late String _subject;
 
   RecurrenceProperties? _recurrenceProperties;
   late RecurrenceType _recurrenceType;
@@ -221,6 +222,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
     _updateAppointmentProperties();
     _selectedGroups;
     //getEvents();
+    _subject = dropdownValue;
     super.initState();
   }
 
@@ -1199,19 +1201,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                   fontSize: 16.0);
                               print("CANT ADD EVENT DUE TO RESTRICTIONS");
                             }
-                          } else {
-                            schedules.doc(docName).update({
-                              "$name.$hour":
-                                  FieldValue.arrayUnion([widget.group.name])
-                            });
-                            schedules.doc(docName).update({
-                              "appointments.${widget.group.name}":
-                                  FieldValue.arrayUnion([appMap])
-                            });
-                            events[widget.group]!.add(appointment[0]);
-
-                            widget.events.notifyListeners(
-                                CalendarDataSourceAction.add, appointment);
                           }
                         } else {
                           Fluttertoast.showToast(
