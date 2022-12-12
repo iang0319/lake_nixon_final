@@ -40,10 +40,11 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: const Text(
-          "Home Page",
-          style: TextStyle(fontFamily: 'Fruit', color: Colors.white),
-        )),
+              "Home Page",
+              style: TextStyle(fontFamily: 'Fruit', color: Colors.white),
+            )),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
