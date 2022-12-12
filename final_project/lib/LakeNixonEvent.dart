@@ -11,8 +11,6 @@ class LakeNixonEvent extends Appointment {
       int? groupSize,
       String? notes,
       Color? color,
-      String? startTimeZone,
-      String? endTimeZone,
       required bool isAllDay,
       required String subject,
       List<Group>? groups,
