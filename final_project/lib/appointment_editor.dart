@@ -36,7 +36,6 @@ class AppointmentEditor extends StatefulWidget {
       this.colorCollection,
       this.colorNames,
       this.events,
-      this.timeZoneCollection,
       this.group,
       this.firebaseEvents,
       [this.selectedResource]);
@@ -60,9 +59,6 @@ class AppointmentEditor extends StatefulWidget {
 
   /// Holds the events value
   final AppointmentDataSource events;
-
-  /// Collection of time zone values
-  final List<String> timeZoneCollection;
 
   /// Selected calendar resource
   final CalendarResource? selectedResource;
@@ -149,12 +145,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
 
       _selectedColorIndex =
           widget.colorCollection.indexOf(widget.selectedAppointment!.color);
-      _selectedTimeZoneIndex =
-          widget.selectedAppointment!.startTimeZone == null ||
-                  widget.selectedAppointment!.startTimeZone == ''
-              ? 0
-              : widget.timeZoneCollection
-                  .indexOf(widget.selectedAppointment!.startTimeZone!);
       _subject = widget.selectedAppointment!.subject == '(No title)'
           ? ''
           : widget.selectedAppointment!.subject;
@@ -617,14 +607,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                             startTime: _startDate,
                             endTime: _endDate,
                             color: widget.colorCollection[_selectedColorIndex],
-                            startTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
-                            endTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
                             notes: _notes,
                             isAllDay: _isAllDay,
                             subject: _subject == '' ? '(No title)' : _subject,
@@ -678,14 +660,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                             startTime: _startDate,
                             endTime: _endDate,
                             color: widget.colorCollection[_selectedColorIndex],
-                            startTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
-                            endTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
                             notes: _notes,
                             isAllDay: _isAllDay,
                             subject: _subject == '' ? '(No title)' : _subject,
@@ -719,14 +693,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                           startTime: _startDate,
                           endTime: _endDate,
                           color: widget.colorCollection[_selectedColorIndex],
-                          startTimeZone: _selectedTimeZoneIndex == 0
-                              ? ''
-                              : widget
-                                  .timeZoneCollection[_selectedTimeZoneIndex],
-                          endTimeZone: _selectedTimeZoneIndex == 0
-                              ? ''
-                              : widget
-                                  .timeZoneCollection[_selectedTimeZoneIndex],
                           notes: _notes,
                           isAllDay: _isAllDay,
                           subject: _subject == '' ? '(No title)' : _subject,
@@ -744,14 +710,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                             startTime: _startDate,
                             endTime: _endDate,
                             color: g.color,
-                            startTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
-                            endTimeZone: _selectedTimeZoneIndex == 0
-                                ? ''
-                                : widget
-                                    .timeZoneCollection[_selectedTimeZoneIndex],
                             notes: _notes,
                             isAllDay: _isAllDay,
                             subject: _subject == '' ? '(No title)' : _subject,
@@ -770,8 +728,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               tmpApp.startTime,
                               tmpApp.endTime,
                               tmpApp.color.toString(),
-                              tmpApp.startTimeZone,
-                              tmpApp.endTimeZone,
                               tmpApp.notes,
                               tmpApp.isAllDay,
                               tmpApp.subject,
@@ -1025,8 +981,6 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               widget.selectedAppointment?.startTime,
                               widget.selectedAppointment?.endTime,
                               widget.selectedAppointment?.color.toString(),
-                              widget.selectedAppointment?.startTimeZone,
-                              widget.selectedAppointment?.endTimeZone,
                               widget.selectedAppointment?.notes,
                               widget.selectedAppointment?.isAllDay,
                               widget.selectedAppointment?.subject,

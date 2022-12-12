@@ -13,8 +13,6 @@ import 'package:final_project/globals.dart';
 
 List<LakeNixonEvent> appointments = <LakeNixonEvent>[];
 
-//late bool isUser;
-
 class CalendarPage extends StatefulWidget {
   CalendarPage(
       {super.key,
@@ -41,15 +39,12 @@ final List<CalendarView> _allowedViews = <CalendarView>[
 class _CalendarPageState extends State<CalendarPage> {
   _CalendarPageState();
 
-  //AppointmentDataSource _events = AppointmentDataSource(<Appointment>[]);
   late CalendarView _currentView;
 
   /// Global key used to maintain the state, when we change the parent of the
   /// widget
   final GlobalKey _globalKey = GlobalKey();
-  final ScrollController _controller = ScrollController();
   final CalendarController _calendarController = CalendarController();
-  //LakeNixonEvent? _selectedAppointment;
   Appointment? _selectedAppointment;
   final List<String> _colorNames = <String>[];
   final List<Color> _colorCollection = <Color>[];
@@ -73,7 +68,7 @@ class _CalendarPageState extends State<CalendarPage> {
     CollectionReference events =
         FirebaseFirestore.instance.collection("events");
     final snapshot = await events.get();
-    if (snapshot.size > 0 && dbEvents.length == 0) {
+    if (snapshot.size > 0 && dbEvents.isEmpty) {
       List<QueryDocumentSnapshot<Object?>> data = snapshot.docs;
       for (var element in data) {
         var event = element.data() as Map;
@@ -175,7 +170,6 @@ class _CalendarPageState extends State<CalendarPage> {
                 _colorCollection,
                 _colorNames,
                 _events,
-                _timeZoneCollection,
                 widget.group,
                 firebaseEvents)),
       ).then((value) {
