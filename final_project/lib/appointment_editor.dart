@@ -219,7 +219,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
   @override
   void initState() {
     _updateAppointmentProperties();
-    _selectedGroups = assignments[widget.group];
+    _selectedGroups;
     //getEvents();
     super.initState();
   }
@@ -348,7 +348,7 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                 onConfirm: (results) {
                   setState(() {
                     _selectedGroups = results;
-                    assignments[widget.group] = _selectedGroups;
+                    //assignments[widget.group] = _selectedGroups;
                   });
                 },
               ),
@@ -709,31 +709,31 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
               height: 1.0,
               thickness: 1,
             ),
-            ListTile(
-              contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-              leading: Icon(Icons.lens,
-                  color: widget.colorCollection[_selectedColorIndex]),
-              title: Text(
-                widget.colorNames[_selectedColorIndex],
-              ),
-              onTap: () {
-                showDialog<Widget>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return _CalendarColorPicker(
-                      widget.colorCollection,
-                      _selectedColorIndex,
-                      widget.colorNames,
-                      onChanged: (_PickerChangedDetails details) {
-                        _selectedColorIndex = details.index;
-                      },
-                    );
-                  },
-                ).then((dynamic value) => setState(() {
-                      /// update the color picker changes
-                    }));
-              },
-            ),
+            // ListTile(
+            //   contentPadding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+            //   leading: Icon(Icons.lens,
+            //       color: widget.colorCollection[_selectedColorIndex]),
+            //   title: Text(
+            //     widget.colorNames[_selectedColorIndex],
+            //   ),
+            //   onTap: () {
+            //     showDialog<Widget>(
+            //       context: context,
+            //       builder: (BuildContext context) {
+            //         return _CalendarColorPicker(
+            //           widget.colorCollection,
+            //           _selectedColorIndex,
+            //           widget.colorNames,
+            //           onChanged: (_PickerChangedDetails details) {
+            //             _selectedColorIndex = details.index;
+            //           },
+            //         );
+            //       },
+            //     ).then((dynamic value) => setState(() {
+            //           /// update the color picker changes
+            //         }));
+            //   },
+            // ),
             const Divider(
               height: 1.0,
               thickness: 1,
@@ -946,22 +946,52 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                               : SfCalendar.generateRRule(
                                   _recurrenceProperties!, _startDate, _endDate),
                         );
-                        appointment.add(app);
 
-                        Map<String, dynamic> appMap = {
-                          "appointment": [
-                            app.startTime,
-                            app.endTime,
-                            app.color.toString(),
-                            app.startTimeZone,
-                            app.endTimeZone,
-                            app.notes,
-                            app.isAllDay,
-                            app.subject,
-                            app.resourceIds,
-                            app.recurrenceRule
-                          ]
-                        };
+                        var test = {};
+                        for (Group g in _selectedGroups) {
+                          Appointment tmpApp = Appointment(
+                            startTime: _startDate,
+                            endTime: _endDate,
+                            color: g.color,
+                            startTimeZone: _selectedTimeZoneIndex == 0
+                                ? ''
+                                : widget
+                                    .timeZoneCollection[_selectedTimeZoneIndex],
+                            endTimeZone: _selectedTimeZoneIndex == 0
+                                ? ''
+                                : widget
+                                    .timeZoneCollection[_selectedTimeZoneIndex],
+                            notes: _notes,
+                            isAllDay: _isAllDay,
+                            subject: _subject == '' ? '(No title)' : _subject,
+                            resourceIds: _resourceIds,
+                            recurrenceRule:
+                                _rule == _SelectRule.doesNotRepeat ||
+                                        _recurrenceProperties == null
+                                    ? null
+                                    : SfCalendar.generateRRule(
+                                        _recurrenceProperties!,
+                                        _startDate,
+                                        _endDate),
+                          );
+                          Map<String, dynamic> appMap = {
+                            "appointment": [
+                              tmpApp.startTime,
+                              tmpApp.endTime,
+                              tmpApp.color.toString(),
+                              tmpApp.startTimeZone,
+                              tmpApp.endTimeZone,
+                              tmpApp.notes,
+                              tmpApp.isAllDay,
+                              tmpApp.subject,
+                              tmpApp.resourceIds,
+                              tmpApp.recurrenceRule
+                            ]
+                          };
+                          test[g.name] = appMap;
+                          appointment.add(tmpApp);
+                          print(appointment);
+                        }
 
                         var time = app.startTime;
                         String hour = "${time.hour}";
@@ -1020,16 +1050,145 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                             }
                           });
                         } else {
-                          print('No data available.');
+                          print('No data available.1');
                         }
 
-                        if (created) {
-                          if (schedule != null &&
-                              schedule!.times[hour] != null) {
-                            int i = indexEvents(schedule!.name);
+                        if (_selectedGroups.iterator.moveNext()) {
+                          if (created) {
+                            int groupAmount = _selectedGroups.length;
+                            if (schedule != null &&
+                                schedule!.times[hour] != null) {
+                              int i = indexEvents(schedule!.name);
+                              int max = dbEvents[i].groupMax;
+                              int current = schedule!.getList(hour);
+                              if (max < current + groupAmount) {
+                                Fluttertoast.showToast(
+                                    msg: "CANT ADD EVENT DUE TO RESTRICTIONS",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                                print("CANT ADD EVENT DUE TO RESTRICTIONS");
+                              } else {
+                                var names = <String>[];
+                                var count = 0;
+                                for (Group g in _selectedGroups) {
+                                  schedule!.addGroup(hour, g.name);
+                                  names.add(g.name);
+                                  schedules.doc(docName).update({
+                                    "appointments.${g.name}":
+                                        FieldValue.arrayUnion([test[g.name]])
+                                  });
+
+                                  events[g]!.add(appointment[count]);
+                                  count += 1;
+                                }
+
+                                schedules.doc(docName).update({
+                                  "${schedule!.name}.${hour}":
+                                      FieldValue.arrayUnion(names)
+                                });
+
+                                widget.events.notifyListeners(
+                                    CalendarDataSourceAction.add, appointment);
+                              }
+                            } else {
+                              int groupAmount = _selectedGroups.length;
+                              int i = indexEvents(name);
+                              int max = dbEvents[i].groupMax;
+                              int current = groupAmount;
+                              if (schedule != null && max >= current) {
+                                var names = <String>[];
+                                var count = 0;
+                                for (Group g in _selectedGroups) {
+                                  schedule!.newGroup(hour, g.name);
+                                  names.add(g.name);
+                                  schedules.doc(docName).update({
+                                    "appointments.${g.name}":
+                                        FieldValue.arrayUnion([test[g.name]])
+                                  });
+                                  events[g]!.add(appointment[count]);
+                                  count += 1;
+                                }
+
+                                schedules.doc(docName).update({
+                                  "${schedule!.name}.${hour}":
+                                      FieldValue.arrayUnion(names)
+                                });
+                                widget.events.notifyListeners(
+                                    CalendarDataSourceAction.add, appointment);
+                              } else {
+                                int groupAmount = _selectedGroups.length;
+                                int i = indexEvents(name);
+                                int max = dbEvents[i].groupMax;
+                                int current = groupAmount;
+                                if (max >= current) {
+                                  var count = 0;
+                                  var names = <String>[];
+                                  for (Group g in _selectedGroups) {
+                                    names.add(g.name);
+                                    events[g]!.add(appointment[count]);
+                                    count += 1;
+                                  }
+                                  Map map = {hour: names};
+                                  schedules
+                                      .doc(docName)
+                                      .update({dropdownValue: map});
+
+                                  for (Group g in _selectedGroups) {
+                                    schedules.doc(docName).update({
+                                      "appointments.${g.name}":
+                                          FieldValue.arrayUnion([test[g.name]])
+                                    });
+                                    setState(() {
+                                      widget.events.notifyListeners(
+                                          CalendarDataSourceAction.add,
+                                          appointment);
+                                    });
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "CANT ADD EVENT DUE TO RESTRICTIONS",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                  print("CANT ADD EVENT DUE TO RESTRICTIONS");
+                                }
+                              }
+                            }
+                          } else {
+                            int groupAmount = _selectedGroups.length;
+                            int i = indexEvents(name);
                             int max = dbEvents[i].groupMax;
-                            int current = schedule!.getList(hour);
-                            if (max <= current) {
+                            int current = groupAmount;
+                            if (max >= current) {
+                              var names = <String>[];
+                              var count = 0;
+                              for (Group g in _selectedGroups) {
+                                names.add(g.name);
+                                events[g]!.add(appointment[count]);
+                                count += 1;
+                              }
+                              Map map = {hour: names};
+                              schedules.doc(docName).set({dropdownValue: map});
+
+                              for (Group g in _selectedGroups) {
+                                schedules.doc(docName).update({
+                                  "appointments.${g.name}":
+                                      FieldValue.arrayUnion([test[g.name]])
+                                });
+                              }
+
+                              setState(() {
+                                widget.events.notifyListeners(
+                                    CalendarDataSourceAction.add, appointment);
+                              });
+                            } else {
                               Fluttertoast.showToast(
                                   msg: "CANT ADD EVENT DUE TO RESTRICTIONS",
                                   toastLength: Toast.LENGTH_LONG,
@@ -1039,54 +1198,18 @@ class _AppointmentEditorState extends State<AppointmentEditor> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                               print("CANT ADD EVENT DUE TO RESTRICTIONS");
-                            } else {
-                              schedule!.addGroup(hour, widget.group.name);
-                              Map<String, Object?> map = {
-                                schedule!.name: schedule!.times
-                              };
-                              schedules.doc(docName).update({
-                                "${schedule!.name}.${hour}":
-                                    FieldValue.arrayUnion([widget.group.name])
-                              });
-                              schedules.doc(docName).update({
-                                "appointments.${widget.group.name}":
-                                    FieldValue.arrayUnion([appMap])
-                              });
-                              events[widget.group]!.add(appointment[0]);
-
-                              widget.events.notifyListeners(
-                                  CalendarDataSourceAction.add, appointment);
                             }
-                          } else {
-                            if (schedule != null) {
-                              schedule!.newGroup(hour, widget.group.name);
-                              schedules.doc(docName).update({
-                                "${schedule!.name}.${hour}":
-                                    FieldValue.arrayUnion([widget.group.name])
-                              });
-                            }
-                            schedules.doc(docName).update({
-                              "appointments.${widget.group.name}":
-                                  FieldValue.arrayUnion([appMap])
-                            });
-                            events[widget.group]!.add(appointment[0]);
-
-                            widget.events.notifyListeners(
-                                CalendarDataSourceAction.add, appointment);
                           }
                         } else {
-                          Map map = {
-                            hour: [widget.group.name]
-                          };
-                          schedules.doc(docName).set({dropdownValue: map});
-                          schedules.doc(docName).update({
-                            "appointments.${widget.group.name}":
-                                FieldValue.arrayUnion([appMap])
-                          });
-                          events[widget.group]!.add(appointment[0]);
-
-                          widget.events.notifyListeners(
-                              CalendarDataSourceAction.add, appointment);
+                          Fluttertoast.showToast(
+                              msg: "PLEASE SELECT A GROUP",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                          print("PLEASE SELECT A GROUP");
                         }
 
                         Navigator.pop(context);
