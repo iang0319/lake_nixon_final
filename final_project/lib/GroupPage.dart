@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/userCalendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,12 +7,6 @@ import 'calender_page.dart';
 import "globals.dart";
 import 'package:firebase_database/firebase_database.dart';
 import "create_event.dart" as Event;
-
-List<Group> groups = <Group>[
-  const Group(name: "Bears"),
-  const Group(name: "Koalas"),
-  const Group(name: "Kangaroos")
-];
 
 class GroupPage extends StatefulWidget {
   GroupPage({super.key, required this.title});
@@ -39,6 +31,7 @@ class _GroupPageState extends State<GroupPage> {
                 title: group.name,
                 group: group,
                 isUser: true,
+                master: false,
               )),
     );
     //await Navigator.of(context).push(
@@ -57,6 +50,7 @@ class _GroupPageState extends State<GroupPage> {
           title: group.name,
           group: group,
           isUser: false,
+          master: false,
         ),
       ),
     );
@@ -86,9 +80,7 @@ class _GroupPageState extends State<GroupPage> {
 
   Future<void> _handleCalendar(Group group) async {
     print("Chat");
-    for (Group g in groups) {
-      createGroup(g);
-    }
+
     _checkAuth(group);
     //await Navigator.of(context).push(
     //MaterialPageRoute(

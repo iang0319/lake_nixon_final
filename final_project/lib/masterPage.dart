@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/Group.dart';
+import 'package:final_project/calender_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import "package:syncfusion_flutter_calendar/calendar.dart";
+import "globals.dart";
 
 class MasterPage extends StatefulWidget {
   const MasterPage({Key? key}) : super(key: key);
@@ -7,6 +12,11 @@ class MasterPage extends StatefulWidget {
   @override
   State<MasterPage> createState() => _MasterPageState();
 }
+
+final List<CalendarView> _allowedViews = <CalendarView>[
+  CalendarView.workWeek,
+  CalendarView.day
+];
 
 class _MasterPageState extends State<MasterPage> {
   var eventController = TextEditingController();
@@ -93,6 +103,19 @@ class _MasterPageState extends State<MasterPage> {
     );
   }
 
+  Future<void> MasterPush() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => CalendarPage(
+                group: const Group(
+                    name: "Admin", color: Color(0xFFFFFFFF), age: 99999),
+                title: "Master",
+                isUser: true,
+                master: true,
+              )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -118,6 +141,18 @@ class _MasterPageState extends State<MasterPage> {
                     child: const Text("Add event"),
                     onPressed: () {
                       _EventInfoPopupForm(context);
+                    },
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    child: const Text("View Master Calendar"),
+                    onPressed: () {
+                      for (Group g in groups) {
+                        createGroup(g);
+                      }
+                      MasterPush();
                     },
                   ),
                 ),
