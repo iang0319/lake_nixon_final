@@ -369,7 +369,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.group.name} calendar",
-            style: TextStyle(color: nixonblue, fontFamily: 'Fruit')),
+            style: TextStyle(color: nixonbrown, fontFamily: 'Fruit')),
         backgroundColor: nixonblue,
       ),
       body: Row(children: <Widget>[
